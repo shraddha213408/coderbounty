@@ -1,0 +1,10 @@
+{% load endless %}
+{% paginate issues %}
+
+{% for issue in issues %}
+{% include "single_issue.html" %}
+
+
+{% endfor %}
+{% show_more %}
+

@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    <!-- Section - Profile -->
+	<div class="section-profile">
+		<div class="grid wrapper-global">
+			<!-- profile-info -->
+			<div class="col-5 profile-info">
+				<section class="frame frame-dark-paper">
+					<span class="bugfix-top"></span>
+					<div class="frame-content">
+                    	<a class="img-holder" href="#"><img src="{% static "images/temp/thumb-medium-01.png" %}" alt="" /></a>
+						<p>Joined 4/13/2013</p>
+                        <ul class="social-list">
+                        	<li><a href="#" class="icon-google-plus2"></a></li>
+                            <li><a href="#" class="icon-github6"></a></li>
+                            <li><a href="#" class="icon-bitbucket2"></a></li>
+                        </ul>
+                        <ul class="stats">
+                        	<li><span class="label">Won:</span><span class="value">$982</span></li>
+                            <li><span class="label">Posted:</span><span class="value">$982</span></li>
+                            <li><span class="label">Taken:</span><span class="value">49</span></li>
+                            <li><span class="label">Closed:</span><span class="value">23</span></li>
+                        </ul>
+                        <button class="ribbon ribbon-03 ribbon-type-01 ribbon-normal ribbon-brown-dark">Edit profile</button>
+                        <button class="ribbon ribbon-03 ribbon-type-01 ribbon-normal"><span></span>Invite</button>
+					</div>
+					<span class="bugfix-bottom"></span>
+				</section>
+			</div>
+			<!-- profile-activitys -->
+			<div class="col-15 profile-activity">
+            	<div class="heading">
+            		<h2>{{ user.get_username }}</h2>
+                	<p>Global Rank #48</p>
+                </div>
+				<section class="frame frame-light">
+					<div class="frame-content">
+                    	<h2 class="titlebar"><span class="ribbon ribbon-normal ribbon-04 ribbon-brown">Recent Activity</span></h2>
+                        <ul class="additional-links" style="margin-top:-15px;">
+                        	<li><a href="">Show issues I've posted</a></li>
+                            <!-- note: you can place also other additional links, if you do remove inline style for margin top -->
+                        </ul>
+                        <table class="table-list table-list-activity">
+							<tbody>
+								<tr>
+									<td class="status">
+										<span class="icon-custom_yes"></span></td>
+									<td class="text">
+										<p>Adam Smith closed <a href="#"><strong>issue #54</strong></a> and won the <strong style="color:#75857B;">$20 bounty!</strong></p>
+										<time class="time">11/21/2013</time></td>
+                                    <td class="user-interaction">
+                                    	<button class="ribbon ribbon-03 ribbon-type-01 ribbon-normal">Award Winner</button>
+                                        <button class="icon-uniE651 button-icon"><span class="tooltip"><em></em>close and refund bounty (3% service charge)</span></button>
+                                    </td>
+								</tr>
+                                <tr>
+									<td class="status">
+										<span class="icon-custom_yes"></span></td>
+									<td class="text">
+										<p>Adam Smith closed <a href="#"><strong>issue #53</strong></a> and won the <strong style="color:#75857B;">$30 bounty!</strong></p>
+										<time class="time">11/20/2013</time></td>
+                                    <td class="user-interaction"></td>
+								</tr>
+                                <tr>
+									<td class="status">
+										<span class="icon-custom_yes"></span></td>
+									<td class="text">
+										<p>Adam Smith closed <a href="#"><strong>issue #51</strong></a> and won the <strong style="color:#75857B;">$45 bounty!</strong></p>
+										<time class="time">11/18/2013</time></td>
+                                    <td class="user-interaction"></td>
+								</tr>
+                                <tr>
+									<td class="status">
+										<span class="icon-custom_yes"></span></td>
+									<td class="text">
+										<p>Adam Smith closed <a href="#"><strong>issue #42</strong></a> and won the <strong style="color:#75857B;">$55 bounty!</strong></p>
+										<time class="time">11/15/2013</time></td>
+                                    <td class="user-interaction"></td>
+								</tr>
+                                <tr>
+									<td class="status">
+										<span class="icon-custom_yes"></span></td>
+									<td class="text">
+										<p>Adam Smith closed <a href="#"><strong>issue #46</strong></a> and won the <strong style="color:#75857B;">$15 bounty!</strong></p>
+										<time class="time">11/14/2013</time></td>
+                                    <td class="user-interaction"></td>
+								</tr>
+                            </tbody>
+                        </table>                               
+					</div>
+				</section>
+			</div>
+		</div>
+	</div>
+{% endblock %}

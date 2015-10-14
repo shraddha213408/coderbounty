@@ -1,0 +1,59 @@
+@font-face {
+    font-family:'CalistoMtRegular';
+    src: url('../fonts/calistomt/regular/calistomtregular.eot');
+    src: url('../fonts/calistomt/regular/calistomtregular.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/calistomt/regular/calistomtregular.woff') format('woff'),
+         url('../fonts/calistomt/regular/calistomtregular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;}
+@font-face {
+    font-family:'CalistoMtBold';
+    src: url('../fonts/calistomt/bold/calistomtbold.eot');
+    src: url('../fonts/calistomt/bold/calistomtbold.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/calistomt/bold/calistomtbold.woff') format('woff'),
+         url('../fonts/calistomt/bold/calistomtbold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;}
+@font-face {
+    font-family:'CalistoMtItalic';
+    src: url('../fonts/calistomt/italic/calistomtitalic.eot');
+    src: url('../fonts/calistomt/italic/calistomtitalic.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/calistomt/italic/calistomtitalic.woff') format('woff'),
+         url('../fonts/calistomt/italic/calistomtitalic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;}
+@font-face {
+    font-family:'CalistoMtBoldItalic';
+    src: url('../fonts/calistomt/bold-italic/calistomtbolditalic.eot');
+    src: url('../fonts/calistomt/bold-italic/calistomtbolditalic.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/calistomt/bold-italic/calistomtbolditalic.woff') format('woff'),
+         url('../fonts/calistomt/bold-italic/calistomtbolditalic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;}
+@font-face {
+    font-family:'AdamantcRegular';
+    src: url('../fonts/adamantc/adamantc.eot');
+    src: url('../fonts/adamantc/adamantc.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/adamantc/adamantc.woff') format('woff'),
+         url('../fonts/adamantc/adamantc.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;}
+@font-face {
+    font-family:'RegulatorsRegular';
+    src: url('../fonts/regulators/regulators.eot');
+    src: url('../fonts/regulators/regulators.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/regulators/regulators.woff') format('woff'),
+         url('../fonts/regulators/regulators.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;}
+
+/* the fix ! simply ADD this block BELOW the above block */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    @font-face {
+    font-family: 'AdamantcRegular';
+        src: url('../fonts/adamantc/adamantc.svg#adamantcregular') format('svg');}
+    @font-face {
+        font-family: 'RegulatorsRegular';
+            src: url('../fonts/regulators/regulators.svg#regulatorsregular') format('svg');}
+    
+}

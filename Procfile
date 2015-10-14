@@ -1,0 +1,1 @@
+web: gunicorn coderbounty.wsgi --log-file -

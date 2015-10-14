@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+
+<script src="{% static "js/jquery.liveurl.js" %}"></script>
+
+<script>
+// console.log('test');
+
+$(document).ready(function(){  
+ $('#issueUrl').liveUrl({
+   success : function(data) 
+   { 
+    console.log(data);
+    $.post( "/parse_url_ajax/", { 
+            url: data['url'], 
+            csrfmiddlewaretoken: "{{ csrf_token }}" 
+        }).done(function( data ) {
+            var issue = jQuery.parseJSON(data)
+            
+            $('#title').val(issue['title']);
+            $('#summary').val(issue['content']);
+
+        });
+  }
+});
+
+});
+
+
+</script>
+
+<!-- $(document).ready(function () {
+
+    $('ul#ui-ajax-tabs li:first').addClass('selected');
+
+    $('#ui-ajax-tabs li a').click(function (e) {
+
+        e.preventDefault();
+
+        $("#ui-ajax-tabs li").removeClass("selected");
+
+        $(this).parents('li').addClass("loading");
+
+        var url = $(this).attr("href");
+        var link = $(this);
+        console.log(url);
+
+        $.ajax({
+            url: url,
+            success: function (responseHtml) {
+                $('div#ui-tab-content').html($(responseHtml).find('div#ui-tab-content > div#ui-ajax-html'));
+                $(link).parents('li').addClass('selected');
+                $("#ui-ajax-tabs li").removeClass("loading");
+            },
+            error: function () {
+                $('div#ui-tab-content').html('<div class="message error">Sorry that page doesn\'t exist</div>');
+                $(link).parents('li').addClass('selected');
+                $("#ui-ajax-tabs li").removeClass("loading");
+            }
+        });
+
+    });
+
+});
+ -->
+
+	<!-- Section - Post a Bounty -->
+	<div class="section-postBounty">
+		<div class="wrapper-global grid">
+			<div class="col-20">
+				<section class="frame frame-dark-paper">
+					<span class="bugfix-top"></span>
+					<div class="frame-content">
+						<h1 class="titlebar-paper"><span>Po$t a Bounty</span></h1>
+                        <form>
+                            <div class="grid">
+                                <!-- bounty-post -->
+                                <div class="col-15 bounty-post form-layout form-layout-horizontal">
+                                    <!-- -->
+                                    <div class="form-item">
+                                        <p class="label">Issue Tracker:</p>
+                                        <div class="value">
+                                            <span class="custom-radiobutton"><input type="radio" id="rbtnGithub" name="issuetracker" checked/></span>
+                                            <label for="rbtnGithub" class="label-github">GitHub</label>
+                                            <span class="custom-radiobutton"><input type="radio" id="rbtnBitbucket" name="issuetracker" /></span>
+                                            <label for="rbtnBitbucket" class="label-bitbucket">Bitbucket</label>
+                                            <!--
+                                            <span class="custom-radiobutton"><input type="radio" id="rbtnOther" name="issuetracker" /></span>
+                                            <label for="rbtnOther">Other</label>
+                                            -->
+                                        </div>
+                                    </div>
+                                    <!-- -->
+                                    <div class="form-item">
+                                        <label class="label" for="issueUrl">Issue URL:</label>
+                                        <div class="value">
+                                            <input type="text" id="issueUrl" name="issueUrl" />
+                                        </div>
+                                    </div>
+                                    <!-- -->
+                                    <div class="form-item">
+                                        <label class="label" for="title">Title:</label>
+                                        <div class="value">
+                                            <input type="text" id="title" />
+                                        </div>
+                                    </div>
+                                    <!-- -->
+                                    <div class="form-item">
+                                        <label class="label" for="summary">Summary:</label>
+                                        <div class="vlaue">
+                                            <textarea id="summary"></textarea>
+                                        </div>
+                                    </div>
+                                    <!-- -->
+                                    <div class="form-item form-short">
+                                        <label class="label" for="language">Language:</label>
+                                        <div class="value">
+                                            <select id="language">
+                                                <option>Python</option>
+                                                <option>Ruby</option>
+                                                <option>C#</option>
+                                                <option>Java</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- -->
+                                    <div class="form-item form-short">
+                                        <label class="label" for="bounty">Bounty $:</label>
+                                        <div class="value">
+                                            <input type="text" id="bounty" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- bounty-info -->
+                                <div class="col-4 bounty-info">
+                                    <h2>Project Title<a href="#">view all issues</a></h2>
+                                    <a class="avatar" href="#"><img src="{% static "images/temp/thumb-medium-00.jpg" %}" alt="" /></a>
+                                    <div class="bounty-info-add-image">
+                                    	<div class="arrow">
+                                            <a class="icon-uniE65C" href="#"></a>
+                                            <a class="icon-uniE63C" href="#"></a>
+                                        </div>
+                                        <a class="add-img" href="#">add image from url</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- bounty-submit -->
+                            <div class="bounty-submit clearfix">
+                                <div class="notice">
+                                	<p>Bounties are posted until the issue is closed, and the it goes to the developer who closed the issue. You can withdraw your bounty at anytime for a 3% fee.</p></div>
+                                <div class="price">Total: <span>$22</span></div>
+                                <div class="button-wrapper"><button class="ribbon ribbon-large ribbon-03">Pay Now</button></div>
+                                <div class="symbol-wrapper">
+                                    <div class="symbol-secure"><span class="icon-lock"></span> Coderbounty uses 1024 bit encryption for secure transactions</div>
+                                </div>
+                            </div>
+                        </form>
+					</div>
+					<span class="bugfix-bottom"></span>
+				</section>
+			</div>
+		</div>
+	</div>
+{% endblock %}
