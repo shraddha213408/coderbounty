@@ -8,5 +8,3 @@ class WebsiteConfig(AppConfig):
     def ready(self):
         registry.register(self.get_model('Issue'))
         registry.register(User)
-        
-

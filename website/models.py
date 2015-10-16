@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db.models import Sum, Min
 from django.utils.timesince import timeuntil
 from django.conf import settings
+from django.db.models.signals import post_save
 import datetime
 import urllib
 import hashlib
@@ -173,6 +174,7 @@ class UserProfile(models.Model):
     payment_service_email = models.CharField(max_length=255, null=True, blank=True, default='')
     coins = models.IntegerField(default=0)
 
+    @property
     def gravatar(self, size=28):
         gravatar_url = "http://www.gravatar.com/avatar.php?"
         gravatar_url += urllib.urlencode({'gravatar_id': hashlib.md5(self.user.email.lower()).hexdigest(), 'default': 'retro', 'size': str(size)})
@@ -199,8 +201,29 @@ class UserProfile(models.Model):
         service = Service.objects.get(name="Bitbucket")
         return UserService.objects.get(user=self.user, service=service)
 
+
+    def save(self, *args, **kwargs):
+        from actstream import action
+        #if new user signs up add it to the activity feed
+        if self.pk is None:
+            action.send(self.user, verb='signed up')
+        super(UserProfile, self).save(*args, **kwargs)
+
+
+
     def __unicode__(self):
         return self.user.email
+
+
+def create_profile(sender, **kwargs):
+    """
+    """
+    user = kwargs["instance"]
+    if kwargs["created"]:
+        profile = UserProfile(user=user)
+        profile.save()
+
+post_save.connect(create_profile, sender=User)
 
 
 class DeltaManager(models.Manager):

@@ -27,7 +27,7 @@ import cookielib
 from BeautifulSoup import BeautifulSoup
 import string
 import random
-
+from actstream.models import Action
 
 #TODO:
 #setup new framework on heroku (in progress now)
@@ -95,10 +95,13 @@ def home(request,
 
     issues = get_issues(q, status, order)
 
+    activities = Action.objects.all()
+
     if request.is_ajax():
         template = page_template
 
     context = {
+        'activities': activities,
         'issues': issues,
         'issue_counts': issue_counts(),
         'page_template': page_template,
