@@ -31,6 +31,7 @@ from BeautifulSoup import BeautifulSoup
 import string
 import random
 from actstream.models import user_stream
+from actstream.models import Action
 
 #TODO:
 #setup new framework on heroku (in progress now)
