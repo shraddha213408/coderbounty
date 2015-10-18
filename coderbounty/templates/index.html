@@ -29,12 +29,13 @@
                         <h2 class="titlebar"><span class="ribbon ribbon-normal ribbon-04 ribbon-brown">Recent Activity</span></h2>
                         <!-- table-list-activity -->
                         <table class="table-list table-list-activity">
+                            {% for activity in activities %}
                             <tbody>
                                 <tr>
                                     <td class="thumb">
-                                        <a href="#" class="img-holder"><img src="{% static "images/temp/thumb-01.jpg" %}" alt="" /></a></td>
+                                        <a href="#" class="img-holder"><img src="{{ activity.actor.userprofile.gravatar }}" alt="" /></a></td>
                                     <td class="text">
-                                        <p>Active stylus closed <a href="#"><strong>issue #54</strong></a> and won the <strong style="color:#75857B;">$20 bounty!</strong></p>
+                                        <p>{{ activity }}</p>
                                         <time class="time">11/21/2013</time></td>
                                     <td class="status">
                                         <span class="icon-custom_yes"></span></td>
@@ -76,6 +77,7 @@
                                         <span class="icon-custom_dolar"></span></td>
                                 </tr>
                             </tbody>
+                            {% endfor %}
                         </table>                        
                     </div>
                 </div>
