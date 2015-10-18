@@ -9,6 +9,9 @@ from models import Issue, Watcher, UserProfile, Service, UserService
 from utils import get_issue, add_issue_to_database, get_twitter_count, get_facebook_count, create_comment, issue_counts, leaderboard, get_hexdigest
 #from decorators import ajax_login_required
 
+from django.views.generic import ListView, DetailView
+from django.contrib.auth import get_user_model
+
 from django.shortcuts import get_object_or_404, render
 
 #from django.utils 
@@ -27,7 +30,7 @@ import cookielib
 from BeautifulSoup import BeautifulSoup
 import string
 import random
-from actstream.models import Action
+from actstream.models import user_stream
 
 #TODO:
 #setup new framework on heroku (in progress now)
@@ -462,7 +465,7 @@ def verify(request, service_slug):
 def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for x in range(size))
 
-
+'''
 def profile(request):
     if request.POST:
         user = User.objects.get(id=request.user.id)
@@ -495,9 +498,26 @@ def profile(request):
 
         user_profile.save()
 
-        return HttpResponse("Your profile has been saved")
+        return HttpResponse("Your profile has been saved") 
 
     return render_to_response("profile.html", context_instance=RequestContext(request))
+'''
+
+
+class UserProfileDetailView(DetailView):
+    model = get_user_model()
+    slug_field = "username"
+    template_name = "profile.html"
+
+    def get_object(self, queryset=None):
+        user = super(UserProfileDetailView, self).get_object(queryset)
+        UserProfile.objects.get_or_create(user=user)
+        return user
+
+    def get_context_data(self, **kwargs):
+        context = super(UserProfileDetailView, self).get_context_data(**kwargs)
+        context['activities'] = user_stream(self.get_object(), with_user_activity=True)        
+        return context
 
 
 def load_issue(request):

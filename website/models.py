@@ -210,8 +210,11 @@ class UserProfile(models.Model):
     def xp(self):
         return XP.objects.filter(user=self.user).aggregate(Sum('points'))['points__sum']
 
+    @property
     def gravatar_large(self, size=200):
-        return self.gravatar(size=200)
+        gravatar_url = "http://www.gravatar.com/avatar.php?"
+        gravatar_url += urllib.urlencode({'gravatar_id': hashlib.md5(self.user.email.lower()).hexdigest(), 'default': 'retro', 'size': str(size)})
+        return gravatar_url
 
     def gravatar_winner(self, size=23):
         return self.gravatar(size=23)
