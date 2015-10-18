@@ -95,7 +95,7 @@ def home(request,
 
     issues = get_issues(q, status, order)
 
-    activities = Action.objects.all()
+    activities = Action.objects.all()[0:10]
 
     if request.is_ajax():
         template = page_template

@@ -30,7 +30,7 @@ admin.site.register(UserService)
 admin.site.register(Service, ServiceAdmin)
 #admin.site.register(Watcher, WatcherAdmin)
 admin.site.register(UserProfile)
-#admin.site.register(Bounty, BountyAdmin)
+admin.site.register(Bounty)
 #admin.site.register(XP, XPAdmin)
 
 # admin.site.register(Delta,
