@@ -9,24 +9,30 @@
 <script>
 // console.log('test');
 
-$(document).ready(function(){  
- $('#issueUrl').liveUrl({
-   success : function(data) 
-   { 
-    console.log(data);
-    $.post( "/parse_url_ajax/", { 
-            url: data['url'], 
-            csrfmiddlewaretoken: "{{ csrf_token }}" 
-        }).done(function( data ) {
-            var issue = jQuery.parseJSON(data)
-            
-            $('#title').val(issue['title']);
-            $('#summary').val(issue['content']);
+$(document).ready(function(){
+    $('#issueurl').val('https://github.com/')
+    $('#issueurl').liveUrl({
+       success : function(data)
+       {
+        console.log(data);
+        $.post( "/parse_url_ajax/", {
+                url: data['url'],
+                csrfmiddlewaretoken: "{{ csrf_token }}"
+            }).done(function( data ) {
+                var issue = jQuery.parseJSON(data)
 
-        });
-  }
-});
+                $('#title').val(issue['title']);
+                $('#summary').val(issue['content']);
 
+            });
+        }
+    });
+    $('#rbtnGithub').click(function(){
+        $('#issueurl').val('https://github.com/')
+    });
+    $('#rbtnBitbucket').click(function(){
+        $('#issueurl').val('https://bitbucket.org/')
+    });
 });
 
 
@@ -75,17 +81,22 @@ $(document).ready(function(){
 					<span class="bugfix-top"></span>
 					<div class="frame-content">
 						<h1 class="titlebar-paper"><span>Po$t a Bounty</span></h1>
-                        <form>
+                        <form action="{% url 'paynow' %}" method="post">
+                            {% csrf_token %}
                             <div class="grid">
                                 <!-- bounty-post -->
                                 <div class="col-15 bounty-post form-layout form-layout-horizontal">
                                     <!-- -->
                                     <div class="form-item">
+                                        {% if message %}<p>&nbsp;&nbsp;&nbsp;<strong>{{ message }}</strong></p>{% endif %}
+                                    </div>
+                                    <!-- -->
+                                    <div class="form-item">
                                         <p class="label">Issue Tracker:</p>
                                         <div class="value">
-                                            <span class="custom-radiobutton"><input type="radio" id="rbtnGithub" name="issuetracker" checked/></span>
+                                            <span class="custom-radiobutton"><input type="radio" id="rbtnGithub" name="issuetracker" value="Github" checked/></span>
                                             <label for="rbtnGithub" class="label-github">GitHub</label>
-                                            <span class="custom-radiobutton"><input type="radio" id="rbtnBitbucket" name="issuetracker" /></span>
+                                            <span class="custom-radiobutton"><input type="radio" id="rbtnBitbucket" name="issuetracker" value="Bitbucket"/></span>
                                             <label for="rbtnBitbucket" class="label-bitbucket">Bitbucket</label>
                                             <!--
                                             <span class="custom-radiobutton"><input type="radio" id="rbtnOther" name="issuetracker" /></span>
@@ -95,34 +106,33 @@ $(document).ready(function(){
                                     </div>
                                     <!-- -->
                                     <div class="form-item">
-                                        <label class="label" for="issueUrl">Issue URL:</label>
+                                        <label class="label" for="issueurl">Issue URL:</label>
                                         <div class="value">
-                                            <input type="text" id="issueUrl" name="issueUrl" />
+                                            <input type="text" id="issueurl" name="issueurl"/>
                                         </div>
                                     </div>
                                     <!-- -->
                                     <div class="form-item">
                                         <label class="label" for="title">Title:</label>
                                         <div class="value">
-                                            <input type="text" id="title" />
+                                            <input type="text" id="title" name="issuetitle"/>
                                         </div>
                                     </div>
                                     <!-- -->
                                     <div class="form-item">
                                         <label class="label" for="summary">Summary:</label>
                                         <div class="vlaue">
-                                            <textarea id="summary"></textarea>
+                                            <textarea id="summary" name="issuesummary"></textarea>
                                         </div>
                                     </div>
                                     <!-- -->
                                     <div class="form-item form-short">
                                         <label class="label" for="language">Language:</label>
                                         <div class="value">
-                                            <select id="language">
-                                                <option>Python</option>
-                                                <option>Ruby</option>
-                                                <option>C#</option>
-                                                <option>Java</option>
+                                            <select id="language" name="language">
+                                                {% for language in languages %}
+                                                    <option>{{ language }}</option>
+                                                {% endfor %}
                                             </select>
                                         </div>
                                     </div>
@@ -130,7 +140,7 @@ $(document).ready(function(){
                                     <div class="form-item form-short">
                                         <label class="label" for="bounty">Bounty $:</label>
                                         <div class="value">
-                                            <input type="text" id="bounty" />
+                                            <input type="text" id="bounty" name="bounty" pattern="^[0-9]*$" />
                                         </div>
                                     </div>
                                 </div>
@@ -150,7 +160,7 @@ $(document).ready(function(){
                             <!-- bounty-submit -->
                             <div class="bounty-submit clearfix">
                                 <div class="notice">
-                                	<p>Bounties are posted until the issue is closed, and the it goes to the developer who closed the issue. You can withdraw your bounty at anytime for a 3% fee.</p></div>
+                                	<p>Bounties are posted until the issue is closed, and then it goes to the developer who closed the issue. You can withdraw your bounty at anytime for a 3% fee.</p></div>
                                 <div class="price">Total: <span>$22</span></div>
                                 <div class="button-wrapper"><button class="ribbon ribbon-large ribbon-03">Pay Now</button></div>
                                 <div class="symbol-wrapper">

@@ -57,8 +57,8 @@ class Issue(models.Model):
         ('Ruby', 'Ruby'),
     )
 
-    service = models.ForeignKey(Service, related_name='+')
-    number = models.IntegerField()
+    service = models.ForeignKey(Service, related_name='+', null=True, blank=True)
+    number = models.IntegerField(null=True, blank=True)
     project = models.CharField(max_length=255)
     user = models.CharField(max_length=255, null=True, blank=True)
     image = models.ImageField(upload_to='images/projects', blank=True)
@@ -113,10 +113,10 @@ class Bounty(models.Model):
     """
     A bounty made on an issue
     """
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, null=True, blank=True)
     issue = models.ForeignKey(Issue)
     price = models.DecimalField(max_digits=10, decimal_places=0)
-    ends = models.DateTimeField()
+    ends = models.DateTimeField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
     def time_remaining(self):

@@ -5,7 +5,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from models import Issue, Watcher, UserProfile, Service, UserService
+from models import Issue, Watcher, UserProfile, Service, UserService, Bounty
 from utils import get_issue, add_issue_to_database, get_twitter_count, get_facebook_count, create_comment, issue_counts, leaderboard, get_hexdigest
 #from decorators import ajax_login_required
 
@@ -52,7 +52,7 @@ from actstream.models import Action
 #@cache_page(60 * 15)
 
 def parse_url_ajax(request):
-    url = request.POST.get('url', '')
+    url = request.POST.get('issueurl', '')
     issue = get_issue(request, url)
     return HttpResponse(json.dumps(issue))
 
@@ -140,7 +140,55 @@ def home(request,
     return response
 
 def post(request):
-    return render(request, 'post.html')
+    languages = []
+    for lang in Issue.LANGUAGES:
+        languages.append(lang[0])
+    return render(request, 'post.html', {
+        'languages': languages,
+    })
+
+def paynow(request):
+    languages = []
+    for lang in Issue.LANGUAGES:
+        languages.append(lang[0])
+    issuetracker = request.POST.get('issuetracker')
+    issueurl = request.POST.get('issueurl')
+    issuetitle = request.POST.get('issuetitle')
+    issuesummary = request.POST.get('issuesummary')
+    language = request.POST.get('language')
+    bounty = request.POST.get('bounty')
+    message = ''
+    if not bounty:
+        message = "Bounty is required."
+    if not issuesummary:
+        message = "Summary is required."
+    if not issuetitle:
+        message = "Title is required."
+    if not issueurl:
+        message = "Issue URL is required."
+    if not message:
+        issuesaver = Issue()
+        issuesaver.title = issuetitle
+        issuesaver.content = issuesummary
+        issuesaver.language = language
+        issuesaver.notified_user = False
+        issuesaver.status = "open"
+        issuesaver.save()
+
+        bountysaver = Bounty()
+        bountysaver.price = bounty
+        bountysaver.issue = issuesaver
+        bountysaver.save()
+
+        return render(request, 'post.html', {
+            'languages': languages,
+            'message': 'Successfully registered on DB.'
+        })
+    else:
+        return render(request, 'post.html', {
+            'languages': languages,
+            'message':message
+        })
 
 def list(request):
     return render(request, 'list.html')
