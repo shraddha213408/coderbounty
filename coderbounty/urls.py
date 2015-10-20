@@ -2,6 +2,8 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 #from django.views.generic.simple import direct_to_template
 
+from website.views import UserProfileDetailView
+
 from django.contrib.auth import views as auth_views
 admin.autodiscover()
 
@@ -18,7 +20,9 @@ urlpatterns = patterns('',
     url(r'^paynow/$', 'website.views.paynow', name='paynow'),
     url(r'^list/$', 'website.views.list', name='list'),
     url(r'^issue/$', 'website.views.issue', name='issue'),
-    url(r'^profile/$', 'website.views.profile', name='profile'),
+    # url(r'^profile/$', 'website.views.profile', name='profile'),
+    url(r"^profile/(?P<slug>\w+)/$", UserProfileDetailView.as_view(),
+        name="profile"),
     url(r'^parse_url_ajax/$', 'website.views.parse_url_ajax', name='parse_url_ajax'),
 
 

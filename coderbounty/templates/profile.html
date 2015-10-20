@@ -10,7 +10,7 @@
 				<section class="frame frame-dark-paper">
 					<span class="bugfix-top"></span>
 					<div class="frame-content">
-                    	<a class="img-holder" href="#"><img src="{% static "images/temp/thumb-medium-01.png" %}" alt="" /></a>
+                    	<a class="img-holder" href="#"><img src="{{ object.userprofile.gravatar_large }}" alt="" /></a>
 						<p>Joined 4/13/2013</p>
                         <ul class="social-list">
                         	<li><a href="#" class="icon-google-plus2"></a></li>
@@ -23,8 +23,10 @@
                             <li><span class="label">Taken:</span><span class="value">49</span></li>
                             <li><span class="label">Closed:</span><span class="value">23</span></li>
                         </ul>
+                        {% if object.username == user.username %}
                         <button class="ribbon ribbon-03 ribbon-type-01 ribbon-normal ribbon-brown-dark">Edit profile</button>
                         <button class="ribbon ribbon-03 ribbon-type-01 ribbon-normal"><span></span>Invite</button>
+                        {% endif %}
 					</div>
 					<span class="bugfix-bottom"></span>
 				</section>
@@ -43,51 +45,17 @@
                             <!-- note: you can place also other additional links, if you do remove inline style for margin top -->
                         </ul>
                         <table class="table-list table-list-activity">
+                        	{% for activity in activities %}
 							<tbody>
 								<tr>
 									<td class="status">
 										<span class="icon-custom_yes"></span></td>
 									<td class="text">
-										<p>Adam Smith closed <a href="#"><strong>issue #54</strong></a> and won the <strong style="color:#75857B;">$20 bounty!</strong></p>
-										<time class="time">11/21/2013</time></td>
-                                    <td class="user-interaction">
-                                    	<button class="ribbon ribbon-03 ribbon-type-01 ribbon-normal">Award Winner</button>
-                                        <button class="icon-uniE651 button-icon"><span class="tooltip"><em></em>close and refund bounty (3% service charge)</span></button>
-                                    </td>
-								</tr>
-                                <tr>
-									<td class="status">
-										<span class="icon-custom_yes"></span></td>
-									<td class="text">
-										<p>Adam Smith closed <a href="#"><strong>issue #53</strong></a> and won the <strong style="color:#75857B;">$30 bounty!</strong></p>
-										<time class="time">11/20/2013</time></td>
-                                    <td class="user-interaction"></td>
-								</tr>
-                                <tr>
-									<td class="status">
-										<span class="icon-custom_yes"></span></td>
-									<td class="text">
-										<p>Adam Smith closed <a href="#"><strong>issue #51</strong></a> and won the <strong style="color:#75857B;">$45 bounty!</strong></p>
-										<time class="time">11/18/2013</time></td>
-                                    <td class="user-interaction"></td>
-								</tr>
-                                <tr>
-									<td class="status">
-										<span class="icon-custom_yes"></span></td>
-									<td class="text">
-										<p>Adam Smith closed <a href="#"><strong>issue #42</strong></a> and won the <strong style="color:#75857B;">$55 bounty!</strong></p>
-										<time class="time">11/15/2013</time></td>
-                                    <td class="user-interaction"></td>
-								</tr>
-                                <tr>
-									<td class="status">
-										<span class="icon-custom_yes"></span></td>
-									<td class="text">
-										<p>Adam Smith closed <a href="#"><strong>issue #46</strong></a> and won the <strong style="color:#75857B;">$15 bounty!</strong></p>
-										<time class="time">11/14/2013</time></td>
-                                    <td class="user-interaction"></td>
-								</tr>
+										<p>{{ activity }}</p>
+									</td>
+
                             </tbody>
+                            {% endfor %}
                         </table>                               
 					</div>
 				</section>

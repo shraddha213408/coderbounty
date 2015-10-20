@@ -12,6 +12,7 @@ from string import Template
 from django.db.models import signals
 import random
 import urllib2
+from actstream import action
 
 YEAR_CHOICES = [(str(yr), str(yr)) for yr in range(1950, 2020)]
 
@@ -107,6 +108,17 @@ class Issue(models.Model):
 
     class Meta:
         unique_together = ("service", "number", "project")
+    """
+    def save(self, *args, **kwargs):
+        #add issue status to activity feed
+        if self.status == Issue.IN_REVIEW_STATUS:
+            action.send(self.user, verb="is in review now",  target=self.number)
+        elif self.status == Issue.OPEN_STATUS:
+            action.send(self.user, verb="is open now", target=self.number)
+        else:
+            action.send(self.user, verb="is closed", target=self.number)
+        super(Issue, self).save(*args, **kwargs)
+    """
 
 
 class Bounty(models.Model):
@@ -127,6 +139,21 @@ class Bounty(models.Model):
     def get_twitter_message(self):
         msg = "Added $%s bounty for %s issue %s. http://coderbounty.com/#%s" % (self.price, self.issue.project, self.issue.number, self.issue.id)
         return msg
+
+    def save(self, *args, **kwargs):
+        #if user adds new bounty
+        if self.pk is None:
+            target = self.issue.number
+            action.send(self.user, verb='placed a bounty', target=self)
+
+        if self.pk is not None:
+            previous_price = Bounty.objects.get(pk=self.pk).price
+            target = self.issue.number
+            if self.price != previous_price:
+                action.send(self.user, verb='updated bounty price', target=self)
+
+        super(Bounty, self).save(*args, **kwargs)
+
 
 
 class Watcher(models.Model):
@@ -183,8 +210,11 @@ class UserProfile(models.Model):
     def xp(self):
         return XP.objects.filter(user=self.user).aggregate(Sum('points'))['points__sum']
 
+    @property
     def gravatar_large(self, size=200):
-        return self.gravatar(size=200)
+        gravatar_url = "http://www.gravatar.com/avatar.php?"
+        gravatar_url += urllib.urlencode({'gravatar_id': hashlib.md5(self.user.email.lower()).hexdigest(), 'default': 'retro', 'size': str(size)})
+        return gravatar_url
 
     def gravatar_winner(self, size=23):
         return self.gravatar(size=23)
@@ -203,7 +233,6 @@ class UserProfile(models.Model):
 
 
     def save(self, *args, **kwargs):
-        from actstream import action
         #if new user signs up add it to the activity feed
         if self.pk is None:
             action.send(self.user, verb='signed up')
