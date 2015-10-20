@@ -31,7 +31,7 @@ admin.site.register(Service, ServiceAdmin)
 #admin.site.register(Watcher, WatcherAdmin)
 admin.site.register(UserProfile)
 admin.site.register(Bounty)
-#admin.site.register(XP, XPAdmin)
+admin.site.register(XP)
 
 # admin.site.register(Delta,
 #     list_display = ('user', 'rank', 'price', 'date'),
