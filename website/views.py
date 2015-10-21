@@ -56,7 +56,7 @@ from actstream.models import Action
 #@cache_page(60 * 15)
 
 def parse_url_ajax(request):
-    url = request.POST.get('issueurl', '')
+    url = request.POST.get('url', '')
     issue = get_issue(request, url)
     return HttpResponse(json.dumps(issue))
 
@@ -156,9 +156,9 @@ def paynow(request):
     for lang in Issue.LANGUAGES:
         languages.append(lang[0])
     issuetracker = request.POST.get('issuetracker')
-    issueurl = request.POST.get('issueurl')
-    issuetitle = request.POST.get('issuetitle')
-    issuesummary = request.POST.get('issuesummary')
+    issueurl = request.POST.get('issueUrl')
+    issuetitle = request.POST.get('title')
+    issuesummary = request.POST.get('summary')
     language = request.POST.get('language')
     bounty = request.POST.get('bounty')
     message = ''

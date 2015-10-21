@@ -139,9 +139,10 @@ class Bounty(models.Model):
     def get_twitter_message(self):
         msg = "Added $%s bounty for %s issue %s. http://coderbounty.com/#%s" % (self.price, self.issue.project, self.issue.number, self.issue.id)
         return msg
-
+    """
     def save(self, *args, **kwargs):
         #if user adds new bounty
+
         if self.pk is None:
             target = self.issue.number
             action.send(self.user, verb='placed a bounty', target=self)
@@ -153,7 +154,7 @@ class Bounty(models.Model):
                 action.send(self.user, verb='updated bounty price', target=self)
 
         super(Bounty, self).save(*args, **kwargs)
-
+    """
 
 
 class Watcher(models.Model):

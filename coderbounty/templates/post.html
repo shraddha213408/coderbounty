@@ -10,8 +10,8 @@
 // console.log('test');
 
 $(document).ready(function(){
-    $('#issueurl').val('https://github.com/')
-    $('#issueurl').liveUrl({
+
+    $('#issueUrl').liveUrl({
        success : function(data)
        {
         console.log(data);
@@ -27,11 +27,12 @@ $(document).ready(function(){
             });
         }
     });
+    $('#issueUrl').val('https://github.com/')
     $('#rbtnGithub').click(function(){
-        $('#issueurl').val('https://github.com/')
+        $('#issueUrl').val('https://github.com/')
     });
     $('#rbtnBitbucket').click(function(){
-        $('#issueurl').val('https://bitbucket.org/')
+        $('#issueUrl').val('https://bitbucket.org/')
     });
 });
 
@@ -106,23 +107,23 @@ $(document).ready(function(){
                                     </div>
                                     <!-- -->
                                     <div class="form-item">
-                                        <label class="label" for="issueurl">Issue URL:</label>
+                                        <label class="label" for="issueUrl">Issue URL:</label>
                                         <div class="value">
-                                            <input type="text" id="issueurl" name="issueurl"/>
+                                            <input type="text" id="issueUrl" name="issueUrl"/>
                                         </div>
                                     </div>
                                     <!-- -->
                                     <div class="form-item">
                                         <label class="label" for="title">Title:</label>
                                         <div class="value">
-                                            <input type="text" id="title" name="issuetitle"/>
+                                            <input type="text" id="title" name="title"/>
                                         </div>
                                     </div>
                                     <!-- -->
                                     <div class="form-item">
                                         <label class="label" for="summary">Summary:</label>
                                         <div class="vlaue">
-                                            <textarea id="summary" name="issuesummary"></textarea>
+                                            <textarea id="summary" name="summary"></textarea>
                                         </div>
                                     </div>
                                     <!-- -->
