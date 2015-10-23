@@ -108,7 +108,7 @@ class Issue(models.Model):
 
     class Meta:
         unique_together = ("service", "number", "project")
-    """
+   
     def save(self, *args, **kwargs):
         #add issue status to activity feed
         if self.status == Issue.IN_REVIEW_STATUS:
@@ -118,7 +118,7 @@ class Issue(models.Model):
         else:
             action.send(self.user, verb="is closed", target=self.number)
         super(Issue, self).save(*args, **kwargs)
-    """
+    
 
 
 class Bounty(models.Model):
@@ -139,7 +139,7 @@ class Bounty(models.Model):
     def get_twitter_message(self):
         msg = "Added $%s bounty for %s issue %s. http://coderbounty.com/#%s" % (self.price, self.issue.project, self.issue.number, self.issue.id)
         return msg
-    """
+   
     def save(self, *args, **kwargs):
         #if user adds new bounty
 
@@ -154,7 +154,7 @@ class Bounty(models.Model):
                 action.send(self.user, verb='updated bounty price', target=self)
 
         super(Bounty, self).save(*args, **kwargs)
-    """
+    
 
 
 class Watcher(models.Model):
