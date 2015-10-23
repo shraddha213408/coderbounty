@@ -31,10 +31,16 @@ admin.site.register(Service, ServiceAdmin)
 #admin.site.register(Watcher, WatcherAdmin)
 admin.site.register(UserProfile)
 admin.site.register(Bounty)
-#admin.site.register(XP, XPAdmin)
+admin.site.register(XP)
 
 # admin.site.register(Delta,
 #     list_display = ('user', 'rank', 'price', 'date'),
 # )
 
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
 
+UserAdmin.list_display = ('email', 'first_name', 'last_name', 'is_active', 'date_joined', 'is_staff')
+
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)

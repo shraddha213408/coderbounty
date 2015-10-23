@@ -53,48 +53,18 @@
                     <div class="frame-content">
                         <h2 class="titlebar"><span class="ribbon ribbon-normal ribbon-04 ribbon-brown-dark"><em class="icon-custom_star"></em>Coder Leaderboard</span></h2>
                         <table class="table-list table-list-leader-board">
+                             {% for leader in leaderboard %}
                             <tbody>
                                 <tr>
                                     <td class="thumb">
-                                        <a href="#" class="img-holder"><img src="{% static "images/temp/thumb-03.jpg" %}" alt="" /></a></td>
+                                        <a href="/profile/{{ leader.username }}" class="img-holder"><img src="{{ leader.userprofile.gravatar }}" alt="" /></a></td>
                                     <td class="text">
-                                        <a href="#">Adam Smith</a>
+                                        <a href="/profile/{{ leader.username }}">{{ leader.first_name}} {{ leader.last_name}}</a>
                                     </td>
                                     <td class="price">$1045</td>
                                 </tr>
-                                <tr>
-                                    <td class="thumb">
-                                        <a href="#" class="img-holder"><img src="{% static "images/temp/thumb-04.jpg" %}" alt="" /></a></td>
-                                    <td class="text">
-                                        <a href="#">Rodger Stone</a>
-                                    </td>
-                                    <td class="price">$872</td>
-                                </tr>
-                                <tr>
-                                    <td class="thumb">
-                                        <a href="#" class="img-holder"><img src="{% static "images/temp/thumb-05.jpg" %}" alt="" /></a></td>
-                                    <td class="text">
-                                        <a href="#">Tim Novak</a>
-                                    </td>
-                                    <td class="price">$619</td>
-                                </tr>
-                                <tr>
-                                    <td class="thumb">
-                                        <a href="#" class="img-holder"><img src="{% static "images/temp/thumb-01.jpg" %}" alt="" /></a></td>
-                                    <td class="text">
-                                        <a href="#">Kristin Simmons</a>
-                                    </td>
-                                    <td class="price">$295</td>
-                                </tr>
-                                <tr>
-                                    <td class="thumb">
-                                        <a href="#" class="img-holder"><img src="{% static "images/temp/thumb-02.jpg" %}" alt="" /></a></td>
-                                    <td class="text">
-                                        <a href="#">Fill Jones</a>
-                                    </td>
-                                    <td class="price">$131</td>
-                                </tr>
                             </tbody>
+                            {% endfor %}
                         </table>
                     </div>
                 </div>
