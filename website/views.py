@@ -171,17 +171,20 @@ def paynow(request):
     if not issueurl:
         message = "Issue URL is required."
     if not message:
+        userprofile = UserProfile()
         issuesaver = Issue()
         issuesaver.title = issuetitle
         issuesaver.content = issuesummary
         issuesaver.language = language
         issuesaver.notified_user = False
         issuesaver.status = "open"
+        issuesaver.user = request.user
         issuesaver.save()
 
         bountysaver = Bounty()
         bountysaver.price = bounty
         bountysaver.issue = issuesaver
+        bountysaver.user = request.user
         bountysaver.save()
 
         return render(request, 'post.html', {
