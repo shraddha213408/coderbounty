@@ -19,10 +19,10 @@ $(document).ready(function(){
                 url: data['url'],
                 csrfmiddlewaretoken: "{{ csrf_token }}"
             }).done(function( data ) {
+                console.log(data)
                 var issue = jQuery.parseJSON(data)
-
                 $('#title').val(issue['title']);
-                $('#summary').val(issue['content']);
+                $('#content').val(issue['content']);
 
             });
         }
@@ -75,7 +75,7 @@ $(document).ready(function(){
 					<span class="bugfix-top"></span>
 					<div class="frame-content">
 						<h1 class="titlebar-paper"><span>Po$t a Bounty</span></h1>
-                        <form action="{% url 'paynow' %}" method="post">
+                        <form action="{% url 'post' %}" method="post">
                             {% csrf_token %}
                             <div class="grid">
                                 <!-- bounty-post -->
@@ -83,6 +83,8 @@ $(document).ready(function(){
                                     <!-- -->
                                     <div class="form-item">
                                         {% if message %}<p>&nbsp;&nbsp;&nbsp;<strong>{{ message }}</strong></p>{% endif %}
+                                        
+                    
                                     </div>
                                     <!-- -->
                                     <div class="form-item">
@@ -103,6 +105,7 @@ $(document).ready(function(){
                                         <label class="label" for="issueUrl">Issue URL:</label>
                                         <div class="value">
                                             <input type="text" id="issueUrl" name="issueUrl"/>
+                                        
                                         </div>
                                     </div>
                                     <!-- -->
@@ -110,13 +113,15 @@ $(document).ready(function(){
                                         <label class="label" for="title">Title:</label>
                                         <div class="value">
                                             <input type="text" id="title" name="title"/>
+                                            {% for error_field,error_value in errors.items  %} {% if error_field == 'title' %} {{ error_value }} {% endif %}  {%  endfor %}
                                         </div>
                                     </div>
                                     <!-- -->
                                     <div class="form-item">
-                                        <label class="label" for="summary">Summary:</label>
+                                        <label class="label" for="content">Summary:</label>
                                         <div class="vlaue">
-                                            <textarea id="summary" name="summary"></textarea>
+                                            <textarea id="content" name="content"></textarea>
+                                            {% for error_field,error_value in errors.items  %} {% if error_field == 'content' %} {{ error_value }} {% endif %}  {%  endfor %}
                                         </div>
                                     </div>
                                     <!-- -->
@@ -132,9 +137,10 @@ $(document).ready(function(){
                                     </div>
                                     <!-- -->
                                     <div class="form-item form-short">
-                                        <label class="label" for="bounty">Bounty $:</label>
+                                        <label class="label" for="price">Bounty $:</label>
                                         <div class="value">
-                                            <input type="text" id="bounty" name="bounty" pattern="^[0-9]*$" />
+                                            <input type="text" id="price" name="price" pattern="^[0-9]*$" />
+                                            {% for error_field,error_value in bounty_errors.items  %} {{ error_value }}  {%  endfor %}
                                         </div>
                                     </div>
                                 </div>

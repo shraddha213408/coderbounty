@@ -60,7 +60,6 @@ def get_issue(request, url):
         return False
     data = r.groupdict()
     req = urllib2.Request(replaced_url, None, {'Content-Type': 'application/' + service.type})
-
     if service.name == "Bitbucket":
         try:
             result = json.load(urllib2.urlopen(req))

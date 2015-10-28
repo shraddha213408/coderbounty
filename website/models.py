@@ -72,7 +72,7 @@ class Issue(models.Model):
     closed_by = models.CharField(max_length=255, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
-    notified_user = models.BooleanField(default=None)
+    notified_user = models.BooleanField(default=False)
 
     def bounties(self):
         if self.status == self.OPEN_STATUS:
@@ -111,13 +111,13 @@ class Issue(models.Model):
    
     def save(self, *args, **kwargs):
         #add issue status to activity feed
+        super(Issue, self).save(*args, **kwargs)
         if self.status == Issue.IN_REVIEW_STATUS:
             action.send(self.user, verb="is in review now",  target=self.number)
         elif self.status == Issue.OPEN_STATUS:
-            action.send(self.user, verb="is open now", target=self.number)
+            action.send(self.user, verb="opened issue", target=self)
         else:
             action.send(self.user, verb="is closed", target=self.number)
-        super(Issue, self).save(*args, **kwargs)
     
 
 

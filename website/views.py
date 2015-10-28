@@ -6,6 +6,7 @@ from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from models import Issue, Watcher, UserProfile, Service, UserService, Bounty
+from .forms import IssueCreateForm, BountyCreateForm
 from utils import get_issue, add_issue_to_database, get_twitter_count, get_facebook_count, create_comment, issue_counts, leaderboard, get_hexdigest
 #from decorators import ajax_login_required
 
@@ -142,6 +143,59 @@ def home(request,
     #         
     response = render_to_response(template, context, context_instance=RequestContext(request))
     return response
+
+
+def create_issue_and_bounty(request):
+    languages = []
+    for lang in Issue.LANGUAGES:
+        languages.append(lang[0])
+    user = request.user
+    if not user.is_authenticated:
+        return render(request, 'post.html', {
+            'languages': languages,
+            'error': 'You need to be authenticated to post bounty'
+        })
+    if request.method == 'GET':
+        return render(request, 'post.html', {
+            'languages': languages,
+        })
+    if request.method == 'POST':
+        url = request.POST.get('issueUrl','')
+        if not url:
+            return render(request, 'post.html', {
+                'languages': languages,
+                'message':'Please provide issue url',
+            })
+        issue_data = get_issue(request, url)
+        if issue_data:
+            instance = Issue(created = user,number = issue_data['number'],
+            project=issue_data['project'],user = user,)
+        else:
+            return render(request, 'post.html', {
+                'languages': languages,
+                'message':'Please provide a propper issue url',
+            })
+        form = IssueCreateForm(request.POST, instance=instance)
+        bounty_form = BountyCreateForm(request.POST)
+        bounty_form_is_valid = bounty_form.is_valid()
+        if form.is_valid() and bounty_form_is_valid:
+            issue = form.save()
+            price = bounty_form.cleaned_data['price']
+            bounty_instance = Bounty(user = user,issue = issue,price = price)
+            bounty_instance.save()
+            return render(request, 'post.html', {
+                'languages': languages,
+                'message':'Successfully saved issue'
+            })
+        else:
+            return render(request, 'post.html', {
+                'languages': languages,
+                'message':'Error',
+                'errors': form.errors,
+                'bounty_errors':bounty_form.errors,
+            })
+            
+
 
 def post(request):
     languages = []
