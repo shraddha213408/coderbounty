@@ -5,7 +5,7 @@ class IssueCreateForm(forms.ModelForm):
 
     class Meta:
         model = Issue
-        fields = ('title','language','number')
+        fields = ('title','language','content')
 
 class BountyCreateForm(forms.ModelForm):
 
