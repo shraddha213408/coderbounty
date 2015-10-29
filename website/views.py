@@ -150,10 +150,10 @@ def create_issue_and_bounty(request):
     for lang in Issue.LANGUAGES:
         languages.append(lang[0])
     user = request.user
-    if not user.is_authenticated:
+    if not user.is_authenticated():
         return render(request, 'post.html', {
             'languages': languages,
-            'error': 'You need to be authenticated to post bounty'
+            'message': 'You need to be authenticated to post bounty'
         })
     if request.method == 'GET':
         return render(request, 'post.html', {
