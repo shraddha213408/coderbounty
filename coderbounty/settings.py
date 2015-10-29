@@ -104,7 +104,7 @@ USE_TZ = True
 DATABASES['default'] =  dj_database_url.config()
 
 # Enable Connection Pooling (if desired)
-DATABASES['default']['ENGINE'] = 'django_postgrespool'
+DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
 if not os.environ.has_key('DATABASE_URL'):
     DATABASES['default']['NAME'] = 'coderbounty'
 
