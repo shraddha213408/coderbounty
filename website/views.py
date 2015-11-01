@@ -610,6 +610,20 @@ def profile(request):
     return render_to_response("profile.html", context_instance=RequestContext(request))
 '''
 
+def profile(request):
+    """Redirects to profile page if the requested user is loggedin
+    """ 
+
+    try:
+        username = request.user.username
+    except Exception:
+        return redirect('/')
+
+    if username != '':
+        profile = '/profile/'+username
+        return redirect(profile)
+    else:
+        return redirect('/')
 
 class UserProfileDetailView(DetailView):
     model = get_user_model()
