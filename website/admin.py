@@ -11,17 +11,20 @@ class ServiceAdmin(admin.ModelAdmin):
 class BountyAdmin(admin.ModelAdmin):
     list_display=[] 
     for x in Bounty._meta.get_all_field_names(): 
-        list_display.append(str(x))
+        if x not in "issue_id,user_id":
+            list_display.append(str(x))
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display=[] 
-    for x in UserProfile._meta.get_all_field_names(): 
-        list_display.append(str(x))
+    for x in UserProfile._meta.get_all_field_names():
+        if x not in "user_id": 
+            list_display.append(str(x))
 
 class IssueAdmin(admin.ModelAdmin):
     list_display=[] 
     for x in Issue._meta.get_all_field_names(): 
-        list_display.append(str(x))
+        if x not in "service_id,winner_id":
+            list_display.append(str(x))
     readonly_fields = ("created","modified")
 
 admin.site.unregister(User)

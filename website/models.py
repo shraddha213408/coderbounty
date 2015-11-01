@@ -155,11 +155,11 @@ class Bounty(models.Model):
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, related_name="profile")
     balance = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     payment_service = models.CharField(max_length=255, null=True, blank=True)
     payment_service_email = models.CharField(max_length=255, null=True, blank=True, default='')
-    coins = models.IntegerField(default=0)
+    #coins = models.IntegerField(default=0)
 
     @property
     def gravatar(self, size=28):
@@ -167,8 +167,6 @@ class UserProfile(models.Model):
         gravatar_url += urllib.urlencode({'gravatar_id': hashlib.md5(self.user.email.lower()).hexdigest(), 'default': 'retro', 'size': str(size)})
         return gravatar_url
 
-    def xp(self):
-        return XP.objects.filter(user=self.user).aggregate(Sum('points'))['points__sum']
 
     @property
     def gravatar_large(self, size=200):

@@ -83,10 +83,15 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'coderbounty.db',                       # Or path to database file if using sqlite3.
+        'USER': '',                       # Not used with sqlite3.
+        'PASSWORD': '',                   # Not used with sqlite3.
+        'HOST': '',                       # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                       # Set to empty string for default. Not used with sqlite3.
     }
 }
 
@@ -101,12 +106,11 @@ USE_TZ = True
 
 
 # Parse database configuration from $DATABASE_URL
-DATABASES['default'] =  dj_database_url.config()
 
 # Enable Connection Pooling (if desired)
-DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
-if not os.environ.has_key('DATABASE_URL'):
-    DATABASES['default']['NAME'] = 'coderbounty'
+if os.environ.has_key('DATABASE_URL'):
+    DATABASES['default'] =  dj_database_url.config()
+    DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

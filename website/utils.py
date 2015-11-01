@@ -5,7 +5,7 @@ from django.core.mail import send_mail, EmailMultiAlternatives
 from django.conf import settings
 
 from string import Template
-from models import Service, Issue, Bounty, Watcher
+from models import Service, Issue, Bounty
 from django.contrib.auth.models import User
 from django.db.models import Sum
 from urlparse import urlparse
@@ -33,7 +33,7 @@ def find_api_url(url):
     return replaced_url
 
 def leaderboard():
-        return User.objects.filter(xp__points__gt=0).annotate(Sum('xp__points')).order_by('-xp__points__sum')
+        return User.objects.filter(profile__balance__gt=0).order_by('-profile__balance')
     
 def get_issue(request, url):
     parsed_url = urlparse(url)

@@ -1,28 +1,24 @@
 from django.shortcuts import render_to_response, RequestContext, redirect, get_object_or_404
 from django.http import HttpResponseNotFound, HttpResponseServerError, HttpResponse
 from django.core.mail import send_mail
-#from django.views.decorators.cache import cache_page
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from models import Issue, Watcher, UserProfile, Service, UserService, Bounty
+from models import Issue, UserProfile, Bounty
 from .forms import IssueCreateForm, BountyCreateForm
 from utils import get_issue, add_issue_to_database, get_twitter_count, get_facebook_count, create_comment, issue_counts, leaderboard, get_hexdigest
-#from decorators import ajax_login_required
 
 from django.views.generic import ListView, DetailView
 from django.contrib.auth import get_user_model
 
 from django.shortcuts import get_object_or_404, render
 
-#from django.utils 
 import json
 from django.contrib import messages
 from django.db.models import Q
 import re
 import datetime
 from django.db.models import Sum, Count
-#from wepay import WePay
 from django.contrib.sites.models import Site
 import urllib
 import urllib2
@@ -34,28 +30,13 @@ import random
 from actstream.models import user_stream
 from actstream.models import Action
 
-#TODO:
-#setup new framework on heroku (in progress now)
-
-#https://assembly.com/coder-bounty
-#these tasks currently have bounties on them
-
-#implement adding an issue
-# - get issue image
-# - add issue to databas
-#integrate activity stream
 #implement ajax loader for posting a bounty /post (done)
-#implement leader board
 #auto count for total bounties won
 #make circles on homepage links
 #integrate avatars
 #create browser extension to post bounties from github / bitbucket
 
-
-#from forms import UserCreationForm
-
 #@cache_page(60 * 15)
-
 def parse_url_ajax(request):
     url = request.POST.get('url', '')
     issue = get_issue(request, url)
@@ -65,34 +46,6 @@ def parse_url_ajax(request):
 def home(request,
     template="index.html",
     page_template="issues.html"):
-
-    ## print request.session.get('coin_count')
-    ## print request.session.get('coin_dates')
-
-    ## day_of_year = datetime.datetime.strftime(datetime.datetime.now(), "%j")
-    ## if "coin_dates" in request.session:
-        ## coin_dates = request.session.get('coin_dates')
-        ## if not day_of_year in coin_dates:
-            ## coin_count =  request.session.get('coin_count')
-            ## request.session['coin_count']=coin_count+1
-            ## request.session['coin_dates'].append(day_of_year)
-    ## else:
-        ## request.session['coin_count']=1
-        ## request.session['coin_dates']=[day_of_year,]
-
-    # if request.GET.get('checkout_id') and request.session.get('issue'):
-
-    #     wepay = WePay(production=settings.IN_PRODUCTION, access_token=settings.WEPAY_ACCESS_TOKEN)
-    #     ctx = {
-    #         'checkout_id': request.GET.get('checkout_id'),
-    #         }
-    #     wepay_call_return = wepay.call('/checkout', ctx)
-    #     if wepay_call_return['state'] == "authorized":
-    #         request.session['issue']['bounty'] = wepay_call_return['amount']
-    #         message = "$" + str(request.session['issue']['bounty']) + " bounty added to " +\
-    #         request.session['issue']['project'] + " issue #" + str(request.session['issue']['number'])
-    #         if add_issue_to_database(request):
-    #             messages.add_message(request, messages.SUCCESS, message)
 
     status = request.GET.get('status', 'open')
     order = request.GET.get('order', '-bounty')
@@ -118,29 +71,6 @@ def home(request,
     }
 
     day_of_year = datetime.datetime.strftime(datetime.datetime.now(), "%j")
-    ## day_of_year = str(int(day_of_year) + 2)
-    # if request.user.is_authenticated():
-    #     if Coin.objects.add_coin_for_user(request.user, request):
-    #         context.update({'coin_added': 1})
-    #     response = render_to_response(template, context, context_instance=RequestContext(request))
-    # else:
-    #     try:
-    #         coins_count = int(request.COOKIES.get('coins', 0))
-    #     except ValueError:
-    #         coins_count = 0
-    #     if day_of_year != request.COOKIES.get('day'):
-    #         coins_count += 1
-    #         context.update({'coin_added': 1})
-    #         response = render_to_response(template, context, context_instance=RequestContext(request))
-    #         response.set_cookie('day', day_of_year, max_age=3600 * 24)
-    #         response.set_cookie('coins', coins_count, max_age=3600 * 24 * 365 * 5)
-    #     elif coins_count == 0:
-    #         coins_count += 1
-    #         context.update({'coin_added': 1})
-    #         response = render_to_response(template, context, context_instance=RequestContext(request))
-    #         response.set_cookie('coins', coins_count, max_age=3600 * 24 * 365 * 5)
-    #     else:
-    #         
     response = render_to_response(template, context, context_instance=RequestContext(request))
     return response
 
@@ -196,7 +126,6 @@ def create_issue_and_bounty(request):
                 'bounty_errors':bounty_form.errors,
             })
             
-
 
 def post(request):
     languages = []
