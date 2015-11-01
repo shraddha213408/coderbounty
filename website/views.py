@@ -133,9 +133,11 @@ def list(request):
     if order.find('number') > -1:
         issues = issues.annotate(Count('id')).order_by(order)
 
-    return render(request, 'list.html', {
-                'issues': issues,
-            })
+    context = {
+         'issues': issues,
+    }
+    response = render_to_response('list.html', context, context_instance=RequestContext(request))
+    return response
 
 
 def issue(request):
