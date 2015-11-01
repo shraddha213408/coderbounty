@@ -118,8 +118,8 @@ def list(request):
     if status and status != "all":
         issues = issues.filter(status=status)
 
-    if status == "open" or status == '' or status == None:
-        issues = issues.filter(bounty__ends__gt=datetime.datetime.now())
+    # if status == "open" or status == '' or status == None:
+    #     issues = issues.filter(bounty__ends__gt=datetime.datetime.now())
 
     if order.find('bounty') > -1:
         issues = issues.annotate(bounty_sum=Sum('bounty__price')).order_by(order + '_sum')
