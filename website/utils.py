@@ -33,7 +33,7 @@ def find_api_url(url):
     return replaced_url
 
 def leaderboard():
-        return User.objects.filter(profile__balance__gt=0).order_by('-profile__balance')
+        return User.objects.filter(userprofile__balance__gt=0).order_by('-userprofile__balance')
     
 def get_issue(request, url):
     parsed_url = urlparse(url)
