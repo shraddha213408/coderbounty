@@ -59,9 +59,9 @@
                                     <td class="thumb">
                                         <a href="/profile/{{ leader.username }}" class="img-holder"><img src="{{ leader.userprofile.gravatar }}" alt="" /></a></td>
                                     <td class="text">
-                                        <a href="/profile/{{ leader.username }}">{{ leader.first_name}} {{ leader.last_name}}</a>
+                                        <a href="/profile/{{ leader.username }}">{{ leader.username}}</a>
                                     </td>
-                                    <td class="price">$1045</td>
+                                    <td class="price">${{ leader.balance}}</td>
                                 </tr>
                             </tbody>
                             {% endfor %}
