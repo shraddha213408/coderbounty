@@ -261,7 +261,6 @@ def alert_winner(instance, created, **kwargs):
         if instance.status == instance.IN_REVIEW_STATUS:
             instance.winner.email_user(email_subj % instance, email_text)
 
-signals.post_save.connect(on_new_user, sender=User)
 signals.post_save.connect(alert_winner, sender=Issue)
 #todo: fix this so it doesn't throw an error
 #signals.post_save.connect(post_to_twitter, sender=Bounty)
