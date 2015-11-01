@@ -76,8 +76,6 @@ class Issue(models.Model):
     notified_user = models.BooleanField(default=False)
 
     def bounties(self):
-        if self.status == self.OPEN_STATUS:
-            return Bounty.objects.filter(issue=self, ends__gt=datetime.datetime.now()).order_by('-ends')
         return Bounty.objects.filter(issue=self).order_by('-ends')
 
     def all_bounties(self):
