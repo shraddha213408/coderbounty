@@ -150,10 +150,10 @@ def create_issue_and_bounty(request):
     for lang in Issue.LANGUAGES:
         languages.append(lang[0])
     user = request.user
-    if not user.is_authenticated:
+    if not user.is_authenticated():
         return render(request, 'post.html', {
             'languages': languages,
-            'error': 'You need to be authenticated to post bounty'
+            'message': 'You need to be authenticated to post bounty'
         })
     if request.method == 'GET':
         return render(request, 'post.html', {
@@ -168,8 +168,9 @@ def create_issue_and_bounty(request):
             })
         issue_data = get_issue(request, url)
         if issue_data:
+            service = Service.objects.get(name=issue_data['service'])
             instance = Issue(created = user,number = issue_data['number'],
-            project=issue_data['project'],user = user,)
+            project=issue_data['project'],user = user,service=service)
         else:
             return render(request, 'post.html', {
                 'languages': languages,
@@ -609,6 +610,20 @@ def profile(request):
     return render_to_response("profile.html", context_instance=RequestContext(request))
 '''
 
+def profile(request):
+    """Redirects to profile page if the requested user is loggedin
+    """ 
+
+    try:
+        username = request.user.username
+    except Exception:
+        return redirect('/')
+
+    if username != '':
+        profile = '/profile/'+username
+        return redirect(profile)
+    else:
+        return redirect('/')
 
 class UserProfileDetailView(DetailView):
     model = get_user_model()
