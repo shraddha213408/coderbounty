@@ -104,16 +104,19 @@ class Issue(models.Model):
 
     class Meta:
         unique_together = ("service", "number", "project")
-   
-    def save(self, *args, **kwargs):
-        #add issue status to activity feed
-        super(Issue, self).save(*args, **kwargs)
-        if self.status == Issue.IN_REVIEW_STATUS:
-            action.send(self.user, verb="is in review now",  target=self.number)
-        elif self.status == Issue.OPEN_STATUS:
-            action.send(self.user, verb="opened issue", target=self)
-        else:
-            action.send(self.user, verb="is closed", target=self.number)
+  
+
+    # there was an issue when saving from admin   
+    # def save(self, *args, **kwargs):
+    #     #add issue status to activity feed
+    #     super(Issue, self).save(*args, **kwargs)
+    #     if self.status == Issue.IN_REVIEW_STATUS:
+    #         action.send(self.user, verb="is in review now",  target=self.number)
+    #     elif self.status == Issue.OPEN_STATUS:
+    #         action.send(self.user, verb="opened issue", target=self)
+    #     elif self.status == Issue.PAID_STATUS:
+    #         action.send(self.user, verb="was paid", target=self.number)
+
     
 
 
