@@ -65,7 +65,7 @@
                             <div class="issue-people clearfix">
                                 <ul class="clearfix">
                                 {% for bounty in issue.bounties %}
-                                    <li><a href="/user/{{bounty.user.username}}"><img src="{{bounty.user.userprofile.gravatar}}" alt="{{bounty.user.username}}" /></a></li>
+                                    <li><a href="/profile/{{bounty.user.username}}"><img src="{{bounty.user.userprofile.gravatar}}" alt="{{bounty.user.username}}" /></a></li>
                                 {% endfor %}
                                 </ul>
                                 <div class="button-wrapper">
