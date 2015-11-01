@@ -9,16 +9,17 @@
 			<h2>Find Issues to Code</h2>
 			<div class="filter">
 				<form>
-					<label for="filterAll">Filter:</label>
+					<label for="filterAll">Language:</label>
 					<select id="filterAll">
-                    	<option>All Issues</option>
+                    	<option>Any</option>
                         <option>Issue #1</option>
                         <option>Issue #2</option>
                         <option>Issue #3</option>
                         <option>Issue #4</option>
 					</select>
-                    <select>
-                    	<option>Any Language</option>
+                    <label for="filterSort">Sort by:</label>
+                    <select id="filterSort">
+                    	<option>Most Recent</option>
                         <option>English Language</option>
                         <option>French Language</option>
                         <option>Italian Language</option>
@@ -31,288 +32,52 @@
         <!-- issues -->
         <div class="issues">
             <!-- -->
-            <div class="item">
-                <section class="frame frame-light">
-                    <div class="frame-content">
-                        <!--info-->
-                        <div class="issue-info clearfix">
-                            <div class="side-info">
-                                <a href="#" class="img-holder"><img src="{% static "images/temp/thumb-github.jpg" %}" alt="" /></a>
-                                <p class="price">$45</p>
-                                <form>
-                                    <button class="ribbon ribbon-normal ribbon-03 ribbon-brown-dark">Add $</button>
-                                </form>
+            {% for issue in issues %}
+                <div class="item">
+                    <section class="frame frame-light">
+                        <div class="frame-content">
+                            <!--info-->
+                            <div class="issue-info clearfix">
+                                <div class="side-info">
+                                    <a href="#" class="img-holder"><img src="{% static "images/temp/thumb-github.jpg" %}" alt="" /></a>
+                                    <p class="price">${{issue.bounty}}</p>
+                                    <form>
+                                        <button class="ribbon ribbon-normal ribbon-03 ribbon-brown-dark">Add $</button>
+                                    </form>
+                                </div>
+                                <div class="text">
+                                    <div class="issue-status">
+                                        <span class="icon-custom_yes"></span>
+                                    </div>
+                                    <ul class="issue-id">
+                                        <li class="number">#{{issue.number}}</li>
+                                        <li class="owner">{{issue.project}}</li>
+                                    </ul> 
+                                    <h3>{{issue.title}}</h3>
+                                    <p>{{issue.content}}</p>
+                                    <div class="logo-tech">
+                                        <img src="{% static "images/logos/logo-{{issue.language|slugify}}.png" %}" alt="{{issue.language}}" />
+                                    </div>
+                                    <div class="posted"><em>First posted: <time>{{issue.created.date}}</time></em></div>
+                                </div>
                             </div>
-                            <div class="text">
-                                <div class="issue-status">
-                                    <span class="icon-custom_yes"></span>
+                            <!-- people -->
+                            <div class="issue-people clearfix">
+                                <ul class="clearfix">
+                                {% for bounty in issue.bounties %}
+                                    <li><a href="/user/{{bounty.user.username}}"><img src="{{bounty.user.userprofile.gravatar}}" alt="{{bounty.user.username}}" /></a></li>
+                                {% endfor %}
+                                </ul>
+                                <div class="button-wrapper">
+                                    <form>
+                                        <button class="ribbon ribbon-normal ribbon-03 ribbon">Take</button>
+                                    </form>
                                 </div>
-                                <ul class="issue-id">
-                                    <li class="number">#45</li>
-                                    <li class="owner">Clusterify</li>
-                                </ul> 
-                                <h3>Should be able to turn off desktop notifications</h3>
-                                <p>When a user starts kyatchi, they should be able to turn off the desktop notifications (grow and libnotify). The notifications should be turned on by default.</p>
-                                <div class="logo-tech">
-                                    <img src="{% static "images/logos/logo-python.png" %}" alt="python" />
-                                </div>
-                                <div class="posted"><em>First posted: <time>3/12/2013</time></em></div>
                             </div>
                         </div>
-                        <!-- people -->
-                        <div class="issue-people clearfix">
-                            <ul class="clearfix">
-                                <li><a href="#"><img src="{% static "images/temp/thumb-01.jpg" %}" alt="" /></a></li>
-                                <li><a href="#"><img src="{% static "images/temp/thumb-02.jpg" %}" alt="" /></a></li>
-                                <li><a href="#"><img src="{% static "images/temp/thumb-03.jpg" %}" alt="" /></a></li>
-                                <li><a href="#"><img src="{% static "images/temp/thumb-04.jpg" %}" alt="" /></a></li>
-                                <li><a href="#"><img src="{% static "images/temp/thumb-05.jpg" %}" alt="" /></a></li>
-                            </ul>
-                            <div class="button-wrapper">
-                                <form>
-                                    <button class="ribbon ribbon-normal ribbon-03 ribbon">Take</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-            <!-- -->
-            <div class="item">
-                <section class="frame frame-light">
-                    <div class="frame-content">
-                        <!--info-->
-                        <div class="issue-info clearfix">
-                            <div class="side-info">
-                                <a href="#" class="img-holder"><img src="{% static "images/temp/thumb-github.jpg" %}" alt="" /></a>
-                                <p class="price">$45</p>
-                                <form>
-                                    <button class="ribbon ribbon-normal ribbon-03 ribbon-brown-dark">Add $</button>
-                                </form>
-                            </div>
-                            <div class="text">
-                                <div class="issue-status">
-                                    <span class="icon-custom_yes"></span>
-                                </div>
-                                <ul class="issue-id">
-                                    <li class="number">#45</li>
-                                    <li class="owner">Clusterify</li>
-                                </ul> 
-                                <h3>Should be able to turn off desktop notifications</h3>
-                                <p>When a user starts kyatchi, they should be able to turn off the desktop notifications (grow and libnotify). The notifications should be turned on by default.</p>
-                                <div class="logo-tech">
-                                    <img src="{% static "images/logos/logo-python.png" %}" alt="python" />
-                                </div>
-                                <div class="posted"><em>First posted: <time>3/12/2013</time></em></div>
-                            </div>
-                        </div>
-                        <!-- people -->
-                        <div class="issue-people clearfix">
-                            <ul class="clearfix">
-                                <li><a href="#"><img src="{% static "images/temp/thumb-01.jpg" %}" alt="" /></a></li>
-                                <li><a href="#"><img src="{% static "images/temp/thumb-02.jpg" %}" alt="" /></a></li>
-                                <li><a href="#"><img src="{% static "images/temp/thumb-03.jpg" %}" alt="" /></a></li>
-                                <li><a href="#"><img src="{% static "images/temp/thumb-04.jpg" %}" alt="" /></a></li>
-                                <li><a href="#"><img src="{% static "images/temp/thumb-05.jpg" %}" alt="" /></a></li>
-                            </ul>
-                            <div class="button-wrapper">
-                                <form>
-                                    <button class="ribbon ribbon-normal ribbon-03 ribbon">Take</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-            <!-- -->
-            <div class="item">
-                <section class="frame frame-light">
-                    <div class="frame-content">
-                        <!--info-->
-                        <div class="issue-info clearfix">
-                            <div class="side-info">
-                                <a href="#" class="img-holder"><img src="{% static "images/temp/thumb-github.jpg" %}" alt="" /></a>
-                                <p class="price">$45</p>
-                                <form>
-                                    <button class="ribbon ribbon-normal ribbon-03 ribbon-brown-dark">Add $</button>
-                                </form>
-                            </div>
-                            <div class="text">
-                                <div class="issue-status">
-                                    <span class="icon-custom_yes"></span>
-                                </div>
-                                <ul class="issue-id">
-                                    <li class="number">#45</li>
-                                    <li class="owner">Clusterify</li>
-                                </ul> 
-                                <h3>Should be able to turn off desktop notifications</h3>
-                                <p>When a user starts kyatchi, they should be able to turn off the desktop notifications (grow and libnotify). The notifications should be turned on by default.</p>
-                                <div class="logo-tech">
-                                    <img src="{% static "images/logos/logo-python.png" %}" alt="python" />
-                                </div>
-                                <div class="posted"><em>First posted: <time>3/12/2013</time></em></div>
-                            </div>
-                        </div>
-                        <!-- people -->
-                        <div class="issue-people clearfix">
-                            <ul class="clearfix">
-                                <li><a href="#"><img src="{% static "images/temp/thumb-01.jpg" %}" alt="" /></a></li>
-                                <li><a href="#"><img src="{% static "images/temp/thumb-02.jpg" %}" alt="" /></a></li>
-                                <li><a href="#"><img src="{% static "images/temp/thumb-03.jpg" %}" alt="" /></a></li>
-                                <li><a href="#"><img src="{% static "images/temp/thumb-04.jpg" %}" alt="" /></a></li>
-                                <li><a href="#"><img src="{% static "images/temp/thumb-05.jpg" %}" alt="" /></a></li>
-                            </ul>
-                            <div class="button-wrapper">
-                                <form>
-                                    <button class="ribbon ribbon-normal ribbon-03 ribbon">Take</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-            <!-- -->
-            <div class="item">
-                <section class="frame frame-light">
-                    <div class="frame-content">
-                        <!--info-->
-                        <div class="issue-info clearfix">
-                            <div class="side-info">
-                                <a href="#" class="img-holder"><img src="{% static "images/temp/thumb-github.jpg" %}" alt="" /></a>
-                                <p class="price">$45</p>
-                                <form>
-                                    <button class="ribbon ribbon-normal ribbon-03 ribbon-brown-dark">Add $</button>
-                                </form>
-                            </div>
-                            <div class="text">
-                                <div class="issue-status">
-                                    <span class="icon-custom_yes"></span>
-                                </div>
-                                <ul class="issue-id">
-                                    <li class="number">#45</li>
-                                    <li class="owner">Clusterify</li>
-                                </ul> 
-                                <h3>Should be able to turn off desktop notifications</h3>
-                                <p>When a user starts kyatchi, they should be able to turn off the desktop notifications (grow and libnotify). The notifications should be turned on by default.</p>
-                                <div class="logo-tech">
-                                    <img src="{% static "images/logos/logo-python.png" %}" alt="python" />
-                                </div>
-                                <div class="posted"><em>First posted: <time>3/12/2013</time></em></div>
-                            </div>
-                        </div>
-                        <!-- people -->
-                        <div class="issue-people clearfix">
-                            <ul class="clearfix">
-                                <li><a href="#"><img src="{% static "images/temp/thumb-01.jpg" %}" alt="" /></a></li>
-                                <li><a href="#"><img src="{% static "images/temp/thumb-02.jpg" %}" alt="" /></a></li>
-                                <li><a href="#"><img src="{% static "images/temp/thumb-03.jpg" %}" alt="" /></a></li>
-                                <li><a href="#"><img src="{% static "images/temp/thumb-04.jpg" %}" alt="" /></a></li>
-                                <li><a href="#"><img src="{% static "images/temp/thumb-05.jpg" %}" alt="" /></a></li>
-                            </ul>
-                            <div class="button-wrapper">
-                                <form>
-                                    <button class="ribbon ribbon-normal ribbon-03 ribbon">Take</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-            <!-- -->
-            <div class="item">
-                <section class="frame frame-light">
-                    <div class="frame-content">
-                        <!--info-->
-                        <div class="issue-info clearfix">
-                            <div class="side-info">
-                                <a href="#" class="img-holder"><img src="{% static "images/temp/thumb-github.jpg" %}" alt="" /></a>
-                                <p class="price">$45</p>
-                                <form>
-                                    <button class="ribbon ribbon-normal ribbon-03 ribbon-brown-dark">Add $</button>
-                                </form>
-                            </div>
-                            <div class="text">
-                                <div class="issue-status">
-                                    <span class="icon-custom_yes"></span>
-                                </div>
-                                <ul class="issue-id">
-                                    <li class="number">#45</li>
-                                    <li class="owner">Clusterify</li>
-                                </ul> 
-                                <h3>Should be able to turn off desktop notifications</h3>
-                                <p>When a user starts kyatchi, they should be able to turn off the desktop notifications (grow and libnotify). The notifications should be turned on by default.</p>
-                                <div class="logo-tech">
-                                    <img src="{% static "images/logos/logo-python.png" %}" alt="python" />
-                                </div>
-                                <div class="posted"><em>First posted: <time>3/12/2013</time></em></div>
-                            </div>
-                        </div>
-                        <!-- people -->
-                        <div class="issue-people clearfix">
-                            <ul class="clearfix">
-                                <li><a href="#"><img src="{% static "images/temp/thumb-01.jpg" %}" alt="" /></a></li>
-                                <li><a href="#"><img src="{% static "images/temp/thumb-02.jpg" %}" alt="" /></a></li>
-                                <li><a href="#"><img src="{% static "images/temp/thumb-03.jpg" %}" alt="" /></a></li>
-                                <li><a href="#"><img src="{% static "images/temp/thumb-04.jpg" %}" alt="" /></a></li>
-                                <li><a href="#"><img src="{% static "images/temp/thumb-05.jpg" %}" alt="" /></a></li>
-                            </ul>
-                            <div class="button-wrapper">
-                                <form>
-                                    <button class="ribbon ribbon-normal ribbon-03 ribbon">Take</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-            <!-- -->
-            <div class="item">
-                <section class="frame frame-light">
-                    <div class="frame-content">
-                        <!--info-->
-                        <div class="issue-info clearfix">
-                            <div class="side-info">
-                                <a href="#" class="img-holder"><img src="{% static "images/temp/thumb-github.jpg" %}" alt="" /></a>
-                                <p class="price">$45</p>
-                                <form>
-                                    <button class="ribbon ribbon-normal ribbon-03 ribbon-brown-dark">Add $</button>
-                                </form>
-                            </div>
-                            <div class="text">
-                                <div class="issue-status">
-                                    <span class="icon-custom_yes"></span>
-                                </div>
-                                <ul class="issue-id">
-                                    <li class="number">#45</li>
-                                    <li class="owner">Clusterify</li>
-                                </ul> 
-                                <h3>Should be able to turn off desktop notifications</h3>
-                                <p>When a user starts kyatchi, they should be able to turn off the desktop notifications (grow and libnotify). The notifications should be turned on by default.</p>
-                                <div class="logo-tech">
-                                    <img src="{% static "images/logos/logo-python.png" %}" alt="python" />
-                                </div>
-                                <div class="posted"><em>First posted: <time>3/12/2013</time></em></div>
-                            </div>
-                        </div>
-                        <!-- people -->
-                        <div class="issue-people clearfix">
-                            <ul class="clearfix">
-                                <li><a href="#"><img src="{% static "images/temp/thumb-01.jpg" %}" alt="" /></a></li>
-                                <li><a href="#"><img src="{% static "images/temp/thumb-02.jpg" %}" alt="" /></a></li>
-                                <li><a href="#"><img src="{% static "images/temp/thumb-03.jpg" %}" alt="" /></a></li>
-                                <li><a href="#"><img src="{% static "images/temp/thumb-04.jpg" %}" alt="" /></a></li>
-                                <li><a href="#"><img src="{% static "images/temp/thumb-05.jpg" %}" alt="" /></a></li>
-                            </ul>
-                            <div class="button-wrapper">
-                                <form>
-                                    <button class="ribbon ribbon-normal ribbon-03 ribbon">Take</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-            
+                    </section>
+                </div>
+            {% endfor %}            
         </div>
 	</div>
 {% endblock %}

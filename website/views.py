@@ -43,34 +43,12 @@ def parse_url_ajax(request):
     return HttpResponse(json.dumps(issue))
 
 
-def home(request,
-    template="index.html",
-    page_template="issues.html"):
-
-    status = request.GET.get('status', 'open')
-    order = request.GET.get('order', '-bounty')
-    q = request.GET.get('q', '')
-
-    issues = get_issues(q, status, order)
-
+def home(request, template="index.html"):
     activities = Action.objects.all()[0:10]
-
-    if request.is_ajax():
-        template = page_template
-
     context = {
         'activities': activities,
-        'issues': issues,
-        'issue_counts': issue_counts(),
-        'page_template': page_template,
-        'q': q,
         'leaderboard': leaderboard(),
-        'wepay_host': settings.DEBUG and "stage" or "www",
-        'status': status,
-        #'form': UserCreationForm()
     }
-
-    day_of_year = datetime.datetime.strftime(datetime.datetime.now(), "%j")
     response = render_to_response(template, context, context_instance=RequestContext(request))
     return response
 
@@ -92,9 +70,9 @@ def create_issue_and_bounty(request):
     if request.method == 'POST':
         url = request.POST.get('issueUrl','')
         if not url:
+            messages.error(request, 'Please provide an issue url')
             return render(request, 'post.html', {
-                'languages': languages,
-                'message':'Please provide issue url',
+                'languages': languages
             })
         issue_data = get_issue(request, url)
         if issue_data:
@@ -125,64 +103,40 @@ def create_issue_and_bounty(request):
                 'errors': form.errors,
                 'bounty_errors':bounty_form.errors,
             })
-            
 
-def post(request):
-    languages = []
-    for lang in Issue.LANGUAGES:
-        languages.append(lang[0])
-    return render(request, 'post.html', {
-        'languages': languages,
-    })
-
-def paynow(request):
-    languages = []
-    for lang in Issue.LANGUAGES:
-        languages.append(lang[0])
-    issuetracker = request.POST.get('issuetracker')
-    issueurl = request.POST.get('issueUrl')
-    issuetitle = request.POST.get('title')
-    issuesummary = request.POST.get('summary')
-    language = request.POST.get('language')
-    bounty = request.POST.get('bounty')
-    message = ''
-    if not bounty:
-        message = "Bounty is required."
-    if not issuesummary:
-        message = "Summary is required."
-    if not issuetitle:
-        message = "Title is required."
-    if not issueurl:
-        message = "Issue URL is required."
-    if not message:
-        userprofile = UserProfile()
-        issuesaver = Issue()
-        issuesaver.title = issuetitle
-        issuesaver.content = issuesummary
-        issuesaver.language = language
-        issuesaver.notified_user = False
-        issuesaver.status = "open"
-        issuesaver.user = request.user
-        issuesaver.save()
-
-        bountysaver = Bounty()
-        bountysaver.price = bounty
-        bountysaver.issue = issuesaver
-        bountysaver.user = request.user
-        bountysaver.save()
-
-        return render(request, 'post.html', {
-            'languages': languages,
-            'message': 'Successfully registered on DB.'
-        })
-    else:
-        return render(request, 'post.html', {
-            'languages': languages,
-            'message':message
-        })
 
 def list(request):
-    return render(request, 'list.html')
+    q=''
+    status=''
+    order='-bounty'
+    if q:
+        entry_query = get_query(q.strip(), ['title', 'content', 'project', 'number', ])
+        issues = Issue.objects.filter(entry_query)
+    else:
+        issues = Issue.objects.all()
+
+    if status and status != "all":
+        issues = issues.filter(status=status)
+
+    if status == "open" or status == '' or status == None:
+        issues = issues.filter(bounty__ends__gt=datetime.datetime.now())
+
+    if order.find('bounty') > -1:
+        issues = issues.annotate(bounty_sum=Sum('bounty__price')).order_by(order + '_sum')
+
+    if order.find('watchers') > -1:
+        issues = issues.annotate(watchers_count=Count('watcher')).order_by(order + '_count')
+
+    if order.find('project') > -1:
+        issues = issues.annotate(Count('id')).order_by(order)
+
+    if order.find('number') > -1:
+        issues = issues.annotate(Count('id')).order_by(order)
+
+    return render(request, 'list.html', {
+                'issues': issues,
+            })
+
 
 def issue(request):
     return render(request, 'issue.html')
@@ -376,32 +330,6 @@ def get_query(query_string, search_fields):
     return query
 
 
-def get_issues(q='', status='', order='-bounty'):
-    if q:
-        entry_query = get_query(q.strip(), ['title', 'content', 'project', 'number', ])
-        issues = Issue.objects.filter(entry_query)
-    else:
-        issues = Issue.objects.all()
-
-    if status and status != "all":
-        issues = issues.filter(status=status)
-
-    if status == "open" or status == '' or status == None:
-        issues = issues.filter(bounty__ends__gt=datetime.datetime.now())
-
-    if order.find('bounty') > -1:
-        issues = issues.annotate(bounty_sum=Sum('bounty__price')).order_by(order + '_sum')
-
-    if order.find('watchers') > -1:
-        issues = issues.annotate(watchers_count=Count('watcher')).order_by(order + '_count')
-
-    if order.find('project') > -1:
-        issues = issues.annotate(Count('id')).order_by(order)
-
-    if order.find('number') > -1:
-        issues = issues.annotate(Count('id')).order_by(order)
-
-    return issues
 
 
 def join(request):

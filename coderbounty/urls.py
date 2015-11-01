@@ -17,7 +17,6 @@ urlpatterns = patterns('',
     
     url(r'^$', 'website.views.home', name='home'),
     url(r'^post/$', 'website.views.create_issue_and_bounty', name='post'),
-    url(r'^paynow/$', 'website.views.paynow', name='paynow'),
     url(r'^list/$', 'website.views.list', name='list'),
     url(r'^issue/$', 'website.views.issue', name='issue'),
     url(r'^profile/$', 'website.views.profile', name='profile'),
