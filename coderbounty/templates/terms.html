@@ -1,10 +1,22 @@
-{% extends "page_template.html" %}
+{% extends "base.html" %}
 
 {% block content %}
-
-<div class="form_box">
-
-
+<style>
+p {margin-bottom:10px;}
+ol {margin-left:40px;margin-bottom:10px;}
+.c4 {font-weight:bold;}
+</style>
+<!-- Section - Post a Bounty -->
+    <div class="section-postBounty">
+        <div class="wrapper-global grid">
+            <div class="col-20">
+                <section class="frame frame-dark-paper">
+                    <span class="bugfix-top"></span>
+                    <div class="frame-content">
+                        <h1 class="titlebar-paper"><span>Terms</span></h1>
+                       
+                            <div class="grid">
+                                <div style="padding:40px; color:black;">
     <p class="c2"><span class="c5">These Terms and Conditions, as may be amended from time
             to time (the "Agreement") apply to your use of the CoderBounty Services, are a legal
             contract between you and CoderBounty, and describe the relationship between you and
@@ -758,9 +770,13 @@
     <p class="c2"><span class="c5">If you have any questions or concerns about this
             Agreement, the CoderBounty website, or any Service, please send us a thorough
             description by email to <a href="mailto:support@CoderBounty.com">support@CoderBounty.com</a>.</span></p>
+                            </div>
+                    </div>
+                    
+                </section>
+            </div>
+        </div>
+    </div>
+<div>
 
-    </br>
-    </br>
-
-</div><!--form_box end-->
 {% endblock  %}

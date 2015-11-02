@@ -14,12 +14,10 @@ $(document).ready(function(){
     $('#issueUrl').liveUrl({
        success : function(data)
        {
-        console.log(data);
         $.post( "/parse_url_ajax/", {
                 url: data['url'],
                 csrfmiddlewaretoken: "{{ csrf_token }}"
             }).done(function( data ) {
-                console.log(data)
                 var issue = jQuery.parseJSON(data)
                 $('#title').val(issue['title']);
                 $('#content').val(issue['content']);
@@ -29,44 +27,8 @@ $(document).ready(function(){
     });
 });
 
-
+ 
 </script>
-
-<!-- $(document).ready(function () {
-
-    $('ul#ui-ajax-tabs li:first').addClass('selected');
-
-    $('#ui-ajax-tabs li a').click(function (e) {
-
-        e.preventDefault();
-
-        $("#ui-ajax-tabs li").removeClass("selected");
-
-        $(this).parents('li').addClass("loading");
-
-        var url = $(this).attr("href");
-        var link = $(this);
-        console.log(url);
-
-        $.ajax({
-            url: url,
-            success: function (responseHtml) {
-                $('div#ui-tab-content').html($(responseHtml).find('div#ui-tab-content > div#ui-ajax-html'));
-                $(link).parents('li').addClass('selected');
-                $("#ui-ajax-tabs li").removeClass("loading");
-            },
-            error: function () {
-                $('div#ui-tab-content').html('<div class="message error">Sorry that page doesn\'t exist</div>');
-                $(link).parents('li').addClass('selected');
-                $("#ui-ajax-tabs li").removeClass("loading");
-            }
-        });
-
-    });
-
-});
- -->
-
 	<!-- Section - Post a Bounty -->
 	<div class="section-postBounty">
 		<div class="wrapper-global grid">
@@ -104,7 +66,7 @@ $(document).ready(function(){
                                     <div class="form-item">
                                         <label class="label" for="issueUrl">Issue URL:</label>
                                         <div class="value">
-                                            <input type="text" id="issueUrl" name="issueUrl"/>
+                                            <input type="text" id="issueUrl" name="issueUrl" placeholder="Paste a link to an issue and we'll fill out the rest"/>
                                         
                                         </div>
                                     </div>
