@@ -24,8 +24,6 @@ urlpatterns = patterns('',
         name="profile"),
     url(r'^parse_url_ajax/$', 'website.views.parse_url_ajax', name='parse_url_ajax'),
 
-
-
     url(r'^add/$', 'website.views.add', name='add'),
     url(r'^watch/$', 'website.views.watch', name='watch'),
     url(r'^login/$', 'website.views.login_async', name='login'),
@@ -49,15 +47,5 @@ urlpatterns = patterns('',
     
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    #url(r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/static/images/favicon.ico'}),
     #url(r'^robots.txt$', direct_to_template, {'template': 'robots.txt', 'mimetype': 'text/plain'}),
-    
-    #url(r'^social_auth/', include('social_auth.urls')),
-    #url(r'^profiles/', include('profiles.urls')),
-
-
 )
-
-#from django.conf import settings
-#from django.conf.urls.static import static
-#urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
