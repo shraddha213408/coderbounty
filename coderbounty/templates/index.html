@@ -38,7 +38,14 @@
                                         <p>{{ activity }}</p>
                                         <time class="time">{{ activity.timestamp.date }}</time></td>
                                     <td class="status">
-                                        <span class="icon-custom_yes"></span></td>
+                                 {% if activity.verb == "signed up" %}
+                                     <span class="icon-custom_yes"></span>
+                                {% elif activity.verb == "placed a bounty" %}
+                                    <span class="icon-custom_dolar"></span>
+                                {% elif activity.verb == "closed bounty" %}
+                                    <span class="icon-custom_idea"></span>
+                                {% endif %}
+                                    </td>
                                 </tr>
                                 
                             </tbody>
