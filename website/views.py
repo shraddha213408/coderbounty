@@ -4,7 +4,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from models import Issue, UserProfile, Bounty
+from models import Issue, UserProfile, Bounty, Service
 from .forms import IssueCreateForm, BountyCreateForm
 from utils import get_issue, add_issue_to_database, get_twitter_count, get_facebook_count, create_comment, issue_counts, leaderboard, get_hexdigest
 
