@@ -15,7 +15,7 @@
                         <ul class="social-list">
                         {% for account in object.socialaccount_set.all %}
 							{% if account.provider == 'github' %}
-								<li><a href="{{account.extra_data.url }}" target="_new" class="icon-github6"></a></li>
+								<li><a href="{{account.extra_data.html_url }}" target="_new" class="icon-github6"></a></li>
 							{% endif %}
 							{% if account.provider == 'google' %}
 								<li><a href="{{account.extra_data.link }}" target="_new" class="icon-google-plus2"></a></li>
