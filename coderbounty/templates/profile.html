@@ -13,15 +13,23 @@
                     	<a class="img-holder" href="#"><img src="{{ object.userprofile.gravatar_large }}" alt="" /></a>
 						<p>Joined 4/13/2013</p>
                         <ul class="social-list">
-                        	<li><a href="#" class="icon-google-plus2"></a></li>
-                            <li><a href="#" class="icon-github6"></a></li>
-                            <li><a href="#" class="icon-bitbucket2"></a></li>
+                        {% for account in object.socialaccount_set.all %}
+							{% if account.provider == 'github' %}
+								<li><a href="{{account.extra_data.url }}" class="icon-github6"></a></li>
+							{% endif %}
+							{% if account.provider == 'google' %}
+								<li><a href="{{account.extra_data.link }}" class="icon-google-plus2"></a></li>
+							{% endif %}
+							{% if account.provider == 'bitbucket' %}
+								<li><a href="{{account.extra_data.link }}" class="icon-bitbucket2"></a></li>
+							{% endif %}
                         </ul>
+                        {% endfor %}
                         <ul class="stats">
-                        	<li><span class="label">Won:</span><span class="value">$982</span></li>
-                            <li><span class="label">Posted:</span><span class="value">$982</span></li>
-                            <li><span class="label">Taken:</span><span class="value">49</span></li>
-                            <li><span class="label">Closed:</span><span class="value">23</span></li>
+                        	<li><span class="label">Won:</span><span class="value">${{object.userprofile.balance}}</span></li>
+                            <li><span class="label">Posted:</span><span class="value">$0</span></li>
+                            <li><span class="label">Taken:</span><span class="value">0</span></li>
+                            <li><span class="label">Closed:</span><span class="value">0</span></li>
                         </ul>
                         {% if object.username == user.username %}
                         	<button class="ribbon ribbon-03 ribbon-type-01 ribbon-normal ribbon-brown-dark">Edit profile</button>
