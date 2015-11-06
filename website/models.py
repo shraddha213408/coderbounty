@@ -103,6 +103,7 @@ class Issue(models.Model):
         return "%s - %s" % (self.number, self.project)
 
     class Meta:
+        ordering = ['-created']
         unique_together = ("service", "number", "project")
   
 
