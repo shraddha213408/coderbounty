@@ -67,8 +67,9 @@
                                   <a class="img-holder" href="/profile/{{bounty.user.username}}"><img alt="" src="{{bounty.user.userprofile.gravatar}}"></a></td>
                               <td class="text">
                                   <a href="/profile/{{bounty.user.username}}">{{bounty.user.username}}</a>
+                                  {{ bounty.created }}
                               </td>
-                              <td class="price">${{bounty}}</td>
+                              <td class="price">${{bounty.price}}</td>
                           </tr>
                           {% endfor %}
                          
@@ -294,7 +295,7 @@
                 </table>
             </div>
         </div>
-        <!-- frame - accepted by -->
+        <!-- frame - accepted by 
         <div class="frame frame-light frame-noLines">
             <div class="frame-content">
                 <h2 class="titlebar"><span class="ribbon ribbon-normal ribbon-04 ribbon-brown">Accepted by</span></h2>
@@ -339,6 +340,7 @@
                 </table>
             </div>
         </div>
+        -->
         <!-- frame - word cloud -->
         <div class="frame frame-light">
             <div class="frame-content">
