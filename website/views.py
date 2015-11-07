@@ -78,7 +78,7 @@ def create_issue_and_bounty(request):
         if issue_data:
             service = Service.objects.get(name=issue_data['service'])
             instance = Issue(created = user,number = issue_data['number'],
-            project=issue_data['project'],user = user,service=service)
+            project=issue_data['project'],user = issue_data['user'],service=service)
         else:
             return render(request, 'post.html', {
                 'languages': languages,
