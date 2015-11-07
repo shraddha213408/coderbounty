@@ -520,3 +520,13 @@ def terms(request):
 
 def about(request):
     return render_to_response("about.html", context_instance=RequestContext(request))
+
+class IssueDetailView(DetailView):
+    model = Issue
+    slug_field = "id"
+    template_name = "issue.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(IssueDetailView, self).get_context_data(**kwargs)
+        context['leaderboard'] = leaderboard()        
+        return context

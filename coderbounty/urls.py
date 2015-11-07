@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 #from django.views.generic.simple import direct_to_template
 
-from website.views import UserProfileDetailView
+from website.views import UserProfileDetailView, IssueDetailView
 
 from django.contrib.auth import views as auth_views
 admin.autodiscover()
@@ -18,7 +18,8 @@ urlpatterns = patterns('',
     url(r'^$', 'website.views.home', name='home'),
     url(r'^post/$', 'website.views.create_issue_and_bounty', name='post'),
     url(r'^list/$', 'website.views.list', name='list'),
-    url(r'^issue/$', 'website.views.issue', name='issue'),
+    url(r"^issue/(?P<slug>\w+)/$", IssueDetailView.as_view(),
+        name="issue"),
     url(r'^profile/$', 'website.views.profile', name='profile'),
     url(r"^profile/(?P<slug>\w+)/$", UserProfileDetailView.as_view(),
         name="profile"),

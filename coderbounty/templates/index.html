@@ -72,18 +72,18 @@
                     <div class="frame-content">
                         <h2 class="titlebar"><span class="ribbon ribbon-normal ribbon-04 ribbon-brown-dark"><em class="icon-custom_star"></em>Coder Leaderboard</span></h2>
                         <table class="table-list table-list-leader-board">
-                             {% for leader in leaderboard %}
                             <tbody>
-                                <tr>
-                                    <td class="thumb">
-                                        <a href="/profile/{{ leader.username }}" class="img-holder"><img src="{{ leader.userprofile.gravatar }}" alt="" /></a></td>
-                                    <td class="text">
-                                        <a href="/profile/{{ leader.username }}">{{ leader.username}}</a>
-                                    </td>
-                                    <td class="price">${{ leader.userprofile.balance}}</td>
-                                </tr>
+                              {% for leader in leaderboard %}
+                                  <tr>
+                                      <td class="thumb">
+                                          <a href="/profile/{{ leader.username }}" class="img-holder"><img src="{{ leader.userprofile.gravatar }}" alt="" /></a></td>
+                                      <td class="text">
+                                          <a href="/profile/{{ leader.username }}">{{ leader.username}}</a>
+                                      </td>
+                                      <td class="price">${{ leader.userprofile.balance}}</td>
+                                  </tr>
+                              {% endfor %}
                             </tbody>
-                            {% endfor %}
                         </table>
                     </div>
                 </div>

@@ -4,7 +4,7 @@
 <html class="no-js">
 <head>
     <meta charset="utf-8" />
-    <title>Home - Coder Bounty</title>
+    <title>{% block title %}{% endblock %} Coderbounty - Post bounties on code issues</title>
     <!-- Meta Tags -->
     <meta name="description" content="">
     <!-- Favicon -->
@@ -25,11 +25,6 @@
             html5elements()
         </script>
     <![endif]-->
-    <script>
-        $(document).ready(function() {
-            
-        });
-    </script>
 </head>
 <body>
     <!-- Header -->
@@ -102,6 +97,8 @@
   ga('create', 'UA-66636003-1', 'auto');
   ga('send', 'pageview');
 
-</script>
+  document.write(unescape("%3Cscript src='" + (("https:" == document.location.protocol) ? "https" : "http") + 
+        "://c.mouseflow.com/projects/77edc2c3-57b8-4ffa-9f9a-6f92e3458259.js' type='text/javascript'%3E%3C/script%3E"));
+
 </body>
 </html>
