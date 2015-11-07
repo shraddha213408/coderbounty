@@ -2,3 +2,4 @@ venv
 *.pyc
 /venv
 db.sqlite3
+coderbounty.db
