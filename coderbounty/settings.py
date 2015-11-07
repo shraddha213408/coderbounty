@@ -112,7 +112,7 @@ USE_TZ = True
 
 # Enable Connection Pooling (if desired)
 if os.environ.has_key('DATABASE_URL'):
-    DEBUG = False
+    DEBUG = True
     DATABASES['default'] =  dj_database_url.config()
     DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
     ROLLBAR = {
