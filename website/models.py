@@ -160,7 +160,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, related_name="userprofile")
     balance = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     payment_service = models.CharField(max_length=255, null=True, blank=True)
-    payment_service_email = models.CharField(max_length=255, null=True, blank=True, default='')
+    payment_service_email = models.EmailField(max_length=255, null=True, blank=True, default='')
     #coins = models.IntegerField(default=0)
 
     @property
