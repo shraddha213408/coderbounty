@@ -5,10 +5,11 @@ from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from models import Issue, UserProfile, Bounty, Service
-from .forms import IssueCreateForm, BountyCreateForm
+from .forms import IssueCreateForm, BountyCreateForm, UserProfileForm
 from utils import get_issue, add_issue_to_database, get_twitter_count, get_facebook_count, create_comment, issue_counts, leaderboard, get_hexdigest
 
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, FormView
+from django.views.generic.edit import UpdateView
 from django.contrib.auth import get_user_model
 
 from django.shortcuts import get_object_or_404, render
@@ -30,6 +31,8 @@ import random
 from actstream.models import user_stream
 from actstream.models import Action
 
+
+from django.core.urlresolvers import reverse
 #implement ajax loader for posting a bounty /post (done)
 #auto count for total bounties won
 #make circles on homepage links
@@ -498,6 +501,18 @@ class UserProfileDetailView(DetailView):
         context = super(UserProfileDetailView, self).get_context_data(**kwargs)
         context['activities'] = user_stream(self.get_object(), with_user_activity=True)        
         return context
+
+
+class UserProfileEditView(UpdateView):
+    model = UserProfile
+    form_class = UserProfileForm
+    template_name = "profiles/edit.html"
+
+    def get_object(self, queryset=None):
+        return UserProfile.objects.get_or_create(user=self.request.user)[0]
+
+    def get_success_url(self):
+        return reverse("profile", kwargs={'slug': self.request.user})
 
 
 def load_issue(request):
