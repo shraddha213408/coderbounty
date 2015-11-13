@@ -139,6 +139,10 @@ ALLOWED_HOSTS = ['*']
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
 
+#EMAIL_HOST='localhost'
+#EMAIL_PORT=1025
+#python -m smtpd -n -c DebuggingServer localhost:1025
+
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME','blank')
 EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD','blank')
@@ -166,3 +170,22 @@ TEMPLATE_DIRS = (
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 LOGIN_REDIRECT_URL = "/profile/"
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    }
+}

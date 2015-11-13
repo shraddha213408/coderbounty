@@ -6,9 +6,6 @@ from django.views.generic.base import TemplateView
 
 admin.autodiscover()
 
-handler404 = 'website.views.error_404_view'
-handler500 = 'website.views.error_500_view'
-
 
 urlpatterns = patterns('',
     ('^accounts/', include('allauth.urls')),
