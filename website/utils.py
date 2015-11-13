@@ -108,6 +108,7 @@ def get_issue(request, url):
         if "closed_by" in result:
             data['closed_by'] = result['closed_by']
         data['service'] = service.name
+		data['avatar_url'] = result['user']['avatar_url']
 
     return data
 

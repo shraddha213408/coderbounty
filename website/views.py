@@ -12,7 +12,10 @@ from django.views.generic import ListView, DetailView, FormView
 from django.views.generic.edit import UpdateView
 from django.contrib.auth import get_user_model
 
+from django.core import serializers
 from django.shortcuts import get_object_or_404, render
+
+from wepay import WePay
 
 import json
 from django.contrib import messages
@@ -91,10 +94,33 @@ def create_issue_and_bounty(request):
         bounty_form = BountyCreateForm(request.POST)
         bounty_form_is_valid = bounty_form.is_valid()
         if form.is_valid() and bounty_form_is_valid:
-            issue = form.save()
+            if not instance.pk: 
+                issue = form.save()
+            else:
+                issue = instance
+                
+                #issue already exists, post additional bounty
+				#this doesn't seem to be working yet
+            
             price = bounty_form.cleaned_data['price']
             bounty_instance = Bounty(user = user,issue = issue,price = price)
+            #save this data and post it with the return_uri from wepay
+            data = serializers.serialize('xml', [ bounty_instance, ])
             bounty_instance.save()
+            wepay = WePay(settings.WEPAY_IN_PRODUCTION, settings.WEPAY_ACCESS_TOKEN)
+
+            wepay_data = wepay.call('/checkout/create', {
+                'account_id': settings.WEPAY_ACCOUNT_ID,
+                'amount': request.POST.get('grand_total'),
+                'short_description': 'CoderBounty',
+                'long_description': data,
+                'type': 'service',
+                'currency': 'USD'
+            })
+            print wepay_data
+
+            #return redirect(wepay_data['checkout_uri'])
+
             return render(request, 'post.html', {
                 'languages': languages,
                 'message':'Successfully saved issue'
