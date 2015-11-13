@@ -127,11 +127,11 @@ if os.environ.has_key('DATABASE_URL'):
     }
     import rollbar
     rollbar.init(**ROLLBAR)
-	EMAIL_HOST = 'smtp.sendgrid.net'
-	EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME','blank')
-	EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD','blank')
-	EMAIL_PORT = 587
-	EMAIL_USE_TLS = True
+    EMAIL_HOST = 'smtp.sendgrid.net'
+    EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME','blank')
+    EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD','blank')
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
