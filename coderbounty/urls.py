@@ -1,10 +1,9 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-#from django.views.generic.simple import direct_to_template
 from django.contrib.auth.decorators import login_required
 from website.views import UserProfileDetailView, IssueDetailView, UserProfileEditView
+from django.views.generic.base import TemplateView
 
-from django.contrib.auth import views as auth_views
 admin.autodiscover()
 
 handler404 = 'website.views.error_404_view'
@@ -18,11 +17,9 @@ urlpatterns = patterns('',
     url(r'^$', 'website.views.home', name='home'),
     url(r'^post/$', 'website.views.create_issue_and_bounty', name='post'),
     url(r'^list/$', 'website.views.list', name='list'),
-    url(r"^issue/(?P<slug>\w+)/$", IssueDetailView.as_view(),
-        name="issue"),
+    url(r"^issue/(?P<slug>\w+)/$", IssueDetailView.as_view(), name="issue"),
     url(r'^profile/$', 'website.views.profile', name='profile'),
-    url(r"^profile/(?P<slug>\w+)/$", UserProfileDetailView.as_view(),
-        name="profile"),
+    url(r"^profile/(?P<slug>\w+)/$", UserProfileDetailView.as_view(), name="profile"),
     url(r'^edit_profile/$', login_required(UserProfileEditView.as_view()), name="edit_profile"),
     url(r'^parse_url_ajax/$', 'website.views.parse_url_ajax', name='parse_url_ajax'),
 
@@ -33,7 +30,6 @@ urlpatterns = patterns('',
     url(r'^logout/$', 'website.views.logout_view', name='logout'),
     
     url(r'^load_issue/$', 'website.views.load_issue', name='load_issue'),
-    #url(r'^issue/(?P<id>\d)/$', 'website.views.issue', name='issue'),
     url(r'^wepay_auth/$', 'website.views.wepay_auth', name='wepay_auth'),
     url(r'^wepay_callback$', 'website.views.wepay_callback', name='wepay_callback'),
     url(r'^post_comment$', 'website.views.post_comment', name='post_comment'),
@@ -42,12 +38,6 @@ urlpatterns = patterns('',
     url(r'^terms/$', 'website.views.terms', name='terms'),   
     url(r'^about/$', 'website.views.about', name='about'),  
     
-    url(r'^passreset/$', auth_views.password_reset, name='forgot_password1'),
-    url(r'^passresetdone/$', auth_views.password_reset_done, name='forgot_password2'),
-    url(r'^passresetconfirm/(?P<uidb36>[-\w]+)/(?P<token>[-\w]+)/$', auth_views.password_reset_confirm, name='forgot_password3'),
-    url(r'^passresetcomplete/$', auth_views.password_reset_complete, name='forgot_password4'),
-    
-    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    #url(r'^robots.txt$', direct_to_template, {'template': 'robots.txt', 'mimetype': 'text/plain'}),
+    url(r'^robots.txt$', TemplateView.as_view(template_name='robots.txt')),
 )

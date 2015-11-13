@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 import os
 import dj_database_url
+from django.http import Http404
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 
@@ -119,6 +120,9 @@ if os.environ.has_key('DATABASE_URL'):
         'access_token': 'f25f82658f7c493f8eeeb271a817345c',
         'environment': 'development' if DEBUG else 'production',
         'root': BASE_DIR,
+        'exception_level_filters': [
+            (Http404, 'warning')
+        ]
     }
     import rollbar
     rollbar.init(**ROLLBAR)
