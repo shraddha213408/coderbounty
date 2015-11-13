@@ -23,7 +23,7 @@ SECRET_KEY = "ci7svvv6wp+5cyk3(ju6w*6v-xldo#an3e3zuvg&&7@v=4*2^c"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+ADMINS = (('Sean', 'sean@alphaonelabs.com'))
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -112,7 +112,7 @@ USE_TZ = True
 
 # Enable Connection Pooling (if desired)
 if os.environ.has_key('DATABASE_URL'):
-    DEBUG = True
+    DEBUG = False
     DATABASES['default'] =  dj_database_url.config()
     DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
     ROLLBAR = {
