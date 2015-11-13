@@ -307,13 +307,6 @@ def logout_view(request):
     return redirect('/')
 
 
-def error_404_view(request):
-    return HttpResponseNotFound('Not Found')
-
-
-def error_500_view(request):
-    return HttpResponseServerError('Internal server error')
-
 
 def login_async(request):
     username = request.POST.get('username', '')

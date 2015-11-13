@@ -109,9 +109,10 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Parse database configuration from $DATABASE_URL
+EMAIL_HOST='localhost'
+EMAIL_PORT=1025
+#python -m smtpd -n -c DebuggingServer localhost:1025
 
-# Enable Connection Pooling (if desired)
 if os.environ.has_key('DATABASE_URL'):
     DEBUG = False
     DATABASES['default'] =  dj_database_url.config()
@@ -126,6 +127,11 @@ if os.environ.has_key('DATABASE_URL'):
     }
     import rollbar
     rollbar.init(**ROLLBAR)
+	EMAIL_HOST = 'smtp.sendgrid.net'
+	EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME','blank')
+	EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD','blank')
+	EMAIL_PORT = 587
+	EMAIL_USE_TLS = True
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -139,15 +145,10 @@ ALLOWED_HOSTS = ['*']
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
 
-#EMAIL_HOST='localhost'
-#EMAIL_PORT=1025
+
 #python -m smtpd -n -c DebuggingServer localhost:1025
 
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME','blank')
-EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD','blank')
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+
 
 WEPAY_IN_PRODUCTION = os.environ.get('WEPAY_IN_PRODUCTION', False) 
 WEPAY_ACCOUNT_ID = os.environ.get('WEPAY_ACCOUNT_ID','941349') 
