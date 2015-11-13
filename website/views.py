@@ -98,17 +98,15 @@ def create_issue_and_bounty(request):
                 issue = form.save()
             else:
                 issue = instance
-                
                 #issue already exists, post additional bounty
-				#this doesn't seem to be working yet
-            
+                #this doesn't seem to be working yet
             price = bounty_form.cleaned_data['price']
             bounty_instance = Bounty(user = user,issue = issue,price = price)
             #save this data and post it with the return_uri from wepay
             data = serializers.serialize('xml', [ bounty_instance, ])
             bounty_instance.save()
-            wepay = WePay(settings.WEPAY_IN_PRODUCTION, settings.WEPAY_ACCESS_TOKEN)
 
+            wepay = WePay(settings.WEPAY_IN_PRODUCTION, settings.WEPAY_ACCESS_TOKEN)
             wepay_data = wepay.call('/checkout/create', {
                 'account_id': settings.WEPAY_ACCOUNT_ID,
                 'amount': request.POST.get('grand_total'),
