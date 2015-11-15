@@ -37,6 +37,10 @@ from actstream.models import Action
 
 from django.core.urlresolvers import reverse
 
+def parse_url_ajax(request):
+     url = request.POST.get('url', '')
+     issue = get_issue(request, url)
+     return HttpResponse(json.dumps(issue))
 
 def home(request, template="index.html"):
     activities = Action.objects.all()[0:10]
