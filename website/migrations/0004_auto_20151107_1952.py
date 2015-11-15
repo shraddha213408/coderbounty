@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
         ('website', '0003_auto_20151021_1455'),
     ]
 
-    operations = [    
+    operations = [
         migrations.AlterModelOptions(
             name='issue',
             options={'ordering': ['-created']},
