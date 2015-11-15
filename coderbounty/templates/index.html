@@ -50,7 +50,7 @@
                                         <a href="/profile/{{ activity.actor.username }}" class="img-holder"><img src="{{ activity.actor.userprofile.gravatar }}" alt="" /></a></td>
                                     <td class="text">
                                         <p>{{ activity }}</p>
-                                        <time class="time">{{ activity.timestamp.date }}</time></td>
+                                        <time class="time">{{ activity.timestamp|date:"m/d/Y" }}</time></td>
                                     <td class="status">
                                  {% if activity.verb == "signed up" %}
                                      <span class="icon-custom_yes"></span>
