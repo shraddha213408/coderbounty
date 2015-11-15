@@ -6,7 +6,7 @@
 
 {% block content %}
     <!-- Section - How it Works -->
-    <section class="section-howWorks">
+    <section class="section-howWorks wrapper-section">
         <div class="wrapper-global">
             <h1>Coders Wanted! Get Your Bounty Today!</h1>
             <a href="/post">
@@ -21,20 +21,20 @@
               <div style="height:325px; width:370px; float:left;">
               </div>
             </a>
-            <a href="/accounts/login/">
+
             <div class="btn-login-wrapper">
-                <div class="btn-login">login</div>   
+                <a href="/accounts/login/"><div class="btn-login">login</div></a>
                 <div class="btn-login-social">
-                    <a class="icon-google-plus2" href="{% provider_login_url "google" method='js_sdk' %}"></a>
-                    <a class="icon-github6" href="{% provider_login_url "github" method='js_sdk' %}"></a>
-                    <a class="icon-bitbucket2" href="{% provider_login_url "bitbucket" method='js_sdk' %}"></a>
+                    <a class="icon-google-plus2" href='{% provider_login_url "google" method="js_sdk" %}'></a>
+                    <a class="icon-github6" href='{% provider_login_url "github" method="js_sdk" %}'></a>
+                    <a class="icon-bitbucket2" href='{% provider_login_url "bitbucket" method="js_sdk" %}'></a>
                 </div>
             </div>
-            </div>
+
         </div>
     </section>
     <!-- Section Latest -->
-    <div class="section-latest">
+    <div class="section-latest wrapper-section">
         <div class="wrapper-global grid">
             <section class="col-14 activity">
                 <!--frame -->
