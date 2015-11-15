@@ -40,8 +40,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'website',
-    #'coderbounty',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -49,6 +47,8 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.bitbucket',
     'actstream',
+    'website',
+
 )
 
 SITE_ID = 1

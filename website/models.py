@@ -74,6 +74,7 @@ class Issue(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     notified_user = models.BooleanField(default=False)
+    views = models.IntegerField(default=1)
 
     def bounties(self):
         return Bounty.objects.filter(issue=self).order_by('-ends')

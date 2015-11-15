@@ -36,17 +36,6 @@ from actstream.models import Action
 
 
 from django.core.urlresolvers import reverse
-#implement ajax loader for posting a bounty /post (done)
-#auto count for total bounties won
-#make circles on homepage links
-#integrate avatars
-#create browser extension to post bounties from github / bitbucket
-
-#@cache_page(60 * 15)
-# def parse_url_ajax(request):
-#     url = request.POST.get('url', '')
-#     issue = get_issue(request, url)
-#     return HttpResponse(json.dumps(issue))
 
 
 def home(request, template="index.html"):
@@ -404,17 +393,11 @@ def list(request):
 def profile(request):
     """Redirects to profile page if the requested user is loggedin
     """ 
-
     try:
-        username = request.user.username
+        return redirect('/profile/'+request.user.username)
     except Exception:
         return redirect('/')
 
-    if username != '':
-        profile = '/profile/'+username
-        return redirect(profile)
-    else:
-        return redirect('/')
 
 class UserProfileDetailView(DetailView):
     model = get_user_model()
@@ -470,3 +453,9 @@ class IssueDetailView(DetailView):
         context = super(IssueDetailView, self).get_context_data(**kwargs)
         context['leaderboard'] = leaderboard()        
         return context
+
+    def get_object(self):
+            object = super(IssueDetailView, self).get_object()
+            object.views = object.views + 1
+            object.save()
+            return object
