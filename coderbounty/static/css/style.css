@@ -29,8 +29,7 @@ html {
 	background:url('../images/layout/pattern-00.gif') repeat 0 0;}
 body {	
 	font:normal 15px/120% 'CalistoMtRegular',serif;
-	color:#675B4D;
-	background:url('../images/layout/pattern-header.gif') repeat-x center top;}
+	color:#675B4D;}
 a {
 	color:#A34B33;
 	text-decoration:none;}
@@ -70,10 +69,14 @@ em {
 ===================== 
 */
 .wrapper-global {
-	width:1180px;
+	width:1190px;
 	margin:0 auto;}
+.wrapper-section {
+	min-width:1190px;
+}
 .header {
-	border-bottom:solid 3px #B6B2A5;}
+	border-bottom:solid 3px #B6B2A5;
+	background:url('../images/layout/pattern-header.gif') repeat-x center top;}
 .header .wrapper-global {
 	position: relative;
     height:175px;}
