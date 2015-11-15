@@ -133,32 +133,33 @@ def create_issue_and_bounty(request):
 
 
 def list(request):
-    q=''
-    status=''
-    order='-bounty'
-    if q:
-        entry_query = get_query(q.strip(), ['title', 'content', 'project', 'number', ])
-        issues = Issue.objects.filter(entry_query)
-    else:
-        issues = Issue.objects.all().order_by('-created')
+    # q=''
+    # status=''
+    # order='-bounty'
+    # if q:
+    #     entry_query = get_query(q.strip(), ['title', 'content', 'project', 'number', ])
+    #     issues = Issue.objects.filter(entry_query)
+    # else:
+    
+    issues = Issue.objects.all().order_by('-created')
 
-    if status and status != "all":
-        issues = issues.filter(status=status)
+    # if status and status != "all":
+    #     issues = issues.filter(status=status)
 
     # if status == "open" or status == '' or status == None:
     #     issues = issues.filter(bounty__ends__gt=datetime.datetime.now())
 
-    if order.find('bounty') > -1:
-        issues = issues.annotate(bounty_sum=Sum('bounty__price')).order_by(order + '_sum')
+    # if order.find('bounty') > -1:
+    #     issues = issues.annotate(bounty_sum=Sum('bounty__price')).order_by(order + '_sum')
 
-    if order.find('watchers') > -1:
-        issues = issues.annotate(watchers_count=Count('watcher')).order_by(order + '_count')
+    # if order.find('watchers') > -1:
+    #     issues = issues.annotate(watchers_count=Count('watcher')).order_by(order + '_count')
 
-    if order.find('project') > -1:
-        issues = issues.annotate(Count('id')).order_by(order)
+    # if order.find('project') > -1:
+    #     issues = issues.annotate(Count('id')).order_by(order)
 
-    if order.find('number') > -1:
-        issues = issues.annotate(Count('id')).order_by(order)
+    # if order.find('number') > -1:
+    #     issues = issues.annotate(Count('id')).order_by(order)
 
     context = {
          'issues': issues,
