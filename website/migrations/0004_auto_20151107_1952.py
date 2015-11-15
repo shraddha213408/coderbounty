@@ -16,10 +16,6 @@ class Migration(migrations.Migration):
             name='issue',
             options={'ordering': ['-created']},
         ),
-        migrations.RemoveField(
-            model_name='userprofile',
-            name='coins',
-        ),
         migrations.AlterField(
             model_name='bounty',
             name='user',
