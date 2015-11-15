@@ -252,17 +252,17 @@ def delete_issue(sender, instance, *args, **kwargs):
             instance.issue.delete()
 
 
-def alert_winner(instance, created, **kwargs):
-    email_subj = "Issue %s in review"
-    email_text = """----
-    You've resolved the issue! If all checks out in 3 days you'll receive the bounty.
-    Coder Bounty
-    ---"""
-    if not created and instance.winner:
-        if instance.status == instance.IN_REVIEW_STATUS:
-            instance.winner.email_user(email_subj % instance, email_text)
+# def alert_winner(instance, created, **kwargs):
+#     email_subj = "Issue %s in review"
+#     email_text = """----
+#     You've resolved the issue! If all checks out in 3 days you'll receive the bounty.
+#     Coder Bounty
+#     ---"""
+#     if not created and instance.winner:
+#         if instance.status == instance.IN_REVIEW_STATUS:
+#             instance.winner.email_user(email_subj % instance, email_text)
 
-signals.post_save.connect(alert_winner, sender=Issue)
+# signals.post_save.connect(alert_winner, sender=Issue)
 #todo: fix this so it doesn't throw an error
 #signals.post_save.connect(post_to_twitter, sender=Bounty)
 signals.post_delete.connect(delete_issue, sender=Bounty)
