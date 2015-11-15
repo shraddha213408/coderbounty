@@ -16,7 +16,7 @@ urlpatterns = patterns('',
     url(r'^list/$', 'website.views.list', name='list'),
     url(r"^issue/(?P<slug>\w+)/$", IssueDetailView.as_view(), name="issue"),
     url(r'^profile/$', 'website.views.profile', name='profile'),
-    url(r"^profile/(?P<slug>\w+)/$", UserProfileDetailView.as_view(), name="profile"),
+    url(r"^profile/(?P<slug>[\w-]+)/$", UserProfileDetailView.as_view(), name="profile"),
     url(r'^edit_profile/$', login_required(UserProfileEditView.as_view()), name="edit_profile"),
     #url(r'^parse_url_ajax/$', 'website.views.parse_url_ajax', name='parse_url_ajax'),
 
