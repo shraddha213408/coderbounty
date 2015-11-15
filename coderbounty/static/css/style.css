@@ -1077,7 +1077,9 @@ form .custom-radiobutton input:checked:before {
 	text-align:center;}
 .issues .item .issue-info .text {
 	width:180px;
-	float:right;}
+	float:right;
+	height:200px;
+	overflow:hidden;}
 .issues .side-info .img-holder {
 	border:solid 2px #453527;
 	display:block;
