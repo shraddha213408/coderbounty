@@ -20,6 +20,7 @@ import json
 from django.db.models import Count
 
 import urllib2
+import requests
 
 def find_api_url(url):
     parsed_url = urlparse(url)
@@ -389,3 +390,10 @@ def get_hexdigest(algorithm, salt, raw_password):
     elif algorithm == 'sha1':
         return sha_constructor(salt + raw_password).hexdigest()
     raise ValueError("Got unknown password algorithm type in password.")
+
+def post_to_slack(bounty):
+
+    payload= {"text": str(bounty.user)+" placed a Bounty of $"+ str(bounty.price)+ " More details at http://coderbounty.com"+str(bounty.issue.get_absolute_url())}
+
+    url = 'https://hooks.slack.com/services/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'
+    r = requests.post(url, data=json.dumps(payload))
