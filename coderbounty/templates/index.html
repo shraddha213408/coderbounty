@@ -65,7 +65,7 @@
                                     <td class="status">
                                  {% if activity.verb == "signed up" %}
                                      <span class="icon-custom_yes"></span>
-                                {% elif activity.verb == "placed a bounty" %}
+                                {% elif "placed" in activity.verb  %}
                                     <span class="icon-custom_dolar"></span>
                                 {% elif activity.verb == "closed bounty" %}
                                     <span class="icon-custom_idea"></span>
