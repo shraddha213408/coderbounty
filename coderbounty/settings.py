@@ -48,11 +48,9 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.bitbucket',
     'actstream',
     'website',
-
 )
 
 SITE_ID = 1
-
 
 
 MIDDLEWARE_CLASSES = (
@@ -72,7 +70,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'allauth.account.context_processors.account',
     'allauth.socialaccount.context_processors.socialaccount',
     'django.contrib.messages.context_processors.messages',
-    'django.core.context_processors.static', 
+    'django.core.context_processors.static',
 )
 
 ROOT_URLCONF = 'coderbounty.urls'
@@ -109,13 +107,13 @@ USE_L10N = True
 USE_TZ = True
 
 
-EMAIL_HOST='localhost'
-EMAIL_PORT=1025
-#python -m smtpd -n -c DebuggingServer localhost:1025
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
+# python -m smtpd -n -c DebuggingServer localhost:1025
 
-if os.environ.has_key('DATABASE_URL'):
+if 'DATABASE_URL' in os.environ:
     DEBUG = False
-    DATABASES['default'] =  dj_database_url.config()
+    DATABASES['default'] = dj_database_url.config()
     DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
     ROLLBAR = {
         'access_token': 'f25f82658f7c493f8eeeb271a817345c',
@@ -128,10 +126,16 @@ if os.environ.has_key('DATABASE_URL'):
     import rollbar
     rollbar.init(**ROLLBAR)
     EMAIL_HOST = 'smtp.sendgrid.net'
-    EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME','blank')
-    EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD','blank')
+    EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME', 'blank')
+    EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD', 'blank')
     EMAIL_PORT = 587
     EMAIL_USE_TLS = True
+
+
+# local dev needs to set SMTP backend or fail at startup
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -146,13 +150,12 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
 
 
-#python -m smtpd -n -c DebuggingServer localhost:1025
+# python -m smtpd -n -c DebuggingServer localhost:1025
 
 
-
-WEPAY_IN_PRODUCTION = os.environ.get('WEPAY_IN_PRODUCTION', False) 
-WEPAY_ACCOUNT_ID = os.environ.get('WEPAY_ACCOUNT_ID','941349') 
-WEPAY_ACCESS_TOKEN = os.environ.get('WEPAY_ACCOUNT_ID','STAGE_9c8476245785f470fd87b6bb1fad6ccb5c6cae5522337c378b7b0984d909401d')
+WEPAY_IN_PRODUCTION = os.environ.get('WEPAY_IN_PRODUCTION', False)
+WEPAY_ACCOUNT_ID = os.environ.get('WEPAY_ACCOUNT_ID', '941349')
+WEPAY_ACCESS_TOKEN = os.environ.get('WEPAY_ACCOUNT_ID', 'STAGE_9c8476245785f470fd87b6bb1fad6ccb5c6cae5522337c378b7b0984d909401d')
 
 STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
