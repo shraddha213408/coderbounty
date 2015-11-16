@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-
+{% load i18n %}
 {% load socialaccount %}
 
 
@@ -60,7 +60,7 @@
 											{% if activity.target %}
 											    {% if activity.target.get_absolute_url %}<a href="{{ activity.target.get_absolute_url }}">{{ activity.target }}</a>
 											    {% else %}<a href="{{ activity.target_url }}">{{ activity.target }}</a>{% endif %}
-											{% endif %}</p>
+											{% endif %}{{ activity.timestamp|timesince }} {% trans "ago" %}</p>
                                         <time class="time">{{ activity.timestamp|date:"m/d/Y" }}</time></td>
                                     <td class="status">
                                  {% if activity.verb == "signed up" %}
