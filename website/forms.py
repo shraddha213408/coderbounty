@@ -37,10 +37,10 @@ class UserProfileForm(forms.ModelForm):
         return cleaned_data
 
     def __init__(self, *args, **kwargs):
-        super(UserProfileForm, self).__init__(*args, **kwargs)
-    	user = kwargs['instance'].user
+      super(UserProfileForm, self).__init__(*args, **kwargs)
+      user = kwargs['instance'].user
         
-        if user.pk:
-            self.fields['first_name'].initial = user.first_name
-            self.fields['last_name'].initial = user.last_name
-            self.fields['email'].initial = user.email
+      if user.pk:
+          self.fields['first_name'].initial = user.first_name
+          self.fields['last_name'].initial = user.last_name
+          self.fields['email'].initial = user.email
