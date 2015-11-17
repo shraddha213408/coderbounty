@@ -187,6 +187,8 @@ class Taker(models.Model):
     """
      allow the user to take an issue
     """
+    TAKEN = 'taken'
+    OPEN = 'open'
     STATUS_ISSUE = (
         (TAKEN, 'taken'),
         (OPEN, 'open')
@@ -194,13 +196,16 @@ class Taker(models.Model):
     issue = models.ForeignKey(Issue)
     user = models.ForeignKey(User)
     status = models.CharField(max_length=255, choices=STATUS_ISSUE, default=OPEN)
-    def __unicode__(self):
-        return self.name
+    issueTaken = models.DateTimeField(auto_now_add=True)
+    issueEnd = models.DateTimeField(null=True, blank=True)
+    
 
     def time_countdown(self):
         if self.status == self.TAKEN:
             pass
 
+    def __unicode__(self):
+        return self.name
 
 def create_profile(sender, **kwargs):
     """
