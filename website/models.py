@@ -193,6 +193,7 @@ class Taker(models.Model):
         (TAKEN, 'taken'),
         (OPEN, 'open')
     )
+    is_taken = models.BooleanField(default=True)
     issue = models.ForeignKey(Issue)
     user = models.ForeignKey(User)
     status = models.CharField(max_length=255, choices=STATUS_ISSUE, default=OPEN)
