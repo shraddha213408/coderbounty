@@ -183,6 +183,24 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.user.email
 
+class Taker(models.Model):
+    """
+     allow the user to take an issue
+    """
+    STATUS_ISSUE = (
+        (TAKEN, 'taken'),
+        (OPEN, 'open')
+    )
+    issue = models.ForeignKey(Issue)
+    user = models.ForeignKey(User)
+    status = models.CharField(max_length=255, choices=STATUS_ISSUE, default=OPEN)
+    def __unicode__(self):
+        return self.name
+
+    def time_countdown(self):
+        if self.status == self.TAKEN:
+            pass
+
 
 def create_profile(sender, **kwargs):
     """
