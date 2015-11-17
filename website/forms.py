@@ -25,17 +25,6 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         exclude = ('balance',)
 
-    def clean(self):
-        cleaned_data=super(UserProfileForm, self).clean()
-        user_id = cleaned_data.get("user")
-        user = User.objects.get(id=user_id)
-        user.first_name = cleaned_data.get("first_name")
-        user.last_name = cleaned_data.get("last_name")
-        user.email = cleaned_data.get("email")
-        user.save()
-
-        return cleaned_data
-
     def __init__(self, *args, **kwargs):
       super(UserProfileForm, self).__init__(*args, **kwargs)
       user = kwargs['instance'].user

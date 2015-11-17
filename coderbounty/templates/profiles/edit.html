@@ -21,14 +21,14 @@
                         {% if field.field.required %}<span style="color:red"> *</span>{% endif %}
                       </span></th>
                       <td >{{field}} <br>
+                          {% if field.errors %}
+                            {% for error in field.errors %}
+                              <span style="color:red">{{ error }}</span><br>
+                            {% endfor %}
+                          {% endif %}
                         {% if field.label == "Payment service email" %}
                         <span id="email-help-text">to receive a payout, please register with wepay <br>and enter your wepay email address. (paypal coming soon)</span>
                         {% endif %}
-                          {% if field.errors %}
-                            {% for error in field.errors %}
-                              <span style="color:red">{{ error }}</span>
-                            {% endfor %}
-                          {% endif %}
                       </td>
                   </tr>
                 {% endfor %}
