@@ -432,6 +432,15 @@ class UserProfileEditView(UpdateView):
     def get_success_url(self):
         return reverse("profile", kwargs={'slug': self.request.user})
 
+    def form_valid(self, form):
+        user_id = form.cleaned_data.get("user")
+        user = User.objects.get(id=user_id)
+        user.first_name = form.cleaned_data.get("first_name")
+        user.last_name = form.cleaned_data.get("last_name")
+        user.email = form.cleaned_data.get("email")
+        user.save()
+        
+        return super(UserProfileEditView, self).form_valid(form)
 
 # def load_issue(request):
 #     if request.POST.get('issue[service]'):

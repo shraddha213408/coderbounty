@@ -1504,3 +1504,14 @@ form .custom-radiobutton input:checked:before {
 	color:#3F3328;}
 .actionbar li a:hover strong {
 	text-decoration: none;}
+.profile-edit{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+button.edit-profile{
+	margin-left: 5%;
+}
+span#email-help-text{
+	font-size: 0.8em;
+}
