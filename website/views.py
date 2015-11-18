@@ -463,3 +463,7 @@ class IssueDetailView(DetailView):
             object.views = object.views + 1
             object.save()
             return object
+def issueTaken(request):
+    if request.method == 'POST':
+        status = 'taken'
+        return HttpResponse(status, content_type="application/json")

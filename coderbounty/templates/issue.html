@@ -5,6 +5,27 @@
 {% endblock %}
 {% block content %}
   <!-- Content -->
+<script>
+$(document).ready(function(){
+  $("#takeBounty").click(function(){
+      $.ajax({
+        url: "/issueTaken/",
+        // contentType: "application/json; charset=UTF-8",
+        data: { csrfmiddlewaretoken: "{{ csrf_token }}",   // < here 
+            status : "taken"
+          },
+        type: "POST",
+        error: function(res) {
+          console.log("errr", res)
+        },
+        success: function(res) {
+          console.log("res", res)
+        }
+      });
+  })
+});
+</script>
+
 <div class="wrapper-section">
   <div class="content wrapper-global">
     <div class="grid">
@@ -134,8 +155,8 @@
                 <div class="text"><p>{{ object.content }}.</p></div>
                 <!-- buttons -->
                 <div class="button-wrapper clearfix">
+                    <button id="takeBounty" class="ribbon ribbon-large ribbon-03">Take</button>
                   <form>
-                    <button class="ribbon ribbon-large ribbon-03">Take</button>
                     <button class="ribbon ribbon-normal ribbon-03 ribbon-brown">Share</button>
                   </form>
                 </div>

@@ -203,7 +203,12 @@ class Taker(models.Model):
 
     def time_countdown(self):
         if self.status == self.TAKEN:
-            pass
+            while issueTaken:
+                mns, secs = divmod(issueTaken, 60)
+                timeformat = '{:02d}:{:02d}'.format(mins, secs)
+                # print(timeformat, end='\r')
+                time.sleep(1)
+                t -= 1
 
     def __unicode__(self):
         return self.name
