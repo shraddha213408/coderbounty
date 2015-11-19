@@ -163,21 +163,21 @@ class UserProfile(models.Model):
     payment_service = models.CharField(max_length=255, null=True, blank=True, choices=CHOICE_PAYMANT_SERVICE)
     payment_service_email = models.EmailField(max_length=255, null=True, blank=True, default='')
 
-    @property
-    def gravatar(self, size=28):
-        gravatar_url = "http://www.gravatar.com/avatar.php?"
-        gravatar_url += urllib.urlencode({'gravatar_id': hashlib.md5(self.user.email.lower()).hexdigest(), 'default': 'retro', 'size': str(size)})
-        return gravatar_url
+    def avatar(self, size=28):
+         for account in self.user.socialaccount_set.all():
+            if account.provider == 'github':
+                if 'avatar_url' in account.extra_data:
+                    return account.extra_data['avatar_url']
+                elif account.provider == 'google':
+                    if 'picture' in account.extra_data:
+                        return account.extra_data['picture']
+                    else:
+                        gravatar_url = "http://www.gravatar.com/avatar.php?"
+                        gravatar_url += urllib.urlencode({'gravatar_id': hashlib.md5(self.user.email.lower()).hexdigest(), 'default': 'retro', 'size': str(size)})
+                        return gravatar_url
 
-
-    @property
-    def gravatar_large(self, size=200):
-        gravatar_url = "http://www.gravatar.com/avatar.php?"
-        gravatar_url += urllib.urlencode({'gravatar_id': hashlib.md5(self.user.email.lower()).hexdigest(), 'default': 'retro', 'size': str(size)})
-        return gravatar_url
-
-    def gravatar_winner(self, size=23):
-        return self.gravatar(size=23)
+    def avatar_large(self, size=200):
+        return self.avatar(size=200)
 
     def save(self, *args, **kwargs):
         if self.pk is None:

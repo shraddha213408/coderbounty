@@ -10,7 +10,7 @@
 				<section class="frame frame-dark-paper">
 					<span class="bugfix-top"></span>
 					<div class="frame-content">
-                    	<a class="img-holder" href="#"><img src="{{ object.userprofile.gravatar_large }}" alt="" /></a>
+                    	<a class="img-holder" href="#"><img src="{{ object.userprofile.avatar_large }}" alt="" /></a>
 						<p>Joined {{ object.date_joined|date:"m/d/Y"}}</p>
                         <ul class="social-list">
                         {% for account in object.socialaccount_set.all %}

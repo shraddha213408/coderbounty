@@ -47,7 +47,7 @@
                             <tbody>
                                 <tr>
                                     <td class="thumb">
-                                        <a href="/profile/{{ activity.actor.username }}" class="img-holder"><img src="{{ activity.actor.userprofile.gravatar }}" alt="" /></a></td>
+                                        <a href="/profile/{{ activity.actor.username }}" class="img-holder"><img src="{{ activity.actor.userprofile.avatar }}" alt="" /></a></td>
                                     <td class="text">
                                         <p>{% if activity.actor.get_absolute_url %}<a href="{{ activity.actor.get_absolute_url }}">{{ activity.actor }}</a>
 											{% else %}<a href="{{ activity.actor_url }}">{{ activity.actor }}</a>{% endif %}
@@ -89,7 +89,7 @@
                               {% for leader in leaderboard %}
                                   <tr>
                                       <td class="thumb">
-                                          <a href="/profile/{{ leader.username }}" class="img-holder"><img src="{{ leader.userprofile.gravatar }}" alt="" /></a></td>
+                                          <a href="/profile/{{ leader.username }}" class="img-holder"><img src="{{ leader.userprofile.avatar }}" alt="" /></a></td>
                                       <td class="text">
                                           <a href="/profile/{{ leader.username }}">{{ leader.username}}</a>
                                       </td>

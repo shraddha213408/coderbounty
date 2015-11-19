@@ -65,7 +65,7 @@
                           {% for bounty in issue.bounties %}
                           <tr>
                               <td class="thumb">
-                                  <a class="img-holder" href="/profile/{{bounty.user.username}}"><img alt="" src="{{bounty.user.userprofile.gravatar}}"></a></td>
+                                  <a class="img-holder" href="/profile/{{bounty.user.username}}"><img alt="" src="{{bounty.user.userprofile.avatar}}"></a></td>
                               <td class="text">
                                   <a href="/profile/{{bounty.user.username}}">{{bounty.user.username}}</a>
                                   {{ bounty.created }}
@@ -287,7 +287,7 @@
                       {% for leader in leaderboard %}
                           <tr>
                               <td class="thumb">
-                                  <a href="/profile/{{ leader.username }}" class="img-holder"><img src="{{ leader.userprofile.gravatar }}" alt="" /></a></td>
+                                  <a href="/profile/{{ leader.username }}" class="img-holder"><img src="{{ leader.userprofile.avatar }}" alt="" /></a></td>
                               <td class="text">
                                   <a href="/profile/{{ leader.username }}">{{ leader.username}}</a>
                               </td>
