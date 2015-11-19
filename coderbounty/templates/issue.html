@@ -23,6 +23,12 @@ $(document).ready(function(){
           $("#starttime").html(res.issueTakenTime)
           $("#takeBounty").html(res.status)
           $('#takeBounty').unbind('click');
+          var issueTakenTime = res.issueTakenTime
+          var d = new Date(issueTakenTime)
+          var hrs = d.getHours()+24;
+          var endtime = new Date(d.setHours(hrs));
+          $("#endtime").html(endtime)
+
         }
       });
   })
@@ -165,7 +171,8 @@ $(document).ready(function(){
                 </div>
             </div>
             <div class="codeIssueTaker">
-              <strong><p id="starttime"></p></strong>
+              <strong>Start Time<p id="starttime"></p></strong>
+              <strong>End Time<p id="endtime"></p></strong>
             </div>
             {% comment "Hide comments until they are integrated" %}
             <!-- comments -->

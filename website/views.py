@@ -470,4 +470,5 @@ def issueTaken(request):
         response_data = {}
         response_data['status'] = 'taken'
         response_data['issueTakenTime'] = _date
+        print _date
         return HttpResponse(json.dumps(response_data), content_type="application/json")
