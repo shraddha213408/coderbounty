@@ -33,7 +33,8 @@ import string
 import random
 from actstream.models import user_stream
 from actstream.models import Action
-
+import time
+from time import gmtime, strftime
 
 from django.core.urlresolvers import reverse
 
@@ -465,5 +466,8 @@ class IssueDetailView(DetailView):
             return object
 def issueTaken(request):
     if request.method == 'POST':
-        status = 'taken'
-        return HttpResponse(status, content_type="application/json")
+        _date = strftime("%c")
+        response_data = {}
+        response_data['status'] = 'taken'
+        response_data['issueTakenTime'] = _date
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
