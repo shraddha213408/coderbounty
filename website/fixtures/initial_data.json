@@ -1,0 +1,41 @@
+[
+    {
+        "pk":1,
+        "model":"website.service",
+        "fields":{
+            "regex":"/(?P<user>\\w*?)/(?P<project>\\w*?)/issues/(?P<number>\\w*)",
+            "domain":"github.com",
+            "name":"Github",
+            "link_template":"/$user/$project/issues/$number",
+            "template":"/repos/$user/$project/issues/$number",
+            "type":"json",
+            "api_url":"https://api.github.com"
+        }
+    },
+    {
+        "pk":2,
+        "model":"website.service",
+        "fields":{
+            "regex":"/(?P<user>[a-z0-9_\\s-]*?)/(?P<project>[a-z0-9_\\s-]*?)/issue/(?P<number>[a-z0-9\\s-]*)",
+            "domain":"bitbucket.org",
+            "name":"Bitbucket",
+            "link_template":"/$user/$project/issue/$number/",
+            "template":"/repositories/$user/$project/issues/$number/",
+            "type":"json",
+            "api_url":"https://api.bitbucket.org/1.0"
+        }
+    },
+    {
+        "pk":3,
+        "model":"website.service",
+        "fields":{
+            "regex":"/p/(?P<project>[a-z0-9\\s-]*?)/issues/detail\\?id=(?P<number>\\w*)",
+            "domain":"code.google.com",
+            "name":"Google Code",
+            "link_template":"/p/$project/issues/detail?id=$number",
+            "template":"/feeds/issues/p/$project/issues/full?id=$number",
+            "type":"xml",
+            "api_url":"https://code.google.com"
+        }
+    }
+]

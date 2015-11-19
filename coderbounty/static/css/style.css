@@ -29,8 +29,7 @@ html {
 	background:url('../images/layout/pattern-00.gif') repeat 0 0;}
 body {	
 	font:normal 15px/120% 'CalistoMtRegular',serif;
-	color:#675B4D;
-	background:url('../images/layout/pattern-header.gif') repeat-x center top;}
+	color:#675B4D;}
 a {
 	color:#A34B33;
 	text-decoration:none;}
@@ -70,10 +69,14 @@ em {
 ===================== 
 */
 .wrapper-global {
-	width:1180px;
+	width:1190px;
 	margin:0 auto;}
+.wrapper-section {
+	min-width:1190px;
+}
 .header {
-	border-bottom:solid 3px #B6B2A5;}
+	border-bottom:solid 3px #B6B2A5;
+	background:url('../images/layout/pattern-header.gif') repeat-x center top;}
 .header .wrapper-global {
 	position: relative;
     height:175px;}
@@ -568,7 +571,7 @@ em {
 */
 .ribbon {	
 	background-color:#BA5A43;
-	color:#fff;
+	color:#F3EFE4;
 	text-decoration:none;
 	text-transform:uppercase;
 	display:inline-block;
@@ -1077,7 +1080,9 @@ form .custom-radiobutton input:checked:before {
 	text-align:center;}
 .issues .item .issue-info .text {
 	width:180px;
-	float:right;}
+	float:right;
+	height:200px;
+	overflow:hidden;}
 .issues .side-info .img-holder {
 	border:solid 2px #453527;
 	display:block;
@@ -1499,3 +1504,14 @@ form .custom-radiobutton input:checked:before {
 	color:#3F3328;}
 .actionbar li a:hover strong {
 	text-decoration: none;}
+.profile-edit{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+button.edit-profile{
+	margin-left: 5%;
+}
+span#email-help-text{
+	font-size: 0.8em;
+}

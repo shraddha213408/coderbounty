@@ -1,13 +1,15 @@
 {% load staticfiles %}
+{% load total %}
 <!DOCTYPE html>
 <html class="no-js">
 <head>
     <meta charset="utf-8" />
-    <title>Home - Coder Bounty</title>
+    <meta name="viewport" content="width=1190"/>
+    <title>{% block title %}{% endblock %} Coderbounty - Post bounties on code issues</title>
     <!-- Meta Tags -->
     <meta name="description" content="">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="{{STATIC_URL}}images/favicon.ico">
     <!-- CSS -->
     <link rel="stylesheet" href="{% static "css/style.css" %}" />
     <link rel="stylesheet" href="{% static "css/font.css" %}" />
@@ -24,15 +26,10 @@
             html5elements()
         </script>
     <![endif]-->
-    <script>
-        $(document).ready(function() {
-            
-        });
-    </script>
 </head>
 <body>
     <!-- Header -->
-    <header class="header">
+    <header class="header wrapper-section">
         <div class="wrapper-global">
             <!-- logo -->
             <a class="logo" href="/">
@@ -43,9 +40,7 @@
                 <ul>
                     <li><a href="{% url 'about' %}">About</a></li>
                     <li><a href="{% url 'help' %}">Help</a></li>
-                    <li><a href="{% url 'post' %}">Post</a></li>
-                    <li><a href="{% url 'list' %}">List</a></li>
-                    <li><a href="{% url 'issue' %}">Issue</a></li>
+                    <li><a href="http://coderbounty.uservoice.com" target="_new">Feedback</a></li>
                 </ul>
             </nav>
             <!-- header-social -->
@@ -53,7 +48,7 @@
                 <ul>
                     <li><a class="twitter" href="https://twitter.com/coderbounty"></a></li>
                     <li><a class="facebook" href="https://www.facebook.com/coderbounty"></a></li>
-                    <li><a class="rss" href="#"></a></li>
+                    <li><a class="rss" href="https://github.com/seanauriti/coderbounty/issues"></a></li>
                 </ul>
             </div>
             {% if messages %}
@@ -72,7 +67,7 @@
 
             <!-- road sign -->
             <div class="element-roadSign">
-                <p><span>$3,000</span> in bounties won!</p>
+                <p><span>${% bounty_total %}</span> in bounties won!</p>
             </div>
         </div>
     </header>
@@ -80,20 +75,21 @@
     {% block content %}{% endblock %}
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer wrapper-section">
         <div class="footer-symbol"></div>
         <div class="copyrights">
             <div class="wrapper-global">
-                <p>© {% now "Y" %} CoderBounty, Inc. All Rights Reserved.</p>
+                <p>© {% now "Y" %} CoderBounty, Inc. All Rights Reserved. <a href="/terms">Terms & Conditions</a></p>
                 <ul class="footer-social">
                     <li><a class="twitter" href="https://twitter.com/coderbounty"></a></li>
                     <li><a class="facebook" href="https://www.facebook.com/coderbounty"></a></li>
-                    <li><a class="rss" href="#"></a></li>
+                    <li><a class="rss" href="https://github.com/seanauriti/coderbounty/issues"></a></li>
                 </ul>
             </div>
         </div>
     </footer>
 
+    
     <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -103,6 +99,6 @@
   ga('create', 'UA-66636003-1', 'auto');
   ga('send', 'pageview');
 
-</script>
+    </script>
 </body>
 </html>

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Section - EditProfile -->
+<div class="section-profile wrapper-section">
+  <div class="grid wrapper-global">
+    <div class="profile-edit">
+      <section class="frame frame-light">
+        <div class="frame-content">
+          <h2 class="titlebar"><span class="ribbon ribbon-normal ribbon-04 ribbon-brown">{{ user.username }}'s Profile</span></h2>
+          <form method="post" action="">
+            <table class="table-list">
+            {% csrf_token %}
+              <tbody>
+              {% for hidden in form.hidden_fields %}
+              {{ hidden }}
+              {% endfor %}
+                {% for field in form.visible_fields %}
+                  <tr> 
+                      <th><span>{{field.label}}: 
+                        {% if field.field.required %}<span style="color:red"> *</span>{% endif %}
+                      </span></th>
+                      <td >{{field}} <br>
+                          {% if field.errors %}
+                            {% for error in field.errors %}
+                              <span style="color:red">{{ error }}</span><br>
+                            {% endfor %}
+                          {% endif %}
+                        {% if field.label == "Payment service email" %}
+                        <span id="email-help-text">to receive a payout, please register with wepay <br>and enter your wepay email address. (paypal coming soon)</span>
+                        {% endif %}
+                      </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <button class="ribbon ribbon-03 ribbon-type-01 ribbon-normal edit-profile" type="submit"><span>Save</span></button>
+          </form>   
+          {{ model }}
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+{% endblock %}

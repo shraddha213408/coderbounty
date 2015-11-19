@@ -263,6 +263,12 @@
 .icon-lock2:before {
 	content: "\e663";
 }
+.icon-closed:before {
+	content: "\e663";
+}
+.icon-open:before {
+	content: "\e664";
+}
 .icon-unlocked:before {
 	content: "\e664";
 }
@@ -473,6 +479,9 @@
 .icon-meter:before {
 	content: "\e6a9";
 }
+.icon-in-progress:before {
+	content: "\e6a9";
+}
 .icon-meter2:before {
 	content: "\e6aa";
 }
@@ -588,6 +597,9 @@
 	content: "\e6bb";
 }
 .icon-eye:before {
+	content: "\e6bd";
+}
+.icon-in-review:before {
 	content: "\e6bd";
 }
 .icon-eye-blocked:before {

@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-
+{% block title %}
+{{ object.project }} | Issue #{{object.number}} | {{object.title}} | 
+{% endblock %}
 {% block content %}
   <!-- Content -->
+<div class="wrapper-section">
   <div class="content wrapper-global">
     <div class="grid">
       <!-- main -->
@@ -11,19 +14,18 @@
         <div class="codeIssue-head">
           <div class="breadcrumbs">
               <ul>
-                  <li><a href="#">Home</a></li>
-                  <li><a href="#">Code Issues</a></li>
-                  <li><a href="#">Open</a></li>
+                  <li><a href="/">Home</a></li>
+                  <li><a href="#">{{object.project}}</a></li>
+                  <li><a href="#">{{object.status}}</a></li>
               </ul>
           </div>
-          <h1>Automatically populate the commit message on the marketing site home</h1>
+          <h1>{{ object.title }}</h1>
           <!-- -->
           <div class="status">
               <ul>
-                  <li class="id"><strong>#4249</strong> zurb/foundation</li>
-                  <li>Status: <span class="icon-unlocked"><span>open</span></span></li>
-                  <li>Status: <span class="icon-lock2"><span>close</span><span></li>
-                  <li>Views: <strong>3992</strong></li>
+                  <li class="id"><strong>#{{ object.number }}</strong> {{object.project}}</li>
+                  <li>Status: <span class="icon-{{object.status|slugify}}"><span> {{object.status}}</span><span></li>
+                  <li>Views: <span class="icon-stats"> <strong>{{object.views}}</strong></span></li>
               </ul>
           </div>
         </div>
@@ -37,7 +39,7 @@
                     <img src="{% static "images/temp/thumb-medium-00.jpg" %}" alt="" />
                 </div>
                 <div class="text">
-                  <p class="total">Total Bounty: <span>$45</span></p>
+                  <p class="total">Total Bounty: <span>${{ object.bounty }}</span></p>
                   <form>
                       <button class="ribbon ribbon-normal ribbon-03 ribbon-brown-dark">add Cash</button>
                   </form>
@@ -46,12 +48,12 @@
                   <table>
                     <tr>
                       <td><p>Primary Language:</p></td>
-                      <td><img src="{% static "images/logos/logo-python.png" %}" alt="Primary language: Python" /></td>
+                      <td><img src="{{STATIC_URL}}images/logos/logo-{{ object.language|slugify }}.png" alt="{{ object.language }}" /></td>
                     </tr>
                   </table>
                 </div>
                 <div class="view-ghithub">
-                  <a href="#">View this issue on Github</a>
+                  <a href="{{object.html_url}}">View this issue on {{object.service.name}}</a>
                 </div>
             </div>
             <!-- frame bounties -->
@@ -60,46 +62,18 @@
                   <h2 class="titlebar"><span class="ribbon ribbon-normal ribbon-04 ribbon-brown">Bounties</span></h2>
                   <table class="table-list table-list-leader-board">
                       <tbody>
+                          {% for bounty in issue.bounties %}
                           <tr>
                               <td class="thumb">
-                                  <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-02.jpg" %}"></a></td>
+                                  <a class="img-holder" href="/profile/{{bounty.user.username}}"><img alt="" src="{{bounty.user.userprofile.avatar}}"></a></td>
                               <td class="text">
-                                  <a href="#">Adam Smith</a>
+                                  <a href="/profile/{{bounty.user.username}}">{{bounty.user.username}}</a>
+                                  {{ bounty.created }}
                               </td>
-                              <td class="price">$1045</td>
+                              <td class="price">${{bounty.price}}</td>
                           </tr>
-                          <tr>
-                              <td class="thumb">
-                                  <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-05.jpg" %}"></a></td>
-                              <td class="text">
-                                  <a href="#">Rodger Stone</a>
-                              </td>
-                              <td class="price">$872</td>
-                          </tr>
-                          <tr>
-                              <td class="thumb">
-                                  <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-04.jpg" %}"></a></td>
-                              <td class="text">
-                                  <a href="#">Tim Novak</a>
-                              </td>
-                              <td class="price">$619</td>
-                          </tr>
-                          <tr>
-                              <td class="thumb">
-                                  <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-03.jpg" %}"></a></td>
-                              <td class="text">
-                                  <a href="#">Kristin Simmons</a>
-                              </td>
-                              <td class="price">$295</td>
-                          </tr>
-                          <tr>
-                              <td class="thumb">
-                                  <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-01.jpg" %}"></a></td>
-                              <td class="text">
-                                  <a href="#">Fill Jones</a>
-                              </td>
-                              <td class="price">$131</td>
-                          </tr>
+                          {% endfor %}
+                         
                       </tbody>
                   </table>
                 </div>
@@ -107,9 +81,9 @@
             <!-- frame watchers -->
             <div class="frame frame-light frame-noLines">
                 <div class="frame-content">
-                  <h2 class="titlebar"><span class="ribbon ribbon-normal ribbon-04 ribbon-brown">Watchers</span></h2>
+                  <h2 class="titlebar"><span class="ribbon ribbon-normal ribbon-04 ribbon-brown">Takers</span></h2>
                   <table class="table-list table-list-leader-board">
-                      <tbody>
+                      <tbody><!--
                           <tr>
                               <td class="thumb">
                                   <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-05.jpg" %}"></a></td>
@@ -144,11 +118,11 @@
                               <td class="text">
                                   <a href="#">Fill Jones</a>
                               </td>
-                          </tr>
+                          </tr>-->
                       </tbody>
                   </table>
                   <form class="center">
-                    <button class="ribbon ribbon-normal ribbon-03 ribbon-green">watch this issue</button>
+                    <button class="ribbon ribbon-normal ribbon-03 ribbon-green">take this bounty</button>
                   </form>
                 </div>
             </div>
@@ -157,7 +131,7 @@
           <div class="codeIssue-main col-10">
             <div class="codeIssue-description">
                 <!-- text -->
-                <div class="text"><p>When in portrait mode, the tabs have not much space, especially when 3 or more, so they collapse into the second line, however the line height is much smaller then the size of the nice tab flap, creating a weird overlapping effect of the flaps. Possible solutions: correct multiline tab flaps, or switching to tab list when not enough width to accommodate them.</p></div>
+                <div class="text"><p>{{ object.content }}.</p></div>
                 <!-- buttons -->
                 <div class="button-wrapper clearfix">
                   <form>
@@ -166,6 +140,7 @@
                   </form>
                 </div>
             </div>
+            {% comment "Hide comments until they are integrated" %}
             <!-- comments -->
             <div class="comments">
               <!-- comments count -->
@@ -297,6 +272,7 @@
                 </div>
               </div>
             </div>
+            {% endcomment %}
           </div>
         </div>
       </div>
@@ -305,54 +281,24 @@
         <!-- frame - top 20 -->
         <div class="frame frame-dark">
             <div class="frame-content">
-                <h2 class="titlebar"><span class="ribbon ribbon-normal ribbon-04 ribbon-brown-dark">January top 20</span></h2>
+                <h2 class="titlebar"><span class="ribbon ribbon-normal ribbon-04 ribbon-brown-dark">{% now "F" %} top 5</span></h2>
                 <table class="table-list table-list-leader-board">
                     <tbody>
-                        <tr>
-                            <td class="thumb">
-                                <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-01.jpg" %}"></a></td>
-                            <td class="text">
-                                <a href="#">Adam Smith</a>
-                            </td>
-                            <td class="price">$1045</td>
-                        </tr>
-                        <tr>
-                            <td class="thumb">
-                                <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-02.jpg" %}"></a></td>
-                            <td class="text">
-                                <a href="#">Rodger Stone</a>
-                            </td>
-                            <td class="price">$872</td>
-                        </tr>
-                        <tr>
-                            <td class="thumb">
-                                <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-03.jpg" %}"></a></td>
-                            <td class="text">
-                                <a href="#">Tim Novak</a>
-                            </td>
-                            <td class="price">$619</td>
-                        </tr>
-                        <tr>
-                            <td class="thumb">
-                                <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-04.jpg" %}"></a></td>
-                            <td class="text">
-                                <a href="#">Kristin Simmons</a>
-                            </td>
-                            <td class="price">$295</td>
-                        </tr>
-                        <tr>
-                            <td class="thumb">
-                                <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-05.jpg" %}"></a></td>
-                            <td class="text">
-                                <a href="#">Fill Jones</a>
-                            </td>
-                            <td class="price">$131</td>
-                        </tr>
+                      {% for leader in leaderboard %}
+                          <tr>
+                              <td class="thumb">
+                                  <a href="/profile/{{ leader.username }}" class="img-holder"><img src="{{ leader.userprofile.avatar }}" alt="" /></a></td>
+                              <td class="text">
+                                  <a href="/profile/{{ leader.username }}">{{ leader.username}}</a>
+                              </td>
+                              <td class="price">${{ leader.userprofile.balance}}</td>
+                          </tr>
+                      {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
-        <!-- frame - accepted by -->
+        <!-- frame - accepted by 
         <div class="frame frame-light frame-noLines">
             <div class="frame-content">
                 <h2 class="titlebar"><span class="ribbon ribbon-normal ribbon-04 ribbon-brown">Accepted by</span></h2>
@@ -397,6 +343,7 @@
                 </table>
             </div>
         </div>
+        -->
         <!-- frame - word cloud -->
         <div class="frame frame-light">
             <div class="frame-content">
@@ -407,4 +354,5 @@
       </div>
     </div>
   </div>
+</div>
 {% endblock %}
