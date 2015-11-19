@@ -4,6 +4,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.contrib.messages.views import SuccessMessageMixin
 from models import Issue, UserProfile, Bounty, Service
 from .forms import IssueCreateForm, BountyCreateForm, UserProfileForm
 from utils import get_issue, add_issue_to_database, get_twitter_count, get_facebook_count, create_comment, issue_counts, leaderboard, get_hexdigest, post_to_slack
@@ -421,16 +422,18 @@ class UserProfileDetailView(DetailView):
         return context
 
 
-class UserProfileEditView(UpdateView):
+class UserProfileEditView(SuccessMessageMixin, UpdateView):
     model = UserProfile
     form_class = UserProfileForm
     template_name = "profiles/edit.html"
+    success_message = 'Profile saved'
 
     def get_object(self, queryset=None):
         return UserProfile.objects.get_or_create(user=self.request.user)[0]
 
     def get_success_url(self):
-        return reverse("profile", kwargs={'slug': self.request.user})
+        # return reverse("profile", kwargs={'slug': self.request.user})
+        return reverse("edit_profile")
 
     def form_valid(self, form):
         user_id = form.cleaned_data.get("user")
@@ -441,6 +444,11 @@ class UserProfileEditView(UpdateView):
         user.save()
         
         return super(UserProfileEditView, self).form_valid(form)
+
+    def get_success_message(self, cleaned_data):
+        return self.success_message 
+
+
 
 # def load_issue(request):
 #     if request.POST.get('issue[service]'):
