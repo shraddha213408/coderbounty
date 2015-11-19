@@ -168,13 +168,13 @@ class UserProfile(models.Model):
             if account.provider == 'github':
                 if 'avatar_url' in account.extra_data:
                     return account.extra_data['avatar_url']
-                elif account.provider == 'google':
-                    if 'picture' in account.extra_data:
-                        return account.extra_data['picture']
-                    else:
-                        gravatar_url = "http://www.gravatar.com/avatar.php?"
-                        gravatar_url += urllib.urlencode({'gravatar_id': hashlib.md5(self.user.email.lower()).hexdigest(), 'default': 'retro', 'size': str(size)})
-                        return gravatar_url
+            elif account.provider == 'google':
+                if 'picture' in account.extra_data:
+                    return account.extra_data['picture']
+            else:
+                gravatar_url = "http://www.gravatar.com/avatar.php?"
+                gravatar_url += urllib.urlencode({'gravatar_id': hashlib.md5(self.user.email.lower()).hexdigest(), 'default': 'retro', 'size': str(size)})
+                return gravatar_url
 
     def avatar_large(self, size=200):
         return self.avatar(size=200)
