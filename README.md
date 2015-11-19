@@ -1,6 +1,6 @@
 Join us on Slack:
 
-https://coderbounty-slackin.herokuapp.com/
+[![Slack Status](https://coderbounty-slackin.herokuapp.com/badge.svg)](https://coderbounty-slackin.herokuapp.com)
 
 To contribute, take an issue, and submit a pull request with the issue number in it win bounty!
 
