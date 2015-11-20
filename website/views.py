@@ -77,7 +77,7 @@ def create_issue_and_bounty(request):
         issue_data = get_issue(request, url)
         if issue_data:
             service = Service.objects.get(name=issue_data['service'])
-            instance = Issue(created = user,number = issue_data['number'],
+            instance = Issue(number = issue_data['number'],
             project=issue_data['project'],user = issue_data['user'],service=service)
         else:
             return render(request, 'post.html', {
@@ -88,18 +88,18 @@ def create_issue_and_bounty(request):
         bounty_form = BountyCreateForm(request.POST)
         bounty_form_is_valid = bounty_form.is_valid()
         if form.is_valid() and bounty_form_is_valid:
-            if not instance.pk: 
+            try:
                 issue = form.save()
-            else:
-                issue = instance
-                #issue already exists, post additional bounty
-                #this doesn't seem to be working yet
+            except:
+                issue = Issue.objects.get(number = issue_data['number'], 
+                    project=issue_data['project'],user = issue_data['user'],service=service)
+                #issue exists
             price = bounty_form.cleaned_data['price']
-            bounty_instance = Bounty(user = user,issue = issue,price = price)
-            #save this data and post it with the return_uri from wepay
-            data = serializers.serialize('xml', [ bounty_instance, ])
-            bounty_instance.save()
 
+            bounty_instance = Bounty(user = user,issue = issue,price = price)
+            
+            data = serializers.serialize('xml', [ bounty_instance, ])
+            
             wepay = WePay(settings.WEPAY_IN_PRODUCTION, settings.WEPAY_ACCESS_TOKEN)
             wepay_data = wepay.call('/checkout/create', {
                 'account_id': settings.WEPAY_ACCOUNT_ID,
@@ -107,18 +107,17 @@ def create_issue_and_bounty(request):
                 'short_description': 'CoderBounty',
                 'long_description': data,
                 'type': 'service',
+                'redirect_uri': request.build_absolute_uri(issue.get_absolute_url()),
                 'currency': 'USD'
             })
-            print wepay_data
+            if "error_code" in wepay_data:
+                messages.error(request, wepay_data['error_description'])
+                return render(request, 'post.html', {
+                    'languages': languages
+                })
 
-            #return redirect(wepay_data['checkout_uri'])
+            return redirect(wepay_data['checkout_uri'])
 
-            post_to_slack(bounty_instance)
-
-            return render(request, 'post.html', {
-                'languages': languages,
-                'message':'Successfully saved issue'
-            })
         else:
             return render(request, 'post.html', {
                 'languages': languages,
@@ -471,6 +470,23 @@ class IssueDetailView(DetailView):
     model = Issue
     slug_field = "id"
     template_name = "issue.html"
+
+    def get(self, request, *args, **kwargs):
+        if self.request.GET.get('checkout_id'):
+            wepay = WePay(settings.WEPAY_IN_PRODUCTION, settings.WEPAY_ACCESS_TOKEN)
+            wepay_data = wepay.call('/checkout/', {
+                'checkout_id': self.request.GET.get('checkout_id'),
+            })
+            
+            for obj in serializers.deserialize("xml", wepay_data['long_description'], ignorenonexistent=True):
+                obj.object.created = datetime.datetime.now()
+                obj.object.checkout_id = self.request.GET.get('checkout_id')
+                obj.save()
+            	post_to_slack(obj.object)
+
+        
+        return super(IssueDetailView, self).get(request, *args, **kwargs)
+
 
     def get_context_data(self, **kwargs):
         context = super(IssueDetailView, self).get_context_data(**kwargs)

@@ -21,7 +21,7 @@
               <div style="height:325px; width:370px; float:left;">
               </div>
             </a>
-
+            {% if not request.user.is_authenticated %}
             <div class="btn-login-wrapper">
                 <a href="/accounts/login/"><div class="btn-login">login</div></a>
                 <div class="btn-login-social">
@@ -30,6 +30,7 @@
                     <a class="icon-bitbucket2" href='{% provider_login_url "bitbucket" method="js_sdk" %}'></a>
                 </div>
             </div>
+            {% endif %}
 
         </div>
     </section>

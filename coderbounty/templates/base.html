@@ -38,6 +38,10 @@
             <!-- navigation -->
             <nav class="navHeader">
                 <ul>
+                    {% if request.user.is_authenticated %}
+                        <li><a href="/profile">Welcome {{user}}</a></li>
+                        <li><a href="/accounts/logout">Logout</a></li>
+                    {% endif %}
                     <li><a href="{% url 'about' %}">About</a></li>
                     <li><a href="{% url 'help' %}">Help</a></li>
                     <li><a href="http://coderbounty.uservoice.com" target="_new">Feedback</a></li>
