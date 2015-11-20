@@ -134,6 +134,7 @@ class Bounty(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=0)
     ends = models.DateTimeField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
+    checkout_id = models.IntegerField(null=True)
 
     def time_remaining(self):
         if self.issue.status == Issue.OPEN_STATUS:
