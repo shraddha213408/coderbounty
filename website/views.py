@@ -94,11 +94,8 @@ def create_issue_and_bounty(request):
                 issue = Issue.objects.get(number = issue_data['number'], 
                     project=issue_data['project'],user = issue_data['user'],service=service)
                 #issue exists
-
-
-
             price = bounty_form.cleaned_data['price']
-            
+
             bounty_instance = Bounty(user = user,issue = issue,price = price)
             
             data = serializers.serialize('xml', [ bounty_instance, ])
@@ -113,6 +110,11 @@ def create_issue_and_bounty(request):
                 'redirect_uri': request.build_absolute_uri(issue.get_absolute_url()),
                 'currency': 'USD'
             })
+            if "error_code" in wepay_data:
+                messages.error(request, wepay_data['error_description'])
+                return render(request, 'post.html', {
+                    'languages': languages
+                })
 
             return redirect(wepay_data['checkout_uri'])
 
@@ -484,8 +486,6 @@ class IssueDetailView(DetailView):
 
         
         return super(IssueDetailView, self).get(request, *args, **kwargs)
-
-
 
 
     def get_context_data(self, **kwargs):
