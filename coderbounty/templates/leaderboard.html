@@ -28,7 +28,7 @@
                                         <p><a href="/profile/{{user.username}}">{{user.username}}</a> </p>
                                         <time class="time">Last Login: {{ user.last_login|date:"m/d/Y" }}</time></td>
                                     <td class="status">
-                                       ${{user.userprofile.balance|floatformat}}
+                                       ${{user.userprofile.balance|floatformat|default:"0"}}
                                     </td>
                                 </tr>
                                 

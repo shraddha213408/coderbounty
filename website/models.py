@@ -167,9 +167,9 @@ class UserProfile(models.Model):
     def avatar(self, size=28):
         for account in self.user.socialaccount_set.all():
             if 'avatar_url' in account.extra_data:
-                    return account.extra_data['avatar_url']
+                return account.extra_data['avatar_url']
             elif 'picture' in account.extra_data:
-                    return account.extra_data['picture']
+                return account.extra_data['picture']
 
         gravatar_url = "http://www.gravatar.com/avatar.php?"
         gravatar_url += urllib.urlencode({'gravatar_id': hashlib.md5(self.user.email.lower()).hexdigest(), 'default': 'retro', 'size': str(size)})
