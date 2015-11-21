@@ -466,6 +466,7 @@ class IssueDetailView(DetailView):
             return object
 def issueTaken(request):
     if request.method == 'POST':
+        # model = Taker
         _date = strftime("%c")
         response_data = {}
         response_data['status'] = 'taken'
