@@ -278,122 +278,8 @@ def list(request):
 #     return [normspace(' ', (t[0] or t[1]).strip()) for t in findterms(query_string)]
 
 
-# def get_query(query_string, search_fields):
-#     query = None
-#     terms = normalize_query(query_string)
-#     for term in terms:
-#         or_query = None
-#         for field_name in search_fields:
-#             q = Q(**{"%s__icontains" % field_name: term})
-#             if or_query is None:
-#                 or_query = q
-#             else:
-#                 or_query = or_query | q
-#         if query is None:
-#             query = or_query
-#         else:
-#             query = query & or_query
-#     return query
 
 
-
-
-# def join(request):
-#     if request.method == 'POST':
-#         if not request.POST.get('agree'):
-#             return HttpResponse()
-#         if request.is_ajax():
-#             #form = UserCreationForm(request.POST)
-
-#             if form.is_valid():
-#                 form.save()
-#                 user = authenticate(username=request.POST.get('username'), password=request.POST.get('password1'))
-#                 if user is not None:
-#                     if user.is_active:
-#                         user_profile = UserProfile(user=user)
-#                         user_profile.save()
-#                         login(request, user)
-#                         subject = "Welcome to Coder Bounty!"
-#                         body = "Thank you for joining Coder Bounty! Enjoy the site. http://coderbounty.com"
-#                         send_mail(subject, body, "Coder Bounty<" + settings.SERVER_EMAIL + ">", [request.POST.get('email')])
-#                         return render_to_response("login_bar.html", {}, context_instance=RequestContext(request))
-#                     else:
-#                         return HttpResponse()
-
-#     return HttpResponse()
-
-
-# def verify(request, service_slug):
-#     username = request.GET.get('username', False)
-#     verification_code = request.GET.get('verification_code', False)
-#     if username:
-#         service_name = ''.join(map(lambda s: s.capitalize() + " ", service_slug.split('-')))
-#         service = Service.objects.get(name=service_name)
-
-#         if verification_code:
-#             if request.session['random_string'] == verification_code:
-#                 user_service = UserService(user=request.user, service=service, username=username)
-#                 user_service.save()
-#                 return HttpResponse("Thanks for verifying your account. Happy coding!")
-#             else:
-#                 return HttpResponse("Please enter a valid verification code.")
-
-#         random_string = id_generator()
-#         request.session['random_string'] = random_string
-
-#         if service.name == "Bitbucket":
-#             cj = cookielib.CookieJar()
-#             opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-#             urllib2.install_opener(opener)
-
-#             url = urllib2.urlopen('https://bitbucket.org/account/signin/')
-#             html = url.read()
-#             doc = BeautifulSoup(html)
-#             csrf_input = doc.find(attrs=dict(name='csrfmiddlewaretoken'))
-#             csrf_token = csrf_input['value']
-
-#             params = urllib.urlencode(dict(username=settings.BITBUCKET_USERNAME,
-#                 password=settings.BITBUCKET_PASSWORD, csrfmiddlewaretoken=csrf_token, next='/', submit="Log in"))
-#             req = urllib2.Request('https://bitbucket.org/account/signin/', params)
-#             req.add_header('Referer', "https://bitbucket.org/account/signin/")
-#             url = urllib2.urlopen(req)
-
-#             url = urllib2.urlopen('https://bitbucket.org/account/notifications/send/?receiver=' + username)
-#             html = url.read()
-#             csrf_input = doc.find(attrs=dict(name='csrfmiddlewaretoken'))
-#             csrf_token = csrf_input['value']
-
-#             params = urllib.urlencode(dict(recipient=username, title="Coder Bounty " + service.name + " account verification code",
-#                 message="Your validation code is " + random_string, csrfmiddlewaretoken=csrf_token))
-#             req = urllib2.Request('https://bitbucket.org/account/notifications/send/', params)
-#             req.add_header('Referer', 'https://bitbucket.org/account/notifications/send/?receiver=' + username)
-#             url = urllib2.urlopen(req)
-
-#             return HttpResponse("I sent a code to your " + service.name + " account.  Please enter it above and click verify again.")
-
-#         else:
-#             if service.name == "Github":
-#                 url = urllib2.urlopen('https://github.com/' + username)
-#                 html = url.read()
-#                 doc = BeautifulSoup(html)
-#                 msg_button = doc.find('a', "email")
-#                 if msg_button:
-#                     encoded_email = msg_button['data-email']
-#                     decoded_email = urllib.unquote(encoded_email)
-#                 else:
-#                     return HttpResponse("Please add your email address to your public github profile for verification, you can remove it afterwards.")
-
-#             elif service.name == "Google Code":
-#                 decoded_email = username
-
-#             send_mail("Coder Bounty " + service.name + " account verification code", "Your validation code is " + random_string,
-#                 "Coder Bounty<" + settings.SERVER_EMAIL + ">", [decoded_email])
-#             return HttpResponse("I sent a code to your " + service.name + " email address.  Please enter it above and click verify again.")
-#     return HttpResponse("Please enter a username")
-
-
-# def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
-#     return ''.join(random.choice(chars) for x in range(size))
 
 
 def profile(request):
@@ -448,14 +334,16 @@ class UserProfileEditView(SuccessMessageMixin, UpdateView):
         return self.success_message 
 
 
-
-# def load_issue(request):
-#     if request.POST.get('issue[service]'):
-#         service = Service.objects.get(name=request.POST.get('issue[service]'))
-#         issue = Issue.objects.get(service=service, number=request.POST.get('issue[number]'), project=request.POST.get('issue[project]'))
-#         return render_to_response("single_issue.html", {'issue': issue}, context_instance=RequestContext(request))
-#     return HttpResponse()
-
+class LeaderboardView(ListView):
+    template_name="leaderboard.html"
+    
+    def get_queryset(self):
+        return User.objects.all().order_by('-userprofile__balance')
+    
+    def get_context_data(self, **kwargs):
+        context = super(LeaderboardView, self).get_context_data(**kwargs)
+        context['leaderboard'] = leaderboard()        
+        return context
 
 def help(request):
     return render_to_response("help.html", context_instance=RequestContext(request))
