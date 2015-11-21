@@ -469,6 +469,8 @@ def issueTaken(request):
         # model = Taker
         _date = strftime("%c")
         response_data = {}
+        user = request.user
         response_data['status'] = 'taken'
         response_data['issueTakenTime'] = _date
+        response_data['user'] = user
         return HttpResponse(json.dumps(response_data), content_type="application/json")
