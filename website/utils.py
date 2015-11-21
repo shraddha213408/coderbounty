@@ -257,65 +257,6 @@ def create_comment(issue=None, comment=None):
     return globals()["post_"+issue.service.name.replace(" ", "_").lower()+"_comment"](issue, comment)
 
 
-def post_google_code_comment(issue, comment=""):
-
-    auth_url = 'https://www.google.com/accounts/ClientLogin'
-    auth_req_data = urllib.urlencode({'Email': settings.GOOGLE_CODE_USERNAME,
-                                  'Passwd': settings.GOOGLE_CODE_PASSWORD,
-                                  'service': 'code'})
-    auth_req = urllib2.Request(auth_url, data=auth_req_data)
-    auth_resp = urllib2.urlopen(auth_req)
-    auth_resp_content = auth_resp.read()
-    auth_resp_dict = dict(x.split('=') for x in auth_resp_content.split('\n') if x)
-    auth_token = auth_resp_dict["Auth"]
-
-
-    xml_data="""<?xml version='1.0' encoding='UTF-8'?>
-    <entry xmlns='http://www.w3.org/2005/Atom' xmlns:issues='http://schemas.google.com/projecthosting/issues/2009'>
-        <content type='html'>{comment}</content>
-        <author>
-            <name>coderbounty</name>
-        </author>
-        <issues:cc>
-        <issues:uri>u/114883342009011078618/</issues:uri>
-        <issues:username>coderbou...@gmail.com</issues:username>
-        </issues:cc>
-    </entry>""".format(comment=comment)
-    base_url = issue.api_url().split("full")[0]+str(issue.number)+"/comments/full"
-    code_req = urllib2.Request(base_url, xml_data)
-    code_req.add_header('Content-Type', 'application/atom+xml')
-    code_req.add_header('Authorization', 'GoogleLogin auth=%s' % auth_token)
-    urllib2.urlopen(code_req)
-
-    cj = cookielib.CookieJar()
-    opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-    urllib2.install_opener(opener)
-
-    url = urllib2.urlopen('https://accounts.google.com/ServiceLogin?service=code')
-    html = url.read()
-    doc = BeautifulSoup(html)
-    galx_input = doc.find(attrs = dict(name = 'GALX'))
-    galx = galx_input['value']
-
-    params = urllib.urlencode({
-    'Email' : settings.GOOGLE_CODE_USERNAME,
-    'Passwd' : settings.GOOGLE_CODE_PASSWORD,
-    'GALX' : galx})
-
-    req = urllib2.Request('https://accounts.google.com/ServiceLoginAuth?service=code', params)
-    req.add_header( 'Referer', "https://accounts.google.com/ServiceLogin?service=code" )
-    url = urllib2.urlopen(req)
-
-    url = urllib2.urlopen(issue.html_url())
-    html = url.read()
-    doc = BeautifulSoup(html)
-    csrf_input = doc.find(attrs = dict(name = 'token'))
-    codesite_token = csrf_input['value']
-
-    url = urllib2.urlopen('http://code.google.com/p/'+issue.project+'/issues/setstar.do?alt=js&issueid='+str(issue.number)+'&starred=1&token='+codesite_token)
-    return True
-
-
 def post_bitbucket_comment(issue, comment=""):
     cj = cookielib.CookieJar()
     opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
@@ -392,8 +333,9 @@ def get_hexdigest(algorithm, salt, raw_password):
     raise ValueError("Got unknown password algorithm type in password.")
 
 def post_to_slack(bounty):
+    if not settings.DEBUG:
 
-    payload= {"text": str(bounty.user)+" placed a Bounty of $"+ str(bounty.price)+ " More details at http://coderbounty.com"+str(bounty.issue.get_absolute_url())}
+        payload= {"text": str(bounty.user)+" placed a Bounty of $"+ str(bounty.price)+ " More details at http://coderbounty.com"+str(bounty.issue.get_absolute_url())}
 
-    url = 'https://hooks.slack.com/services/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'
-    r = requests.post(url, data=json.dumps(payload))
+        url = 'https://hooks.slack.com/services/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'
+        r = requests.post(url, data=json.dumps(payload))

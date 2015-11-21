@@ -7,6 +7,7 @@
 		<!-- headbar -->
         <div class="headbar">
 			<h2>Find Issues to Code</h2>
+            <!--
 			<div class="filter">
 				<form>
 					<label for="filterAll">Language:</label>
@@ -28,6 +29,7 @@
                     <button class="ribbon ribbon-normal ribbon-green ribbon-03">Find</button>
 				</form>
 			</div>
+            -->
 		</div>
         <!-- issues -->
         <div class="issues">
@@ -57,7 +59,7 @@
                                     <h3>{{issue.title}}</h3>
                                     <p>{{issue.content}}</p>
                                     <div class="logo-tech">
-                                        <img src="{{ STATIC_URL }}images/logos/logo-{{issue.language|slugify}}.png" alt=" {{issue.language}}" />
+                                        <img src="{{ STATIC_URL }}images/logos/logo-{{issue.language|slugify}}.png" alt=" {{issue.language}}" onError="this.onerror=null;$(this).hide();$(this).after('{{issue.language}}')" />
                                     </div>
                                     <div class="posted"><em>Posted: <time>{{issue.created|date:"m/d/Y"}}</time></em> <em>Views: <time>{{issue.views}}</time></em></div>
                                 </div>
