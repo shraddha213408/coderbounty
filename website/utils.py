@@ -98,10 +98,7 @@ def get_issue(request, url):
         try:
             result = json.load(urllib2.urlopen(req))
         except Exception, e:
-            error = "I had an issue getting "+data['user']+" / "+data['project']+" issue #"+data['number']
-            if not request:
-                return error
-            messages.error(request, error)
+            return str(e)
 
         data['status'] = result['state']
         data['title'] = result['title']

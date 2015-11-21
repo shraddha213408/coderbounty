@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.bitbucket',
     'actstream',
     'website',
+    'rest_framework',
 )
 
 SITE_ID = 1
