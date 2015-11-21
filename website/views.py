@@ -338,7 +338,7 @@ class LeaderboardView(ListView):
     template_name="leaderboard.html"
     
     def get_queryset(self):
-        return User.objects.all().order_by('-userprofile__balance')
+        return User.objects.all().order_by('date_joined').order_by('userprofile__balance')
     
     def get_context_data(self, **kwargs):
         context = super(LeaderboardView, self).get_context_data(**kwargs)
