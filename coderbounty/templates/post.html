@@ -138,7 +138,7 @@ $(document).ready(function(){
                                     <div class="form-item">
                                         <label class="label" for="issueUrl">Issue URL:</label>
                                         <div class="value">
-                                            <input type="text" id="issueUrl" name="issueUrl" placeholder="Paste a link to an issue and we'll fill out the rest" value="{{form.issueUrl.value|default:''}}"/>
+                                            <input type="text" id="issueUrl" name="issueUrl" autocomplete="off" placeholder="Paste a link to an issue and we'll fill out the rest" value="{{form.issueUrl.value|default:''}}"/>
                                         
                                         </div>
                                     </div>
@@ -184,7 +184,7 @@ $(document).ready(function(){
 
                                     </div>
                                 </div>
-                                <!-- bounty-info -->
+                                <!-- bounty-info
                                 <div class="col-4 bounty-info">
                                     <h2>Project Title<a href="#">view all issues</a></h2>
                                     <a class="avatar" href="#"><img src="{% static "images/temp/thumb-medium-00.jpg" %}" alt="" /></a>
@@ -196,6 +196,7 @@ $(document).ready(function(){
                                         <a class="add-img" href="#">add image from url</a>
                                     </div>
                                 </div>
+                                 -->
                             </div>
                             <!-- bounty-submit -->
                             <div class="bounty-submit clearfix">
