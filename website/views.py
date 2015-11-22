@@ -64,8 +64,18 @@ def create_issue_and_bounty(request):
             'message': 'You need to be authenticated to post bounty'
         })
     if request.method == 'GET':
+        if request.GET.get('url'):
+            issue_data = get_issue(request, request.GET.get('url'))
+           
+            form = IssueCreateForm(
+                initial={
+                'issueUrl': request.GET.get('url'), 
+                'title': issue_data['title'],
+                'content': issue_data['content'] or "Added from Github" 
+                })
         return render(request, 'post.html', {
             'languages': languages,
+            'form': form,
         })
     if request.method == 'POST':
         url = request.POST.get('issueUrl','')
@@ -121,8 +131,9 @@ def create_issue_and_bounty(request):
         else:
             return render(request, 'post.html', {
                 'languages': languages,
-                'message':'Error',
+                'message':form.errors,
                 'errors': form.errors,
+                'form':form,
                 'bounty_errors':bounty_form.errors,
             })
 
