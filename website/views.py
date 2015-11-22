@@ -58,7 +58,6 @@ def create_issue_and_bounty(request):
                 messages.error(request, 'Please provide an valid issue url')
                 return redirect('/post')
 
-           
             form = IssueCreateForm(
                 initial={
                 'issueUrl': request.GET.get('url'), 
@@ -170,27 +169,6 @@ def list(request):
 
 # #@ajax_login_required
 # def add(request):
-#     message = ''
-#     url = ''
-#     error = ''
-#     checkout_uri = ''
-
-#     if not request.GET.get('bounty', None):
-#         error = "Please enter a bounty"
-#     if not request.GET.get('limit', None):
-#         error = "Please enter a time limit"
-#     if not request.GET.get('url', None):
-#         error = "Please enter a Github, Google Code or Bitbucket issue"
-
-#     if error:
-#         if request.is_ajax():
-#             return HttpResponse(error)
-#         else:
-#             messages.error(request, error)
-#             return redirect('/')
-
-#     url = request.GET.get('url', None)
-#     issue = get_issue(request, url)
 
 #     if issue and issue['status'] == "open":
 #         issue['bounty'] = int(request.GET.get('bounty', 0))
