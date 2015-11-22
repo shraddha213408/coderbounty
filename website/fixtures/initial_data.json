@@ -37,5 +37,15 @@
             "type":"xml",
             "api_url":"https://code.google.com"
         }
-    }
+    },
+      {
+        "model": "auth.user",
+        "pk": 1,
+        "fields": {
+          "first_name": "John",
+          "last_name": "Lennon",
+          "username": "myuser",
+          "password": "pbkdf2_sha256$20000$GOVz4ND4RG0F$J4Z48PYW3VFY58wimhBGX5m4CVIQ2dxAmptO3b92Gdc="
+        }
+      }
 ]
