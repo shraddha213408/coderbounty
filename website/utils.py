@@ -5,7 +5,7 @@ from django.core.mail import send_mail, EmailMultiAlternatives
 from django.conf import settings
 
 from string import Template
-from models import Service, Issue, Bounty
+from models import Service, Issue, Bounty, Taker
 from django.contrib.auth.models import User
 from django.db.models import Sum
 from urlparse import urlparse
@@ -13,7 +13,7 @@ import urllib
 from BeautifulSoup import BeautifulSoup
 import base64
 import cookielib
-import datetime
+import datetime, time
 import re
 #from django.utils 
 import json
@@ -389,3 +389,20 @@ def get_hexdigest(algorithm, salt, raw_password):
     elif algorithm == 'sha1':
         return sha_constructor(salt + raw_password).hexdigest()
     raise ValueError("Got unknown password algorithm type in password.")
+
+def submit_issue_taker(data):
+    issueID = data["issue"]
+    user = data["user"]
+    issuetakenTime = data["issueStartTime"]
+    issueTaker = data["user"]
+    issueEndtime = issuetakenTime + datetime.timedelta(hours=24)
+    issue = Issue.objects.get(pk=issueID)
+    taker = Taker(is_taken=True,issue=issue,user=user,status="taken",issueTaken=issuetakenTime,issueEnd=issueEndtime)
+    taker.save()
+    return data
+
+def timecounter(issuetakenTime, duration):
+    pass
+
+
+# time.struct_time(tm_year=2015, tm_mon=11, tm_mday=22, tm_hour=17, tm_min=25, tm_sec=21, tm_wday=6, tm_yday=326, tm_isdst=-1)

@@ -45,11 +45,15 @@ h1{
 <script>
 $(document).ready(function(){
   $("#takeBounty").click(function(){
+    var issueId = window.location.pathname
+    issueId = issueId.split('/')
+    issueId = issueId[2]
+    console.log(issueId)
       $.ajax({
         url: "/issueTaken/",
         data: { csrfmiddlewaretoken: "{{ csrf_token }}",   // < here 
             status : "taken",
-            // id: window.location.pathname,
+            id: issueId,
           },
         type: "POST",
         error: function(res) {

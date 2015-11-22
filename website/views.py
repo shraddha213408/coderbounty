@@ -4,9 +4,9 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from models import Issue, UserProfile, Bounty, Service
+from models import Issue, UserProfile, Bounty, Service, Taker
 from .forms import IssueCreateForm, BountyCreateForm, UserProfileForm
-from utils import get_issue, add_issue_to_database, get_twitter_count, get_facebook_count, create_comment, issue_counts, leaderboard, get_hexdigest
+from utils import get_issue, add_issue_to_database, get_twitter_count, get_facebook_count, create_comment, issue_counts, leaderboard, get_hexdigest, submit_issue_taker
 
 from django.views.generic import ListView, DetailView, FormView
 from django.views.generic.edit import UpdateView
@@ -466,12 +466,19 @@ class IssueDetailView(DetailView):
             return object
 def issueTaken(request):
     if request.method == 'POST':
-        print request
-        # model = Taker
+        issueId =  request.POST.get('id')
         _date = strftime("%c")
+        today = datetime.datetime.today()
         response_data = {}
         response_data['status'] = 'taken'
         response_data['issueTakenTime'] = _date
-        issue = Issue.objects.get(pk=1)
-        # response_data['user'] = request.user
+
+        # issue = Issue.objects.get(pk=issueId)
+        issue_take_data = {
+            "issue": issueId,
+            "issueStartTime": today,
+            "user": request.user,
+            "status": "taken"
+        }
+        issueTaken = submit_issue_taker(issue_take_data)
         return HttpResponse(json.dumps(response_data), content_type="application/json")
