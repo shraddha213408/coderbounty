@@ -48,7 +48,8 @@ $(document).ready(function(){
       $.ajax({
         url: "/issueTaken/",
         data: { csrfmiddlewaretoken: "{{ csrf_token }}",   // < here 
-            status : "taken"
+            status : "taken",
+            // id: window.location.pathname,
           },
         type: "POST",
         error: function(res) {

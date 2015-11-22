@@ -466,11 +466,12 @@ class IssueDetailView(DetailView):
             return object
 def issueTaken(request):
     if request.method == 'POST':
+        print request
         # model = Taker
         _date = strftime("%c")
         response_data = {}
-        user = request.user
         response_data['status'] = 'taken'
         response_data['issueTakenTime'] = _date
-        response_data['user'] = user
+        issue = Issue.objects.get(pk=1)
+        # response_data['user'] = request.user
         return HttpResponse(json.dumps(response_data), content_type="application/json")
