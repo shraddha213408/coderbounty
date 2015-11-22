@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.decorators import login_required
 from models import Issue, UserProfile, Bounty, Service
 from .forms import IssueCreateForm, BountyCreateForm, UserProfileForm
 from utils import get_issue, add_issue_to_database, get_twitter_count, get_facebook_count, create_comment, issue_counts, leaderboard, get_hexdigest, post_to_slack
@@ -52,17 +53,13 @@ def home(request, template="index.html"):
     response = render_to_response(template, context, context_instance=RequestContext(request))
     return response
 
-
+@login_required
 def create_issue_and_bounty(request):
     languages = []
     for lang in Issue.LANGUAGES:
         languages.append(lang[0])
     user = request.user
-    if not user.is_authenticated():
-        return render(request, 'post.html', {
-            'languages': languages,
-            'message': 'You need to be authenticated to post bounty'
-        })
+
     if request.method == 'GET':
         if request.GET.get('url'):
             issue_data = get_issue(request, request.GET.get('url'))
@@ -73,6 +70,8 @@ def create_issue_and_bounty(request):
                 'title': issue_data['title'],
                 'content': issue_data['content'] or "Added from Github" 
                 })
+        else:
+             form = IssueCreateForm()
         return render(request, 'post.html', {
             'languages': languages,
             'form': form,
