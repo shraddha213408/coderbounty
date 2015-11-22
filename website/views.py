@@ -1,43 +1,34 @@
-from django.shortcuts import render_to_response, RequestContext, redirect, get_object_or_404
-from django.http import HttpResponseNotFound, HttpResponseServerError, HttpResponse
-from django.core.mail import send_mail
+from .forms import IssueCreateForm, BountyCreateForm, UserProfileForm
+from actstream import action
+from actstream.models import Action
+from actstream.models import user_stream
+from BeautifulSoup import BeautifulSoup
 from django.conf import settings
-from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout, get_user_model
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth.decorators import login_required
-from models import Issue, UserProfile, Bounty, Service
-from .forms import IssueCreateForm, BountyCreateForm, UserProfileForm
-from utils import get_issue, add_issue_to_database, get_twitter_count, get_facebook_count, create_comment, issue_counts, leaderboard, get_hexdigest, post_to_slack
-
+from django.contrib.sites.models import Site
+from django.core import serializers
+from django.core.mail import send_mail
+from django.core.urlresolvers import reverse
+from django.db.models import Q, Sum, Count
+from django.http import HttpResponseNotFound, HttpResponseServerError, HttpResponse
+from django.shortcuts import render_to_response, RequestContext, redirect, get_object_or_404, render
 from django.views.generic import ListView, DetailView, FormView
 from django.views.generic.edit import UpdateView
-from django.contrib.auth import get_user_model
-
-from django.core import serializers
-from django.shortcuts import get_object_or_404, render
-
+from models import Issue, UserProfile, Bounty, Service
+from utils import get_issue, add_issue_to_database, get_twitter_count, get_facebook_count, create_comment, issue_counts, leaderboard, get_hexdigest, post_to_slack
 from wepay import WePay
-
-import json
-from django.contrib import messages
-from django.db.models import Q
-import re
+import cookielib
 import datetime
-from django.db.models import Sum, Count
-from django.contrib.sites.models import Site
+import json
+import random
+import re
+import string
 import urllib
 import urllib2
-import cookielib
-
-from BeautifulSoup import BeautifulSoup
-import string
-import random
-from actstream.models import user_stream
-from actstream.models import Action
-
-
-from django.core.urlresolvers import reverse
 
 def parse_url_ajax(request):
      url = request.POST.get('url', '')
@@ -380,6 +371,7 @@ class IssueDetailView(DetailView):
                 obj.object.created = datetime.datetime.now()
                 obj.object.checkout_id = self.request.GET.get('checkout_id')
                 obj.save()
+                action.send(self.request.user, verb='placed a $' + str(obj.object.price) + ' bounty on ', target=obj.object.issue)
             	post_to_slack(obj.object)
 
         
