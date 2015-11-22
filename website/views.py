@@ -54,6 +54,10 @@ def create_issue_and_bounty(request):
     if request.method == 'GET':
         if request.GET.get('url'):
             issue_data = get_issue(request, request.GET.get('url'))
+            if not issue_data:
+                messages.error(request, 'Please provide an valid issue url')
+                return redirect('/post')
+
            
             form = IssueCreateForm(
                 initial={
