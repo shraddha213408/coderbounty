@@ -3,7 +3,7 @@ from .models import Issue,Bounty,UserProfile
 from django.contrib.auth.models import User
 
 class IssueCreateForm(forms.ModelForm):
-
+    issueUrl = forms.CharField(label="issueUrl")
     class Meta:
         model = Issue
         fields = ('title','language','content')
