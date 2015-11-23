@@ -480,5 +480,7 @@ def issueTaken(request):
             "user": request.user,
             "status": "taken"
         }
+        username = issue_take_data["user"]
+        response_data['username'] = str(username)
         issueTaken = submit_issue_taker(issue_take_data)
         return HttpResponse(json.dumps(response_data), content_type="application/json")

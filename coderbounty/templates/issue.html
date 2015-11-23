@@ -61,6 +61,7 @@ $(document).ready(function(){
         },
         success: function(res) {
           console.log("res", res)
+          $(".username").html(res.username)
           $("#starttime").html(res.issueTakenTime)
           $("#takeBounty").html(res.status)
           $('#takeBounty').unbind('click');
@@ -71,6 +72,12 @@ $(document).ready(function(){
           $("#endtime").html(endtime)
           initializeClock('clockdiv', endtime);
           $(".codeIssueTaker").show()
+          $("#takers").append(
+          '<td class="thumb">'+
+'              <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-05.jpg" %}"></a></td>'+
+'          <td class="text">'+
+              '<a href="#">'+res.username+'</a>'+
+          '</td>')
         }
       });
   })
@@ -114,8 +121,8 @@ function initializeClock(id, endtime){
   var timeinterval = setInterval(updateClock,1000);
 }
 
-var deadline = 'December 31 2015 00:00:50 UTC+0200';
-initializeClock('clockdiv', deadline);
+// var deadline = 'December 31 2015 00:00:50 UTC+0200';
+// initializeClock('clockdiv', deadline);
 </script>
 
 
@@ -196,8 +203,10 @@ initializeClock('clockdiv', deadline);
             <div class="frame frame-light frame-noLines">
                 <div class="frame-content">
                   <h2 class="titlebar"><span class="ribbon ribbon-normal ribbon-04 ribbon-brown">Takers</span></h2>
-                  <table class="table-list table-list-leader-board">
-                      <tbody><!--
+                  <table class="table-list table-list-leader-board" id="takers">
+                      <tbody>
+
+                      <!--
                           <tr>
                               <td class="thumb">
                                   <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-05.jpg" %}"></a></td>
@@ -258,7 +267,7 @@ initializeClock('clockdiv', deadline);
                <div class="img-holder">
                     <img src="{% static "images/temp/thumb-medium-00.jpg" %}" alt="" />
                 </div>
-              <div class="user"><strong>Test User</strong></div>
+              <div class="username"><strong>Test User</strong></div>
               <p></p>
               <strong>Start Time<p id="starttime"></p></strong>
               <p></p>

@@ -203,6 +203,8 @@ class Taker(models.Model):
 
     def time_end(self):
         if self.status == self.TAKEN:
+            pass
+        pass
             # return timeuntil(self.bounties().aggregate(Min('ends'))['ends__min'], datetime.datetime.now()).split(',')[0]
         # return timeuntil(self.modified + datetime.timedelta(days=3), datetime.datetime.now()).split(',')[0]
 
