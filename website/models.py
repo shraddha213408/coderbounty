@@ -261,3 +261,13 @@ def delete_issue(sender, instance, *args, **kwargs):
 #todo: fix this so it doesn't throw an error
 #signals.post_save.connect(post_to_twitter, sender=Bounty)
 signals.post_delete.connect(delete_issue, sender=Bounty)
+
+
+class Solution(models.Model):
+    issue = models.ForeignKey(Issue)
+    submitted_by = models.ForeignKey(UserProfile)
+    submitted_at = models.DateTimeField(auto_now_add=True)
+    pr_link = models.URLField(help_text="Pull Request Link ")
+
+    def __unicode__(self):
+        return str(self.issue)+" solution"
