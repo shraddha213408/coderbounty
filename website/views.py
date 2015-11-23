@@ -1,42 +1,34 @@
-from django.shortcuts import render_to_response, RequestContext, redirect, get_object_or_404
-from django.http import HttpResponseNotFound, HttpResponseServerError, HttpResponse
-from django.core.mail import send_mail
+from .forms import IssueCreateForm, BountyCreateForm, UserProfileForm
+from actstream import action
+from actstream.models import Action
+from actstream.models import user_stream
+from BeautifulSoup import BeautifulSoup
 from django.conf import settings
-from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout, get_user_model
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
-from models import Issue, UserProfile, Bounty, Service
-from .forms import IssueCreateForm, BountyCreateForm, UserProfileForm
-from utils import get_issue, add_issue_to_database, get_twitter_count, get_facebook_count, create_comment, issue_counts, leaderboard, get_hexdigest, post_to_slack
-
+from django.contrib.sites.models import Site
+from django.core import serializers
+from django.core.mail import send_mail
+from django.core.urlresolvers import reverse
+from django.db.models import Q, Sum, Count
+from django.http import HttpResponseNotFound, HttpResponseServerError, HttpResponse
+from django.shortcuts import render_to_response, RequestContext, redirect, get_object_or_404, render
 from django.views.generic import ListView, DetailView, FormView
 from django.views.generic.edit import UpdateView
-from django.contrib.auth import get_user_model
-
-from django.core import serializers
-from django.shortcuts import get_object_or_404, render
-
+from models import Issue, UserProfile, Bounty, Service
+from utils import get_issue, add_issue_to_database, get_twitter_count, get_facebook_count, create_comment, issue_counts, leaderboard, get_hexdigest, post_to_slack
 from wepay import WePay
-
-import json
-from django.contrib import messages
-from django.db.models import Q
-import re
+import cookielib
 import datetime
-from django.db.models import Sum, Count
-from django.contrib.sites.models import Site
+import json
+import random
+import re
+import string
 import urllib
 import urllib2
-import cookielib
-
-from BeautifulSoup import BeautifulSoup
-import string
-import random
-from actstream.models import user_stream
-from actstream.models import Action
-
-
-from django.core.urlresolvers import reverse
 
 def parse_url_ajax(request):
      url = request.POST.get('url', '')
@@ -52,20 +44,31 @@ def home(request, template="index.html"):
     response = render_to_response(template, context, context_instance=RequestContext(request))
     return response
 
-
+@login_required
 def create_issue_and_bounty(request):
     languages = []
     for lang in Issue.LANGUAGES:
         languages.append(lang[0])
     user = request.user
-    if not user.is_authenticated():
-        return render(request, 'post.html', {
-            'languages': languages,
-            'message': 'You need to be authenticated to post bounty'
-        })
+
     if request.method == 'GET':
+        if request.GET.get('url'):
+            issue_data = get_issue(request, request.GET.get('url'))
+            if not issue_data:
+                messages.error(request, 'Please provide an valid issue url')
+                return redirect('/post')
+
+            form = IssueCreateForm(
+                initial={
+                'issueUrl': request.GET.get('url'), 
+                'title': issue_data['title'],
+                'content': issue_data['content'] or "Added from Github" 
+                })
+        else:
+             form = IssueCreateForm()
         return render(request, 'post.html', {
             'languages': languages,
+            'form': form,
         })
     if request.method == 'POST':
         url = request.POST.get('issueUrl','')
@@ -121,8 +124,9 @@ def create_issue_and_bounty(request):
         else:
             return render(request, 'post.html', {
                 'languages': languages,
-                'message':'Error',
+                'message':form.errors,
                 'errors': form.errors,
+                'form':form,
                 'bounty_errors':bounty_form.errors,
             })
 
@@ -165,27 +169,6 @@ def list(request):
 
 # #@ajax_login_required
 # def add(request):
-#     message = ''
-#     url = ''
-#     error = ''
-#     checkout_uri = ''
-
-#     if not request.GET.get('bounty', None):
-#         error = "Please enter a bounty"
-#     if not request.GET.get('limit', None):
-#         error = "Please enter a time limit"
-#     if not request.GET.get('url', None):
-#         error = "Please enter a Github, Google Code or Bitbucket issue"
-
-#     if error:
-#         if request.is_ajax():
-#             return HttpResponse(error)
-#         else:
-#             messages.error(request, error)
-#             return redirect('/')
-
-#     url = request.GET.get('url', None)
-#     issue = get_issue(request, url)
 
 #     if issue and issue['status'] == "open":
 #         issue['bounty'] = int(request.GET.get('bounty', 0))
@@ -370,6 +353,7 @@ class IssueDetailView(DetailView):
                 obj.object.created = datetime.datetime.now()
                 obj.object.checkout_id = self.request.GET.get('checkout_id')
                 obj.save()
+                action.send(self.request.user, verb='placed a $' + str(obj.object.price) + ' bounty on ', target=obj.object.issue)
             	post_to_slack(obj.object)
 
         

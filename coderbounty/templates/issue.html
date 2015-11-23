@@ -40,7 +40,8 @@
                 </div>
                 <div class="text">
                   <p class="total">Total Bounty: <span>${{ object.bounty }}</span></p>
-                  <form>
+                  <form action="/post/" method="GET">
+                      <input type="hidden" name="url" value="{{object.html_url}}">
                       <button class="ribbon ribbon-normal ribbon-03 ribbon-brown-dark">add Cash</button>
                   </form>
                 </div>

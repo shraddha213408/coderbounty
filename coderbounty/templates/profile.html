@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load socialaccount %}
+{% block title %}{{ object.get_username }} |{% endblock %}
 
 {% block content %}
     <!-- Section - Profile -->
@@ -35,7 +37,12 @@
                         	<a href="/edit_profile/" class="ribbon ribbon-03 ribbon-type-01 ribbon-normal ribbon-brown-dark">Edit profile</a>
 						{% endif %}                        
 						<button class="ribbon ribbon-03 ribbon-type-01 ribbon-normal"><span></span>Invite</button>
-                        
+						{% get_social_accounts user as accounts %}
+
+						{% if not accounts.github.0 %}
+                        <button class="ribbon ribbon-03 ribbon-type-01 ribbon-normal" onclick="location.href='{% provider_login_url "github" process="connect" %}';" ><i class="icon-github6" style="font-size: 1.5em;"></i> Connect</button>
+                        {% endif %}
+
 					</div>
 					<span class="bugfix-bottom"></span>
 				</section>
