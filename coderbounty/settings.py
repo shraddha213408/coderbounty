@@ -49,13 +49,6 @@ INSTALLED_APPS = (
     'actstream',
     'website',
 )
-SOCIALACCOUNT_PROVIDERS = \
-        { 'github':
-            { 'SCOPE': ['email', 'publish_stream'],
-              'AUTH_PARAMS': { 'auth_type': 'reauthenticate' },
-              'METHOD': 'oauth2' ,
-              'LOCALE_FUNC': 'path.to.callable'} }
-
 SITE_ID = 1
 
 

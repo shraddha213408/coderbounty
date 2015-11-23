@@ -201,14 +201,12 @@ class Taker(models.Model):
     issueEnd = models.DateTimeField(null=True, blank=True)
     
 
-    def time_countdown(self):
+    def time_end(self):
         if self.status == self.TAKEN:
-            while issueTaken:
-                mns, secs = divmod(issueTaken, 60)
-                timeformat = '{:02d}:{:02d}'.format(mins, secs)
-                # print(timeformat, end='\r')
-                time.sleep(1)
-                t -= 1
+            # return timeuntil(self.bounties().aggregate(Min('ends'))['ends__min'], datetime.datetime.now()).split(',')[0]
+        # return timeuntil(self.modified + datetime.timedelta(days=3), datetime.datetime.now()).split(',')[0]
+
+
 
     def __unicode__(self):
         return self.name
