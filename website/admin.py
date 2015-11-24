@@ -1,5 +1,5 @@
 from django.contrib import admin
-from website.models import Issue, Service, UserProfile, Bounty
+from website.models import Issue, Service, UserProfile, Bounty, Solution
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
@@ -33,3 +33,4 @@ admin.site.register(Service, ServiceAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(Bounty, BountyAdmin)
 admin.site.register(User, UserAdmin)
+admin.site.register(Solution)
