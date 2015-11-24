@@ -33,3 +33,14 @@ class UserProfileForm(forms.ModelForm):
           self.fields['first_name'].initial = user.first_name
           self.fields['last_name'].initial = user.last_name
           self.fields['email'].initial = user.email
+
+    def clean_email(self):
+      email = self.cleaned_data.get("email")
+
+      if self.instance.user.email != email:
+        try:
+            User.objects.get(email = email)
+            raise forms.ValidationError("Email taken.")
+        except User.DoesNotExist:
+              pass
+      return email
