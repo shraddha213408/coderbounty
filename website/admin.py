@@ -1,5 +1,5 @@
 from django.contrib import admin
-from website.models import Issue, Service, UserProfile, Bounty
+from website.models import Issue, Service, UserProfile, Bounty, Taker
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
@@ -24,6 +24,11 @@ class IssueAdmin(admin.ModelAdmin):
             list_display.append(str(x))
     readonly_fields = ("created","modified")
 
+class TakerAdmin(admin.ModelAdmin):
+    list_display=[] 
+    for x in Taker._meta.get_all_field_names(): 
+         list_display.append(str(x))
+
 admin.site.unregister(User)
 
 UserAdmin.list_display = ('id','username','email', 'first_name', 'last_name', 'is_active', 'date_joined', 'is_staff')
@@ -33,3 +38,4 @@ admin.site.register(Service, ServiceAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(Bounty, BountyAdmin)
 admin.site.register(User, UserAdmin)
+admin.site.register(Taker, TakerAdmin)

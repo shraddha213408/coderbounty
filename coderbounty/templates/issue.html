@@ -5,6 +5,122 @@
 {% endblock %}
 {% block content %}
   <!-- Content -->
+<style type="text/css">
+
+h1{
+  color: #396;
+  font-weight: 100;
+  font-size: 40px;
+  margin: 40px 0px 20px;
+}
+
+#clockdiv{
+    font-family: sans-serif;
+    color: #fff;
+    display: inline-block;
+    font-weight: 100;
+    text-align: center;
+    font-size: 30px;
+}
+
+#clockdiv > div{
+    padding: 10px;
+    border-radius: 3px;
+    background: #00BF96;
+    display: inline-block;
+}
+
+#clockdiv div > span{
+    padding: 15px;
+    border-radius: 3px;
+    background: #00816A;
+    display: inline-block;
+}
+
+.smalltext{
+    padding-top: 5px;
+    font-size: 16px;
+}
+</style>
+<script>
+$(document).ready(function(){
+  $("#takeBounty").click(function(){
+    var issueId = window.location.pathname
+    issueId = issueId.split('/')
+    issueId = issueId[2]
+    console.log(issueId)
+      $.ajax({
+        url: "/issueTaken/",
+        data: { csrfmiddlewaretoken: "{{ csrf_token }}",   // < here 
+            status : "taken",
+            id: issueId,
+          },
+        type: "POST",
+        error: function(res) {
+          console.log("errr", res)
+        },
+        success: function(res) {
+          console.log("res", res)
+          $(".username").html(res.username)
+          $("#starttime").html(res.issueTakenTime)
+          $("#takeBounty").html(res.status)
+          $('#takeBounty').unbind('click');
+          var issueTakenTime = res.issueTakenTime
+          var d = new Date(issueTakenTime)
+          var hrs = d.getHours()+24;
+          var endtime = new Date(d.setHours(hrs));
+          $("#endtime").html(endtime)
+          initializeClock('clockdiv', endtime);
+          $(".codeIssueTaker").show()
+          $("#takers").append(
+          '<td class="thumb">'+
+'              <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-05.jpg" %}"></a></td>'+
+'          <td class="text">'+
+              '<a href="#">'+res.username+'</a>'+
+          '</td>')
+        }
+      });
+  })
+});
+
+function getTimeRemaining(endtime){
+  var t = Date.parse(endtime) - Date.parse(new Date());
+  var seconds = Math.floor( (t/1000) % 60 );
+  var minutes = Math.floor( (t/1000/60) % 60 );
+  var hours = Math.floor( (t/(1000*60*60)) % 24 );
+  var days = Math.floor( t/(1000*60*60*24) );
+  return {
+    'total': t,
+    'days': days,
+    'hours': hours,
+    'minutes': minutes,
+    'seconds': seconds
+  };
+}
+
+function initializeClock(id, endtime){
+  var clock = document.getElementById(id);
+  var daysSpan = clock.querySelector('.days');
+  var hoursSpan = clock.querySelector('.hours');
+  var minutesSpan = clock.querySelector('.minutes');
+  var secondsSpan = clock.querySelector('.seconds');
+
+  function updateClock(){
+    var t = getTimeRemaining(endtime);
+    daysSpan.innerHTML = t.days;
+    hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+    minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+    secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+
+    if(t.total<=0){
+      clearInterval(timeinterval);
+    }
+  }
+
+  updateClock();
+  var timeinterval = setInterval(updateClock,1000);
+}
+</script>
 <div class="wrapper-section">
   <div class="content wrapper-global">
     <div class="grid">
@@ -135,10 +251,41 @@
                 <div class="text"><p>{{ object.content }}.</p></div>
                 <!-- buttons -->
                 <div class="button-wrapper clearfix">
+                <button id="takeBounty" class="ribbon ribbon-large ribbon-03">Take</button>
                   <form>
-                    <button class="ribbon ribbon-large ribbon-03">Take</button>
+                    // <button class="ribbon ribbon-large ribbon-03">Take</button>
                     <button class="ribbon ribbon-normal ribbon-03 ribbon-brown">Share</button>
                   </form>
+                </div>
+            </div>
+            <div class="codeIssueTaker" style="display:none;">
+               <div class="img-holder">
+                    <img src="{% static "images/temp/thumb-medium-00.jpg" %}" alt="" />
+                </div>
+              <div class="username"><strong>Test User</strong></div>
+              <p></p>
+              <strong>Start Time<p id="starttime"></p></strong>
+              <p></p>
+              <strong>End Time<p id="endtime"></p></strong>
+              <p></p>
+              <h1>Countdown Clock</h1>
+                <div id="clockdiv">
+                  <div style="display:none">
+                    <span class="days"></span>
+                    <div class="smalltext">Days</div>
+                  </div>
+                  <div>
+                    <span class="hours"></span>
+                    <div class="smalltext">Hours</div>
+                  </div>
+                  <div>
+                    <span class="minutes"></span>
+                    <div class="smalltext">Minutes</div>
+                  </div>
+                  <div>
+                    <span class="seconds"></span>
+                    <div class="smalltext">Seconds</div>
+                  </div>
                 </div>
             </div>
             {% comment "Hide comments until they are integrated" %}

@@ -5,7 +5,7 @@ from django.core.mail import send_mail, EmailMultiAlternatives
 from django.conf import settings
 
 from string import Template
-from models import Service, Issue, Bounty
+from models import Service, Issue, Bounty, Taker
 from django.contrib.auth.models import User
 from django.db.models import Sum
 from urlparse import urlparse
@@ -13,7 +13,7 @@ import urllib
 from BeautifulSoup import BeautifulSoup
 import base64
 import cookielib
-import datetime
+import datetime, time
 import re
 #from django.utils 
 import json
@@ -336,3 +336,16 @@ def post_to_slack(bounty):
 
         url = 'https://hooks.slack.com/services/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'
         r = requests.post(url, data=json.dumps(payload))
+def submit_issue_taker(data):
+    issueID = data["issue"]
+    user = data["user"]
+    issuetakenTime = data["issueStartTime"]
+    issueTaker = data["user"]
+    issueEndtime = issuetakenTime + datetime.timedelta(hours=24)
+    issue = Issue.objects.get(pk=issueID)
+    taker = Taker(is_taken=True,issue=issue,user=user,status="taken",issueTaken=issuetakenTime,issueEnd=issueEndtime)
+    taker.save()
+    return data
+
+def timecounter(issuetakenTime, duration):
+    pass

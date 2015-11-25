@@ -261,3 +261,33 @@ def delete_issue(sender, instance, *args, **kwargs):
 #todo: fix this so it doesn't throw an error
 #signals.post_save.connect(post_to_twitter, sender=Bounty)
 signals.post_delete.connect(delete_issue, sender=Bounty)
+
+class Taker(models.Model):
+    """
+     allow the user to take an issue
+    """
+    TAKEN = 'taken'
+    OPEN = 'open'
+    STATUS_ISSUE = (
+        (TAKEN, 'taken'),
+        (OPEN, 'open')
+    )
+    is_taken = models.BooleanField(default=True)
+    issue = models.ForeignKey(Issue)
+    user = models.ForeignKey(User)
+    status = models.CharField(max_length=255, choices=STATUS_ISSUE, default=OPEN)
+    issueTaken = models.DateTimeField(auto_now_add=True)
+    issueEnd = models.DateTimeField(null=True, blank=True)
+    
+
+    def time_end(self):
+        if self.status == self.TAKEN:
+            pass
+        pass
+            # return timeuntil(self.bounties().aggregate(Min('ends'))['ends__min'], datetime.datetime.now()).split(',')[0]
+        # return timeuntil(self.modified + datetime.timedelta(days=3), datetime.datetime.now()).split(',')[0]
+
+
+
+    def __unicode__(self):
+        return self.name
