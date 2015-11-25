@@ -120,7 +120,11 @@ function initializeClock(id, endtime){
   updateClock();
   var timeinterval = setInterval(updateClock,1000);
 }
+
+// var deadline = 'December 31 2015 00:00:50 UTC+0200';
+// initializeClock('clockdiv', deadline);
 </script>
+
 <div class="wrapper-section">
   <div class="content wrapper-global">
     <div class="grid">
@@ -199,8 +203,10 @@ function initializeClock(id, endtime){
             <div class="frame frame-light frame-noLines">
                 <div class="frame-content">
                   <h2 class="titlebar"><span class="ribbon ribbon-normal ribbon-04 ribbon-brown">Takers</span></h2>
-                  <table class="table-list table-list-leader-board">
-                      <tbody><!--
+                  <table class="table-list table-list-leader-board" id="takers">
+                      <tbody>
+
+                      <!--
                           <tr>
                               <td class="thumb">
                                   <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-05.jpg" %}"></a></td>
@@ -253,7 +259,9 @@ function initializeClock(id, endtime){
                 <div class="button-wrapper clearfix">
                 <button id="takeBounty" class="ribbon ribbon-large ribbon-03">Take</button>
                   <form>
-                    // <button class="ribbon ribbon-large ribbon-03">Take</button>
+                    <!-- // <button class="ribbon ribbon-large ribbon-03">Take</button>
+                    <button id="takeBounty" class="ribbon ribbon-large ribbon-03">Take</button>
+                  <form> -->
                     <button class="ribbon ribbon-normal ribbon-03 ribbon-brown">Share</button>
                   </form>
                 </div>

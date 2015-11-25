@@ -16,6 +16,9 @@ from django.core.urlresolvers import reverse
 from django.db.models import Q, Sum, Count
 from django.http import HttpResponseNotFound, HttpResponseServerError, HttpResponse
 from django.shortcuts import render_to_response, RequestContext, redirect, get_object_or_404, render
+from models import Issue, UserProfile, Bounty, Service, Taker
+from .forms import IssueCreateForm, BountyCreateForm, UserProfileForm
+from utils import get_issue, add_issue_to_database, get_twitter_count, get_facebook_count, create_comment, issue_counts, leaderboard, get_hexdigest, submit_issue_taker
 from django.views.generic import ListView, DetailView, FormView
 from django.views.generic.edit import UpdateView
 from models import Issue, UserProfile, Bounty, Service, Taker
@@ -31,6 +34,17 @@ import re
 import string
 import urllib
 import urllib2
+import cookielib
+
+from BeautifulSoup import BeautifulSoup
+import string
+import random
+from actstream.models import user_stream
+from actstream.models import Action
+import time
+from time import gmtime, strftime
+
+from django.core.urlresolvers import reverse
 
 def parse_url_ajax(request):
      url = request.POST.get('url', '')

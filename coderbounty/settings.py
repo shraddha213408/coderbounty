@@ -50,7 +50,6 @@ INSTALLED_APPS = (
     'website',
     'rest_framework',
 )
-
 SITE_ID = 1
 
 
