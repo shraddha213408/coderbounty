@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "ci7svvv6wp+5cyk3(ju6w*6v-xldo#an3e3zuvg&&7@v=4*2^c"
+SECRET_KEY = os.environ.get('SECRET_KEY', "ci7svvv6wp+5cyk3(ju6w*6v-xldo#an3e3zuvg&&7@v=4*2^c")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -118,7 +118,7 @@ if 'DATABASE_URL' in os.environ:
     DATABASES['default'] = dj_database_url.config()
     DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
     ROLLBAR = {
-        'access_token': 'f25f82658f7c493f8eeeb271a817345c',
+        'access_token': os.environ.get('ROLLBAR_ACCESS_TOKEN', 'f25f82658f7c493f8eeeb271a817345c'),
         'environment': 'development' if DEBUG else 'production',
         'root': BASE_DIR,
         'exception_level_filters': [
