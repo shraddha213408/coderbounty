@@ -91,13 +91,19 @@ def create_issue_and_bounty(request):
         bounty_form = BountyCreateForm(request.POST)
         bounty_form_is_valid = bounty_form.is_valid()
         if form.is_valid() and bounty_form_is_valid:
+            price = bounty_form.cleaned_data['price']
+            if int(price) < 5:
+                return render(request, 'post.html', {
+                	'languages': languages,
+                	'message':'Bounty must be greater than $5',
+                })
             try:
                 issue = form.save()
             except:
                 issue = Issue.objects.get(number = issue_data['number'], 
                     project=issue_data['project'],user = issue_data['user'],service=service)
                 #issue exists
-            price = bounty_form.cleaned_data['price']
+            
 
             bounty_instance = Bounty(user = user,issue = issue,price = price)
             
