@@ -18,10 +18,12 @@ from django.http import HttpResponseNotFound, HttpResponseServerError, HttpRespo
 from django.shortcuts import render_to_response, RequestContext, redirect, get_object_or_404, render
 from django.views.generic import ListView, DetailView, FormView
 from django.views.generic.edit import UpdateView
-from models import Issue, UserProfile, Bounty, Service
+from models import Issue, UserProfile, Bounty, Service, Taker
 from utils import get_issue, add_issue_to_database, get_twitter_count, get_facebook_count, create_comment, issue_counts, leaderboard, get_hexdigest, post_to_slack
 from wepay import WePay
 import cookielib
+import time
+from time import gmtime, strftime
 import datetime
 import json
 import random
@@ -376,3 +378,24 @@ class IssueDetailView(DetailView):
             object.views = object.views + 1
             object.save()
             return object
+
+def issueTaken(request):
+    if request.method == 'POST':
+        issueId =  request.POST.get('id')
+        _date = strftime("%c")
+        today = datetime.datetime.today()
+        response_data = {}
+        response_data['status'] = 'taken'
+        response_data['issueTakenTime'] = _date
+
+        # issue = Issue.objects.get(pk=issueId)
+        issue_take_data = {
+            "issue": issueId,
+            "issueStartTime": today,
+            "user": request.user,
+            "status": "taken"
+        }
+        username = issue_take_data["user"]
+        response_data['username'] = str(username)
+        issueTaken = submit_issue_taker(issue_take_data)
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
