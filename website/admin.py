@@ -20,7 +20,7 @@ class UserProfileAdmin(admin.ModelAdmin):
 class IssueAdmin(admin.ModelAdmin):
     list_display=[] 
     for x in Issue._meta.get_all_field_names(): 
-        if x not in "service_id,winner_id":
+        if x not in "service_id,winner_id,taker,solution":
             list_display.append(str(x))
     readonly_fields = ("created","modified")
 
