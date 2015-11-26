@@ -13,6 +13,7 @@ from django.db.models import signals
 import random
 import urllib2
 from actstream import action
+import os
 
 YEAR_CHOICES = [(str(yr), str(yr)) for yr in range(1950, 2020)]
 
@@ -212,10 +213,10 @@ def post_to_twitter(sender, instance, *args, **kwargs):
     # check if there's a twitter account configured
     import tweepy
     try:
-        consumer_key = settings.TWITTER_CONSUMER_KEY
-        consumer_secret = settings.TWITTER_CONSUMER_SECRET
-        access_key = settings.TWITTER_ACCESS_KEY
-        access_secret = settings.TWITTER_ACCESS_SECRET
+        consumer_key = os.environ.get('TWITTER_CONSUMER_KEY')
+        consumer_secret = os.environ.get('TWITTER_CONSUMER_SECRET')
+        access_key = os.environ.get('TWITTER_ACCESS_KEY')
+        access_secret = os.environ.get('TWITTER_ACCESS_SECRET')
     except AttributeError:
         print 'WARNING: Twitter account not configured.'
         return False
@@ -259,7 +260,7 @@ def delete_issue(sender, instance, *args, **kwargs):
 
 # signals.post_save.connect(alert_winner, sender=Issue)
 #todo: fix this so it doesn't throw an error
-#signals.post_save.connect(post_to_twitter, sender=Bounty)
+signals.post_save.connect(post_to_twitter, sender=Bounty)
 signals.post_delete.connect(delete_issue, sender=Bounty)
 
 
