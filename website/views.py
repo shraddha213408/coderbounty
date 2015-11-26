@@ -19,7 +19,7 @@ from django.shortcuts import render_to_response, RequestContext, redirect, get_o
 from django.views.generic import ListView, DetailView, FormView
 from django.views.generic.edit import UpdateView
 from models import Issue, UserProfile, Bounty, Service, Taker
-from utils import get_issue, add_issue_to_database, get_twitter_count, get_facebook_count, create_comment, issue_counts, leaderboard, get_hexdigest, post_to_slack
+from utils import get_issue, add_issue_to_database, get_twitter_count, get_facebook_count, create_comment, issue_counts, leaderboard, get_hexdigest, post_to_slack, submit_issue_taker
 from wepay import WePay
 import cookielib
 import time
