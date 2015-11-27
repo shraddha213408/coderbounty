@@ -297,6 +297,3 @@ class Taker(models.Model):
         pass
         # return timeuntil(self.bounties().aggregate(Min('ends'))['ends__min'], datetime.datetime.now()).split(',')[0]
         # return timeuntil(self.modified + datetime.timedelta(days=3), datetime.datetime.now()).split(',')[0]
-
-    def __unicode__(self):
-        return self.name

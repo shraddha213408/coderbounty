@@ -9,10 +9,7 @@ class ServiceAdmin(admin.ModelAdmin):
          list_display.append(str(x))
 
 class BountyAdmin(admin.ModelAdmin):
-    list_display=[] 
-    for x in Bounty._meta.get_all_field_names(): 
-        if x not in "issue_id,user_id":
-            list_display.append(str(x))
+    list_display = ('issue','price','user','created','ends')
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display=('user','balance','payment_service', 'payment_service_email')
