@@ -213,11 +213,11 @@ def post_to_twitter(sender, instance, *args, **kwargs):
     # check if there's a twitter account configured
     import tweepy
     try:
-        consumer_key = os.environ.get('TWITTER_CONSUMER_KEY')
-        consumer_secret = os.environ.get('TWITTER_CONSUMER_SECRET')
-        access_key = os.environ.get('TWITTER_ACCESS_KEY')
-        access_secret = os.environ.get('TWITTER_ACCESS_SECRET')
-    except AttributeError:
+        consumer_key = os.environ['TWITTER_CONSUMER_KEY']
+        consumer_secret = os.environ['TWITTER_CONSUMER_SECRET']
+        access_key = os.environ['TWITTER_ACCESS_KEY']
+        access_secret = os.environ['TWITTER_ACCESS_SECRET']
+    except KeyError:
         print 'WARNING: Twitter account not configured.'
         return False
 
