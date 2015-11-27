@@ -32,10 +32,12 @@ import string
 import urllib
 import urllib2
 
+
 def parse_url_ajax(request):
      url = request.POST.get('url', '')
      issue = get_issue(request, url)
      return HttpResponse(json.dumps(issue))
+
 
 def home(request, template="index.html"):
     activities = Action.objects.all()[0:10]
@@ -45,6 +47,7 @@ def home(request, template="index.html"):
     }
     response = render_to_response(template, context, context_instance=RequestContext(request))
     return response
+
 
 @login_required
 def create_issue_and_bounty(request):
@@ -139,138 +142,14 @@ def create_issue_and_bounty(request):
             })
 
 
-def list(request):
-    # q=''
-    # status=''
-    # order='-bounty'
-    # if q:
-    #     entry_query = get_query(q.strip(), ['title', 'content', 'project', 'number', ])
-    #     issues = Issue.objects.filter(entry_query)
-    # else:
-    
+def list(request):    
     issues = Issue.objects.all().order_by('-created')
-
-    # if status and status != "all":
-    #     issues = issues.filter(status=status)
-
-    # if status == "open" or status == '' or status == None:
-    #     issues = issues.filter(bounty__ends__gt=datetime.datetime.now())
-
-    # if order.find('bounty') > -1:
-    #     issues = issues.annotate(bounty_sum=Sum('bounty__price')).order_by(order + '_sum')
-
-    # if order.find('watchers') > -1:
-    #     issues = issues.annotate(watchers_count=Count('watcher')).order_by(order + '_count')
-
-    # if order.find('project') > -1:
-    #     issues = issues.annotate(Count('id')).order_by(order)
-
-    # if order.find('number') > -1:
-    #     issues = issues.annotate(Count('id')).order_by(order)
 
     context = {
          'issues': issues,
     }
     response = render_to_response('list.html', context, context_instance=RequestContext(request))
     return response
-
-
-# #@ajax_login_required
-# def add(request):
-
-#     if issue and issue['status'] == "open":
-#         issue['bounty'] = int(request.GET.get('bounty', 0))
-#         issue['limit'] = request.GET.get('limit', 0)
-#         request.session['issue'] = issue
-#         if request.user.get_profile().balance and (int(request.user.get_profile().balance) > int(request.GET.get('bounty', 0))):
-#             if add_issue_to_database(request):
-#                 user_profile = UserProfile.objects.get(user=request.user)
-#                 user_profile.balance = int(user_profile.balance) - int(request.GET.get('bounty', 0))
-#                 request.user.get_profile().balance = user_profile.balance
-#                 user_profile.save()
-#                 message = "<span style='color: #8DC63F; font-weight:bold;'>$"\
-#                     + request.GET.get('bounty', 0) + " <span style='color:#4B4B4B'>bounty added to issue </span><strong>#"\
-#                     + str(issue['number']) + "</strong>"
-#                 messages.add_message(request, messages.SUCCESS, message)
-
-#         else:
-#             try:
-#                 wepay = WePay(production=settings.IN_PRODUCTION, access_token=settings.WEPAY_ACCESS_TOKEN)
-
-#                 ctx = {
-#                 'account_id': settings.ACCOUNT_ID,
-#                 'short_description': '$' + request.GET.get('bounty', 0) + " bounty on " + issue['project'] + " issue #" + str(issue['number']),
-#                 'type': 'PERSONAL',
-#                 'amount': int(request.GET.get('bounty', 0)),
-#                 'mode': 'iframe'
-#                 }
-#                 wepay_call_return = wepay.call('/checkout/create', ctx)
-#                 checkout_uri = wepay_call_return['checkout_uri']
-#                 message = "Adding bounty to issue #" + str(issue['number'])
-#                 messages.add_message(request, messages.SUCCESS, message)
-#             except Exception, e:
-#                 message = "%s" % e
-
-#     else:
-#         if issue['status'] != "open":
-#             error = "Issue must be open, it is " + issue['status']
-#             messages.error(request, error)
-#         storage = messages.get_messages(request)
-#         for item in storage:
-#             message += str(item)
-
-#     context = {
-#         'message': message,
-#         'url': url,
-#         'issue': issue,
-#         'wepay_host': settings.DEBUG and "stage" or "www",
-#         'checkout_uri': checkout_uri,
-#         'balance': str(request.user.get_profile().balance),
-#     }
-
-#     if request.is_ajax():
-#         storage = messages.get_messages(request)
-#         for item in storage:
-#             message += str(item)
-#         return HttpResponse(json.dumps(context))
-
-#     q = request.GET.get('q', '')
-#     status = request.GET.get('status', 'open')
-#     order = request.GET.get('order', '-bounty')
-#     context['issues'] = get_issues(q, status, order)
-
-#     template = "index.html"
-
-#     return render_to_response(template, context, context_instance=RequestContext(request))
-
-
-# def wepay_auth(request):
-#     wepay = WePay(settings.IN_PRODUCTION)
-#     return redirect(wepay.get_authorization_url("http://" + Site.objects.get(id=settings.SITE_ID).domain + '/wepay_callback', settings.CLIENT_ID))
-
-
-# def wepay_callback(request):
-#     code = request.GET.get('code')
-#     wepay = WePay(settings.IN_PRODUCTION)
-#     response = wepay.get_token("http://" + Site.objects.get(id=settings.SITE_ID).domain + '/wepay_callback', settings.CLIENT_ID, settings.CLIENT_SECRET, code)
-#     messages.add_message(request, messages.SUCCESS, "Wepay token created !" + response['access_token'])
-#     return redirect("/")
-
-
-# def post_comment(request):
-#     issue = Issue.objects.get(number='34')
-#     create_comment(issue, "Is this still active????")
-#     return HttpResponse("True")
-
-
-# def normalize_query(query_string,
-#                     findterms=re.compile(r'"([^"]+)"|(\S+)').findall,
-#                     normspace=re.compile(r'\s{2,}').sub):
-#     return [normspace(' ', (t[0] or t[1]).strip()) for t in findterms(query_string)]
-
-
-
-
 
 
 def profile(request):

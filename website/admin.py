@@ -9,7 +9,7 @@ class ServiceAdmin(admin.ModelAdmin):
          list_display.append(str(x))
 
 class BountyAdmin(admin.ModelAdmin):
-    list_display = ('issue','price','user','created','ends')
+    list_display = ('issue','price','user','created','ends','checkout_id')
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display=('user','balance','payment_service', 'payment_service_email')
