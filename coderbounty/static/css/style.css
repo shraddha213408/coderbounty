@@ -1,7 +1,7 @@
 /*
 =====================
  RESET ==============
-===================== 
+=====================
 */
 html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,samp,small,strong,sub,sup,var,b,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;outline:0;}
 article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}
@@ -22,12 +22,12 @@ input,select{vertical-align:middle}
 /*
 =====================
  GENERAL ============
-===================== 
+=====================
 */
 
 html {
 	background:url('../images/layout/pattern-00.gif') repeat 0 0;}
-body {	
+body {
 	font:normal 15px/120% 'CalistoMtRegular',serif;
 	color:#675B4D;}
 a {
@@ -38,7 +38,7 @@ a:hover {
 h1, h2, h3 {
 	font-family:'RegulatorsRegular',serif;
 	line-height:120%;
-	font-weight:normal;	
+	font-weight:normal;
 	color:#75857B;
 	-webkit-text-stroke: 0.05px;}
 h1 {font-size:40px;}
@@ -66,7 +66,7 @@ em {
 /*
 =====================
  LAYOUT =============
-===================== 
+=====================
 */
 .wrapper-global {
 	width:1190px;
@@ -164,7 +164,7 @@ em {
 .footer .footer-social .facebook:hover {background-position:-380px -30px;}
 .footer .footer-social .twitter:hover {background-position:-350px -30px;}
 .footer .footer-social .rss:hover {background-position:-410px -30px;}
-	
+
 /* Elements */
 .element-newFeature {
 	display:block;
@@ -197,7 +197,7 @@ em {
 .element-roadSign span {
 	display:block;
 	color:#A34B33;
-	font-family:'RegulatorsRegular',serif;	
+	font-family:'RegulatorsRegular',serif;
 	font-size:30px;
 	margin-bottom:6px;
 	-webkit-text-stroke: 0.05px;}
@@ -215,7 +215,7 @@ em {
 	padding-bottom:10px;}
 .table-list a:hover {
 	text-decoration:underline;}
-	
+
 .table-list .thumb {
 	width:100px;
 	text-align:center;}
@@ -272,7 +272,7 @@ em {
 	border-color:#BFB8AD;}
 
 /* FRAME */
-.frame {	
+.frame {
 	position:relative;
 	padding:0;
 	border-radius:15px;}
@@ -281,7 +281,7 @@ em {
 	z-index:10;
 	min-height:100px;
 	padding:20px 0;}
-	
+
 .frame:before,
 .frame:after,
 .frame-content:before,
@@ -312,7 +312,7 @@ em {
 .frame-dark-paper .frame-content {
 	padding-top:30px;
 	padding-bottom:30px;}
-	
+
 /*fame-light*/
 .frame-light:before {
 	background-position:0 0;
@@ -390,7 +390,7 @@ em {
 	height:43px;
 	width:76px;
 	right:-10px;
-	bottom:-4px;}
+	bottom:-2px;}
 .frame-dark-paper .bugfix-top {
 	position:relative;
 	top:20px;
@@ -412,7 +412,7 @@ em {
 	width:100%;}
 .frame .titlebar .ribbon {
 	min-width:270px;}
-	
+
 .frame .titlebar-paper {
 	position:absolute;
 	top:-30px;
@@ -445,14 +445,14 @@ em {
 /*
 =====================
  GRID ===============
-===================== 
+=====================
 */
 .grid:before,
 .grid:after {
     content: " ";
     display: table;}
 .grid:after {clear: both;}
-.grid {*zoom: 1;}	
+.grid {*zoom: 1;}
 /* col */
 .grid [class^="col-"].col-center,
 .grid [class*=" col-"].col-center {
@@ -478,7 +478,7 @@ em {
 .grid > [class^="col-"]:last-child,
 .grid > [class*=" col-"]:last-child{
 	margin-right:0;}
-	
+
 .grid .col-1 {width:40px;}
 .grid .col-2 {width:100px;}
 .grid .col-3 {width:160px;}
@@ -567,9 +567,9 @@ em {
 /*
 =====================
  RIBBON =============
-===================== 
+=====================
 */
-.ribbon {	
+.ribbon {
 	background-color:#BA5A43;
 	color:#F3EFE4;
 	text-decoration:none;
@@ -582,12 +582,12 @@ em {
 	z-index:10;}
 a.ribbon,
 button.ribbon,
-inpyt[type="submit"].ribbon {
+input[type="submit"].ribbon {
 	cursor:pointer;
 	font-family:'RegulatorsRegular',serif !important;}
 a.ribbon.ribbon-type-01,
 button.ribbon.ribbon-type-01,
-inpyt[type="submit"].ribbon.ribbon-type-01 {
+input[type="submit"].ribbon.ribbon-type-01 {
 	font-family:'CalistoMtRegular',serif !important;
 	font-size:12px;}
 
@@ -605,7 +605,7 @@ inpyt[type="submit"].ribbon.ribbon-type-01 {
 	font-size:24px;
 	margin-left:23px;
 	margin-right:23px;}
-	
+
 .ribbon.ribbon-type-01 {
 	font-size:11px !important;}
 
@@ -632,8 +632,8 @@ button.ribbon:hover:before {
 	color:#000;}
 
 button.ribbon-normal::-moz-focus-inner,
-button.ribbon-large::-moz-focus-inner { 
-	margin-top:-1px; 
+button.ribbon-large::-moz-focus-inner {
+	margin-top:-1px;
 	margin-bottom: -1px;}
 
 .ribbon:after,
@@ -713,11 +713,12 @@ button.ribbon-large::-moz-focus-inner {
 /*
 =====================
  FORM ELEMENTS ======
-===================== 
+=====================
 */
 form input[type="text"],
 form input[type="email"],
 form input[type="number"],
+form input[type="password"],
 form select,
 form textarea {
 	border:solid 2px #B3A895;
@@ -785,6 +786,10 @@ form .custom-radiobutton input:checked:before {
 	left:2px;
 	border-radius:4px;}
 
+form .errorlist {
+	color: red;
+	margin-bottom: 20px;
+}
 .form-layout {}
 .form-item:before,
 .form-item:after {
@@ -833,7 +838,7 @@ form .custom-radiobutton input:checked:before {
 /*
 =====================
  SECTIONS ===========
-===================== 
+=====================
 */
 /* Section howWorks */
 .section-howWorks {
@@ -907,7 +912,7 @@ form .custom-radiobutton input:checked:before {
 	margin-top:4px;}
 .section-latest .leader-board .frame-dark .titlebar {
 	top:-22px;}
-	
+
 /* Section - Post Bounty */
 .section-postBounty {
 	padding-top:70px;
@@ -915,7 +920,7 @@ form .custom-radiobutton input:checked:before {
 .section-postBounty .bounty-post {
 	padding-left:30px;
 	padding-top:45px;}
-	
+
 .section-postBounty .bounty-post .label {
 	text-align:right;
 	width:110px;
@@ -925,7 +930,7 @@ form .custom-radiobutton input:checked:before {
 	margin-right:5px;}
 .section-postBounty .bounty-post .value .custom-radiobutton {
 	margin-left:10px;}
-	
+
 .section-postBounty .bounty-post input[type="text"],
 .section-postBounty .bounty-post textarea {
 	width:660px;}
@@ -946,7 +951,7 @@ form .custom-radiobutton input:checked:before {
 	color:#463527;
 	margin-bottom:15px;}
 .section-postBounty .bounty-info h2 a {
-	display:block;	
+	display:block;
 	color:#A34B33;
 	font-size:15px;
 	text-decoration:underline;}
@@ -1188,7 +1193,7 @@ form .custom-radiobutton input:checked:before {
 	height:165px;
 	overflow:hidden;
 	border:solid 2px #94856E;
-	background-color:#fff;	
+	background-color:#fff;
 	text-align:center;
 	margin-bottom:5px;}
 .section-profile .profile-info .img-holder img {
@@ -1369,11 +1374,11 @@ form .custom-radiobutton input:checked:before {
 .codeIssue-head .status li.id strong {
 	color:#A34B33;}
 
-.codeIssue-head .status li [class^="icon-"], 
+.codeIssue-head .status li [class^="icon-"],
 .codeIssue-head .status li [class*=" icon-"] {
 	color:#4D6F59;
 	text-transform: uppercase;}
-.codeIssue-head .status li [class^="icon-"] span, 
+.codeIssue-head .status li [class^="icon-"] span,
 .codeIssue-head .status li [class*=" icon-"] span {
 	padding-left: 3x;
 	font-size: 13px;}
@@ -1455,7 +1460,7 @@ form .custom-radiobutton input:checked:before {
 	text-decoration: none;}
 
 .item-comment {
-	margin-top: 25px;} 
+	margin-top: 25px;}
 .item-comment .img-holder {
 	position: absolute;
 	left: 0;
@@ -1514,4 +1519,88 @@ button.edit-profile{
 }
 span#email-help-text{
 	font-size: 0.8em;
+}
+
+
+/*
+=====================
+ LOGIN PAGE==========
+=====================
+*/
+.section-login {}
+.section-login .login-grid {
+	color: black;
+	margin: 40px auto;
+	width: 450px;
+}
+.section-login .login-grid .login-intro {
+	margin-bottom: 20px;
+	text-align: center;
+}
+.section-login .login-grid .socialaccount_ballot {
+	margin: 20px 0;
+}
+.section-login .login-grid .socialaccount_providers {
+	overflow: hidden;
+}
+.section-login .login-grid .socialaccount_providers li {
+	float: left;
+	padding: 0;
+	text-align: center;
+	height: 35px;
+	width: 33%;
+}
+.section-login .login-grid .login-or {
+	margin-top: 10px;
+	text-align: center;
+}
+
+.socialaccount_provider {
+	display: inline-block;
+	height: 100%;
+    overflow: hidden;
+	text-indent: 100%;
+    white-space: nowrap;
+	width: 100%;
+}
+.socialaccount_provider.bitbucket {
+	background: url('../images/logos/logo-bitbucket.png') no-repeat center center;
+}
+.socialaccount_provider.github {
+	background: url('../images/logos/logo-github.png') no-repeat center center;
+}
+.socialaccount_provider.google {
+	background: url('../images/logos/logo-google.png') no-repeat center center;
+}
+.section-login .form-login {
+}
+.section-login .form-login input[type="text"],
+.section-login .form-login input[type="password"] {
+	margin-bottom: 5px;
+	padding: 10px;
+	width: 100%;
+}
+.section-login .form-login input[type="text"] {
+	margin-bottom: 20px;
+}
+
+
+.section-login .secondaryAction {
+	float: right;
+    position: relative;
+    top: -19px;
+}
+.section-login .btn-login-wrapper {
+	bottom: 0;
+	float: left;
+	position: relative;
+}
+.section-login .btn-login-wrapper .btn-login {
+	background: url('../images/layout/css-sprites.png') no-repeat -775px 0px;
+	cursor: pointer;
+	outline: none;
+	width: 190px;
+}
+.section-login .btn-login-wrapper .btn-login:hover {
+	background-position: -775px -53px;
 }
