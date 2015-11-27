@@ -1527,7 +1527,11 @@ span#email-help-text{
  LOGIN PAGE==========
 =====================
 */
-.section-login {}
+.section-login {
+	padding-top:70px;
+	padding-bottom:50px;
+}
+
 .section-login .login-grid {
 	color: black;
 	margin: 40px auto;

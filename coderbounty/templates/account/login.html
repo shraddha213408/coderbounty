@@ -9,7 +9,7 @@
 {% block content %}
 <div class="section-login">
     <div class="wrapper-global grid">
-        <div class="col-20">
+        <div class="col-12">
             <section class="frame frame-dark-paper">
                 <span class="bugfix-top"></span>
 
@@ -28,7 +28,7 @@
                             <ul class="socialaccount_providers">
                                 {% include "socialaccount/snippets/provider_list.html" with process="login" %}
                             </ul>
-                            <div class="login-or">{% trans 'or' %}</div>
+                           
                         </div>
 
                         {% include "socialaccount/snippets/login_extra.html" %}
@@ -51,6 +51,7 @@
                         </form>
                     </div>
                 </div>
+                <span class="bugfix-bottom"></span>
             </section>
         </div>
     </div>
