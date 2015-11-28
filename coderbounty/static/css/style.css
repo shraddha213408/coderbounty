@@ -92,7 +92,7 @@ em {
 .navHeader li a {
 	color:#463527;
 	text-decoration:none;
-	font-size:12px;}
+	font-size:14px;}
 .navHeader li a {
 	font-family:'CalistoMtBold',serif;}
 .navHeader li:before {
@@ -140,7 +140,7 @@ em {
 	background:url('../images/layout/css-sprites.png') no-repeat center -450px;}
 .footer .copyrights {
 	background:url('../images/layout/pattern-05.png') repeat 0 0;
-	height:150px;
+	height:auto;
 	padding-top:50px;}
 .footer .footer-social {
 	overflow:hidden;
@@ -150,6 +150,17 @@ em {
 	display:inline-block;
 	*zoom:1;
 	*display:inline;}
+.footer .footer-links li {
+	display:inline;}
+
+.footer .footer-links li:first-child:before {
+	content:'';}
+.footer .footer-links li:before {
+	color:#A79C8B;
+	content:'|';
+	position:relative;
+	left:-1px;}
+
 .footer .footer-social a {
 	display:inline-block;
 	*zoom:1;
@@ -429,6 +440,15 @@ em {
 	padding-top:8px;
 	font-size:32px;
 	color:#A34B33;}
+
+.listing span {
+	margin-top:24px;
+	margin-bottom:10px;
+} 
+
+.filter{
+	padding-top:24px;
+}
 
 /*frame frame-noLines*/
 .frame.frame-noLines .table-list {
@@ -1047,7 +1067,7 @@ form .errorlist {
 
 .section-issues .headbar {
 	text-align:center;
-	margin-bottom:30px;}
+	margin-bottom:100px;}
 .section-issues .headbar h2 {
 	font-family:'AdamantcRegular',serif;
 	text-transform:uppercase;
