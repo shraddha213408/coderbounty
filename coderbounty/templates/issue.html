@@ -171,7 +171,7 @@ function initializeClock(id, endtime){
                   <table>
                     <tr>
                       <td><p>Primary Language:</p></td>
-                      <td><img src="{{STATIC_URL}}images/logos/logo-{{ object.language|slugify }}.png" alt="{{ object.language }}" /></td>
+                      <td><span class="icon-{{issue.language|slugify}}" style="font-size:21px;"></span>{{issue.language}}</td>
                     </tr>
                   </table>
                 </div>

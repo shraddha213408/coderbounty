@@ -49,17 +49,23 @@ class Issue(models.Model):
         (PAID_STATUS, 'paid'),
     )
     LANGUAGES = (
-        ('Java', 'Java'),
+        ('C#', 'C#'),
         ('C', 'C'),
         ('C++', 'C++'),
-        ('PHP', 'PHP'),
-        ('VB', 'VB'),
-        ('Python', 'Python'),
-        ('C#', 'C#'),
-        ('JavaScript', 'JavaScript'),
-        ('Perl', 'Perl'),
-        ('Ruby', 'Ruby'),
+        ('CSS', 'CSS'),
+        ('Erlang', 'Erlang'),
+        ('Haskell', 'Haskell'),
         ('HTML', 'HTML'),
+        ('Java', 'Java'),
+        ('JavaScript', 'JavaScript'),
+        ('NodeJS', 'NodeJS'),
+        ('Perl', 'Perl'),
+        ('PHP', 'PHP'),
+        ('Python', 'Python'),
+        ('Ruby', 'Ruby'),
+        ('Scala', 'Scala'),
+        ('Shell', 'Shell'),
+        ('VB', 'VB'),
     )
 
     service = models.ForeignKey(Service, related_name='+')

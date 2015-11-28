@@ -1129,12 +1129,16 @@ form .errorlist {
 	position:relative;}
 .issues .issue-status {
 	position:absolute;
-	right:-14px;
+	right:17px;
 	top:-10px;
 	width:24px;
 	height:24px;
-	font-size:24px;}
-.issues .issue-status .icon-custom_yes {color:#89A594;}
+	font-size:24px;
+    z-index: 11;}
+.issues .issue-status .icon-banknote {color:#89A594;}
+.issues .issue-status .icon-clock {color:#C9816F;}
+.issues .issue-status .icon-trophy color:#D3C9B9;}
+
 .issues .issue-id {
 	font-family:'CalistoMtBold',serif;
 	color:#A34B33;
