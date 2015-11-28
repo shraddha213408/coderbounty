@@ -26,7 +26,7 @@ urlpatterns = patterns('',
     url(r'^parse_url_ajax/$', 'website.views.parse_url_ajax', name='parse_url_ajax'),
     url(r'^post/$', 'website.views.create_issue_and_bounty', name='post'),
     url(r'^profile/$', 'website.views.profile', name='profile'),
-    url(r'^profile/(?P<slug>[\w-]+)/$', UserProfileDetailView.as_view(), name="profile"),
+    url(r'^profile/(?P<slug>[^/]+)/$', UserProfileDetailView.as_view(), name="profile"),
     url(r'^robots.txt$', TemplateView.as_view(template_name='robots.txt')),
     url(r'^terms/$', TemplateView.as_view(template_name='terms.html'), name='terms'),
 )
