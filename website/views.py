@@ -15,7 +15,7 @@ from django.shortcuts import render_to_response, RequestContext, redirect, rende
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView
 from models import Issue, UserProfile, Bounty, Service
-from utils import get_issue, leaderboard, post_to_slack, submit_issue_taker
+from utils import get_issue_helper, leaderboard, post_to_slack, submit_issue_taker
 from wepay import WePay
 from time import strftime
 import datetime
@@ -24,7 +24,8 @@ import json
 
 def parse_url_ajax(request):
     url = request.POST.get('url', '')
-    issue = get_issue(request, url)
+    helper = get_issue_helper(request, url)
+    issue = helper.get_issue(request, url)
     return HttpResponse(json.dumps(issue))
 
 
@@ -46,8 +47,10 @@ def create_issue_and_bounty(request):
     user = request.user
 
     if request.method == 'GET':
-        if request.GET.get('url'):
-            issue_data = get_issue(request, request.GET.get('url'))
+        url = request.GET.get('url')
+        if url:
+            helper = get_issue_helper(request, url)
+            issue_data = helper.get_issue(request, url)
             if not issue_data:
                 messages.error(request, 'Please provide an valid issue url')
                 return redirect('/post')
@@ -71,7 +74,8 @@ def create_issue_and_bounty(request):
             return render(request, 'post.html', {
                 'languages': languages
             })
-        issue_data = get_issue(request, url)
+        helper = get_issue_helper(request, url)
+        issue_data = helper.get_issue(request, url)
         if issue_data:
             service = Service.objects.get(name=issue_data['service'])
             instance = Issue(
