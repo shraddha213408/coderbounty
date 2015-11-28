@@ -14,7 +14,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response, RequestContext, redirect, render
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView
-from models import Issue, UserProfile, Bounty, Service
+from models import Issue, UserProfile, Bounty, Service, Taker
 from utils import get_issue_helper, leaderboard, post_to_slack, submit_issue_taker
 from wepay import WePay
 from time import strftime
@@ -278,3 +278,13 @@ def issueTaken(request):
         response_data['username'] = str(username)
         issueTaken = submit_issue_taker(issue_take_data)
         return HttpResponse(json.dumps(response_data), content_type="application/json")
+def issueTakenById(request,id):
+    print id
+    issue = Issue.objects.get(pk=id)
+    taker = Taker.objects.get(issue=issue)
+    print taker.issu_id
+    response_data = {}
+    response_data['status'] = str(taker.status)
+    response_data['issueTakenTime'] = str(taker.issueTaken)
+    response_data['username'] = str(taker.user)
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
