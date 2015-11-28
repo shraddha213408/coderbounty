@@ -1,42 +1,31 @@
 from .forms import IssueCreateForm, BountyCreateForm, UserProfileForm
 from actstream import action
-from actstream.models import Action
-from actstream.models import user_stream
-from BeautifulSoup import BeautifulSoup
+from actstream.models import Action, user_stream
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout, get_user_model
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.sites.models import Site
 from django.core import serializers
-from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
-from django.db.models import Q, Sum, Count
-from django.http import HttpResponseNotFound, HttpResponseServerError, HttpResponse
-from django.shortcuts import render_to_response, RequestContext, redirect, get_object_or_404, render
-from django.views.generic import ListView, DetailView, FormView
+from django.db.models import Count
+from django.http import HttpResponse
+from django.shortcuts import render_to_response, RequestContext, redirect, render
+from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView
-from models import Issue, UserProfile, Bounty, Service, Taker
-from utils import get_issue, add_issue_to_database, get_twitter_count, get_facebook_count, create_comment, issue_counts, leaderboard, get_hexdigest, post_to_slack, submit_issue_taker
+from models import Issue, UserProfile, Bounty, Service
+from utils import get_issue, leaderboard, post_to_slack, submit_issue_taker
 from wepay import WePay
-import cookielib
-import time
-from time import gmtime, strftime
+from time import strftime
 import datetime
 import json
-import random
-import re
-import string
-import urllib
-import urllib2
 
 
 def parse_url_ajax(request):
-     url = request.POST.get('url', '')
-     issue = get_issue(request, url)
-     return HttpResponse(json.dumps(issue))
+    url = request.POST.get('url', '')
+    issue = get_issue(request, url)
+    return HttpResponse(json.dumps(issue))
 
 
 def home(request, template="index.html"):
@@ -65,18 +54,18 @@ def create_issue_and_bounty(request):
 
             form = IssueCreateForm(
                 initial={
-                'issueUrl': request.GET.get('url'), 
-                'title': issue_data['title'],
-                'content': issue_data['content'] or "Added from Github" 
+                    'issueUrl': request.GET.get('url'),
+                    'title': issue_data['title'],
+                    'content': issue_data['content'] or "Added from Github"
                 })
         else:
-             form = IssueCreateForm()
+            form = IssueCreateForm()
         return render(request, 'post.html', {
             'languages': languages,
             'form': form,
         })
     if request.method == 'POST':
-        url = request.POST.get('issueUrl','')
+        url = request.POST.get('issueUrl', '')
         if not url:
             messages.error(request, 'Please provide an issue url')
             return render(request, 'post.html', {
@@ -85,12 +74,16 @@ def create_issue_and_bounty(request):
         issue_data = get_issue(request, url)
         if issue_data:
             service = Service.objects.get(name=issue_data['service'])
-            instance = Issue(number = issue_data['number'],
-            project=issue_data['project'],user = issue_data['user'],service=service)
+            instance = Issue(
+                number=issue_data['number'],
+                project=issue_data['project'],
+                user=issue_data['user'],
+                service=service
+            )
         else:
             return render(request, 'post.html', {
                 'languages': languages,
-                'message':'Please provide a propper issue url',
+                'message': 'Please provide a propper issue url',
             })
         form = IssueCreateForm(request.POST, instance=instance)
         bounty_form = BountyCreateForm(request.POST)
@@ -99,21 +92,22 @@ def create_issue_and_bounty(request):
             price = bounty_form.cleaned_data['price']
             if int(price) < 5:
                 return render(request, 'post.html', {
-                	'languages': languages,
-                	'message':'Bounty must be greater than $5',
+                    'languages': languages,
+                    'message': 'Bounty must be greater than $5',
                 })
             try:
                 issue = form.save()
             except:
-                issue = Issue.objects.get(number = issue_data['number'], 
-                    project=issue_data['project'],user = issue_data['user'],service=service)
-                #issue exists
-            
+                issue = Issue.objects.get(
+                    number=issue_data['number'],
+                    project=issue_data['project'],
+                    user=issue_data['user'],
+                    service=service)
 
-            bounty_instance = Bounty(user = user,issue = issue,price = price)
-            
-            data = serializers.serialize('xml', [ bounty_instance, ])
-            
+            bounty_instance = Bounty(user=user, issue=issue, price=price)
+
+            data = serializers.serialize('xml', [bounty_instance, ])
+
             wepay = WePay(settings.WEPAY_IN_PRODUCTION, settings.WEPAY_ACCESS_TOKEN)
             wepay_data = wepay.call('/checkout/create', {
                 'account_id': settings.WEPAY_ACCOUNT_ID,
@@ -135,18 +129,18 @@ def create_issue_and_bounty(request):
         else:
             return render(request, 'post.html', {
                 'languages': languages,
-                'message':form.errors,
+                'message': form.errors,
                 'errors': form.errors,
-                'form':form,
-                'bounty_errors':bounty_form.errors,
+                'form': form,
+                'bounty_errors': bounty_form.errors,
             })
 
 
-def list(request):    
+def list(request):
     issues = Issue.objects.all().order_by('-created')
 
     context = {
-         'issues': issues,
+        'issues': issues,
     }
     response = render_to_response('list.html', context, context_instance=RequestContext(request))
     return response
@@ -154,9 +148,9 @@ def list(request):
 
 def profile(request):
     """Redirects to profile page if the requested user is loggedin
-    """ 
+    """
     try:
-        return redirect('/profile/'+request.user.username)
+        return redirect('/profile/' + request.user.username)
     except Exception:
         return redirect('/')
 
@@ -173,7 +167,7 @@ class UserProfileDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(UserProfileDetailView, self).get_context_data(**kwargs)
-        context['activities'] = user_stream(self.get_object(), with_user_activity=True)        
+        context['activities'] = user_stream(self.get_object(), with_user_activity=True)
         return context
 
 
@@ -197,32 +191,26 @@ class UserProfileEditView(SuccessMessageMixin, UpdateView):
         user.last_name = form.cleaned_data.get("last_name")
         user.email = form.cleaned_data.get("email")
         user.save()
-        
+
         return super(UserProfileEditView, self).form_valid(form)
 
     def get_success_message(self, cleaned_data):
-        return self.success_message 
+        return self.success_message
 
 
 class LeaderboardView(ListView):
-    template_name="leaderboard.html"
-    
+    template_name = "leaderboard.html"
+
     def get_queryset(self):
-        return User.objects.all().annotate(null_position=Count('userprofile__balance')).order_by('-null_position', '-userprofile__balance', '-last_login')
-    
+        return User.objects.all().annotate(
+            null_position=Count('userprofile__balance')).order_by(
+            '-null_position', '-userprofile__balance', '-last_login')
+
     def get_context_data(self, **kwargs):
         context = super(LeaderboardView, self).get_context_data(**kwargs)
-        context['leaderboard'] = leaderboard()        
+        context['leaderboard'] = leaderboard()
         return context
 
-def help(request):
-    return render_to_response("help.html", context_instance=RequestContext(request))
-
-def terms(request):
-    return render_to_response("terms.html", context_instance=RequestContext(request))
-
-def about(request):
-    return render_to_response("about.html", context_instance=RequestContext(request))
 
 class IssueDetailView(DetailView):
     model = Issue
@@ -235,21 +223,28 @@ class IssueDetailView(DetailView):
             wepay_data = wepay.call('/checkout/', {
                 'checkout_id': self.request.GET.get('checkout_id'),
             })
-            
+
             for obj in serializers.deserialize("xml", wepay_data['long_description'], ignorenonexistent=True):
                 obj.object.created = datetime.datetime.now()
                 obj.object.checkout_id = self.request.GET.get('checkout_id')
                 obj.save()
                 action.send(self.request.user, verb='placed a $' + str(obj.object.price) + ' bounty on ', target=obj.object.issue)
-            	post_to_slack(obj.object)
+                post_to_slack(obj.object)
 
-        
         return super(IssueDetailView, self).get(request, *args, **kwargs)
 
+    def post(self, request, *args, **kwargs):
+        if self.get_object().status == 'open':
+            if self.get_object().get_api_data()['state'] == 'closed':
+                print "closed"
+                object = self.get_object()
+                object.status = 'in review'
+                object.save()
+        return super(IssueDetailView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(IssueDetailView, self).get_context_data(**kwargs)
-        context['leaderboard'] = leaderboard()        
+        context['leaderboard'] = leaderboard()
         return context
 
     def get_object(self):
@@ -258,9 +253,10 @@ class IssueDetailView(DetailView):
             object.save()
             return object
 
+
 def issueTaken(request):
     if request.method == 'POST':
-        issueId =  request.POST.get('id')
+        issueId = request.POST.get('id')
         _date = strftime("%c")
         today = datetime.datetime.today()
         response_data = {}

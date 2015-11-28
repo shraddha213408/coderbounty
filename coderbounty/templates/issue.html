@@ -140,14 +140,16 @@ function initializeClock(id, endtime){
               </ul>
           </div>
           <h1>{{ object.title }}</h1>
-          <!-- -->
+          <!-- --><form action="#" method="post" id="refresh_form">{% csrf_token %}
           <div class="status">
               <ul>
                   <li class="id"><strong>#{{ object.number }}</strong> {{object.project}}</li>
-                  <li>Status: <span class="icon-{{object.status|slugify}}"><span> {{object.status}}</span><span></li>
+                  <li>Status: <span class="icon-{{object.status|slugify}}"><span> {{object.status}}</span><span>
+                  <a href="javascript:document.getElementById('refresh_form').submit();" title="Refresh"><span  class="icon-loop"></span></a></li>
                   <li>Views: <span class="icon-stats"> <strong>{{object.views}}</strong></span></li>
               </ul>
           </div>
+          </form>
         </div>
         <!-- codeIssue-content -->
         <div class="codeIssue-content grid">

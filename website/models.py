@@ -14,6 +14,8 @@ import random
 import urllib2
 from actstream import action
 import os
+import json
+
 
 YEAR_CHOICES = [(str(yr), str(yr)) for yr in range(1950, 2020)]
 
@@ -86,11 +88,6 @@ class Issue(models.Model):
     def bounty(self):
         return int(self.bounties().aggregate(Sum('price'))['price__sum'] or 0)
 
-    def time_remaining(self):
-        if self.status == self.OPEN_STATUS:
-            return timeuntil(self.bounties().aggregate(Min('ends'))['ends__min'], datetime.datetime.now()).split(',')[0]
-        return timeuntil(self.modified + datetime.timedelta(days=3), datetime.datetime.now()).split(',')[0]
-
     def html_url(self):
         service = self.service
         template = Template(service.link_template)
@@ -101,6 +98,10 @@ class Issue(models.Model):
         template = Template(service.template)
         return service.api_url + template.substitute({'user': self.user, 'project': self.project, 'number': self.number})
 
+    def get_api_data(self):
+        if self.service.name == "Github":
+            return json.load(urllib2.urlopen(self.api_url()))
+
     def __unicode__(self):
         return "%s issue #%s" % (self.project, self.number)
 
@@ -110,7 +111,8 @@ class Issue(models.Model):
     class Meta:
         ordering = ['-created']
         unique_together = ("service", "number", "project")
-  
+
+      
 
     # there was an issue when saving from admin   
     # def save(self, *args, **kwargs):
