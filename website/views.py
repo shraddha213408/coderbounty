@@ -14,7 +14,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response, RequestContext, redirect, render
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView
-from models import Issue, UserProfile, Bounty, Service
+from models import Issue, UserProfile, Bounty, Service, Taker
 from utils import get_issue_helper, leaderboard, post_to_slack, submit_issue_taker
 from wepay import WePay
 from time import strftime
@@ -268,6 +268,7 @@ def issueTaken(request):
         response_data['issueTakenTime'] = _date
 
         # issue = Issue.objects.get(pk=issueId)
+
         issue_take_data = {
             "issue": issueId,
             "issueStartTime": today,
@@ -276,5 +277,17 @@ def issueTaken(request):
         }
         username = issue_take_data["user"]
         response_data['username'] = str(username)
+        # print request.user.userprofile
+        # import pdb; pdb.set_trace()
         issueTaken = submit_issue_taker(issue_take_data)
         return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+def issueTakenById(request,id):
+    print id
+    issue = Issue.objects.get(pk=id)
+    taker = Taker.objects.get(issue=issue)
+    response_data = {}
+    response_data['status'] = str(taker.status)
+    response_data['issueTakenTime'] = str(taker.issueTaken)
+    response_data['username'] = str(taker.user)
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
