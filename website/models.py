@@ -13,6 +13,9 @@ from django.db.models import signals
 import random
 import urllib2
 from actstream import action
+import os
+import json
+
 
 YEAR_CHOICES = [(str(yr), str(yr)) for yr in range(1950, 2020)]
 
@@ -85,11 +88,6 @@ class Issue(models.Model):
     def bounty(self):
         return int(self.bounties().aggregate(Sum('price'))['price__sum'] or 0)
 
-    def time_remaining(self):
-        if self.status == self.OPEN_STATUS:
-            return timeuntil(self.bounties().aggregate(Min('ends'))['ends__min'], datetime.datetime.now()).split(',')[0]
-        return timeuntil(self.modified + datetime.timedelta(days=3), datetime.datetime.now()).split(',')[0]
-
     def html_url(self):
         service = self.service
         template = Template(service.link_template)
@@ -100,6 +98,10 @@ class Issue(models.Model):
         template = Template(service.template)
         return service.api_url + template.substitute({'user': self.user, 'project': self.project, 'number': self.number})
 
+    def get_api_data(self):
+        if self.service.name == "Github":
+            return json.load(urllib2.urlopen(self.api_url()))
+
     def __unicode__(self):
         return "%s issue #%s" % (self.project, self.number)
 
@@ -109,7 +111,8 @@ class Issue(models.Model):
     class Meta:
         ordering = ['-created']
         unique_together = ("service", "number", "project")
-  
+
+      
 
     # there was an issue when saving from admin   
     # def save(self, *args, **kwargs):
@@ -212,11 +215,11 @@ def post_to_twitter(sender, instance, *args, **kwargs):
     # check if there's a twitter account configured
     import tweepy
     try:
-        consumer_key = settings.TWITTER_CONSUMER_KEY
-        consumer_secret = settings.TWITTER_CONSUMER_SECRET
-        access_key = settings.TWITTER_ACCESS_KEY
-        access_secret = settings.TWITTER_ACCESS_SECRET
-    except AttributeError:
+        consumer_key = os.environ['TWITTER_CONSUMER_KEY']
+        consumer_secret = os.environ['TWITTER_CONSUMER_SECRET']
+        access_key = os.environ['TWITTER_ACCESS_KEY']
+        access_secret = os.environ['TWITTER_ACCESS_SECRET']
+    except KeyError:
         print 'WARNING: Twitter account not configured.'
         return False
 
@@ -259,15 +262,82 @@ def delete_issue(sender, instance, *args, **kwargs):
 
 # signals.post_save.connect(alert_winner, sender=Issue)
 #todo: fix this so it doesn't throw an error
-#signals.post_save.connect(post_to_twitter, sender=Bounty)
+signals.post_save.connect(post_to_twitter, sender=Bounty)
 signals.post_delete.connect(delete_issue, sender=Bounty)
 
 
 class Solution(models.Model):
+ 
+    IN_REVIEW = 'in review'
+    MERGED = 'Merged or accepted'
+    REQUESTED_REVISION = 'Requested for revision'
+    STATUS_CHOICES = (
+        (IN_REVIEW, 'In review'),
+        (MERGED, 'Merged or accepted'),
+        (REQUESTED_REVISION, 'Requested for revision'),
+    )
+ 
+
     issue = models.ForeignKey(Issue)
     submitted_by = models.ForeignKey(UserProfile)
     submitted_at = models.DateTimeField(auto_now_add=True)
     pr_link = models.URLField(help_text="Pull Request Link ")
+    status = models.CharField(max_length=250 ,choices=STATUS_CHOICES, default=IN_REVIEW)
 
     def __unicode__(self):
         return str(self.issue)+" solution"
+
+    def notify_owner(self):
+         """Email Bounty Owner
+         """
+         pass
+ 
+    def notify_coder(self, status):
+        "notify coder about solution status" 
+        pass
+
+    def notify_coderbounty(self):
+        "notify coderbounty to realse funds"
+        pass
+ 
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            #notify owner if there's a new solution
+            self.notify_owner()
+        
+        if self.status == Solution.REQUESTED_REVISION:
+            #notify coder to revision the solution
+            self.notify_coder(status=self.status)
+
+        if status.status == Solution.MERGED:
+            #ask cb to realease bounty
+            #notify coder that PR has been accepted
+            self.notify_coderbounty()
+            self.notify_coder(status=self.status)
+
+        super(Solution, self).save(*args, **kwargs)
+
+class Taker(models.Model):
+    """
+     allow the user to take an issue
+    """
+    TAKEN = 'taken'
+    OPEN = 'open'
+    STATUS_ISSUE = (
+        (TAKEN, 'taken'),
+        (OPEN, 'open')
+    )
+    is_taken = models.BooleanField(default=True)
+    issue = models.ForeignKey(Issue)
+    user = models.ForeignKey(User)
+    status = models.CharField(max_length=255, choices=STATUS_ISSUE, default=OPEN)
+    issueTaken = models.DateTimeField(auto_now_add=True)
+    issueEnd = models.DateTimeField(null=True, blank=True)
+    
+
+    def time_end(self):
+        if self.status == self.TAKEN:
+            pass
+        pass
+        # return timeuntil(self.bounties().aggregate(Min('ends'))['ends__min'], datetime.datetime.now()).split(',')[0]
+        # return timeuntil(self.modified + datetime.timedelta(days=3), datetime.datetime.now()).split(',')[0]

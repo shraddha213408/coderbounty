@@ -33,9 +33,11 @@
                             <li><span class="label">Taken:</span><span class="value">0</span></li>
                             <li><span class="label">Closed:</span><span class="value">0</span></li>
                         </ul>
-                        {% if object.username == user.username %}
+                        {% if request.user.is_authenticated %}
+                        {% if object.username == request.user.username %}
                         	<a href="/edit_profile/" class="ribbon ribbon-03 ribbon-type-01 ribbon-normal ribbon-brown-dark">Edit profile</a>
-						{% endif %}                        
+						{% endif %}                  
+						{% endif %}      
 						<button class="ribbon ribbon-03 ribbon-type-01 ribbon-normal"><span></span>Invite</button>
 						{% get_social_accounts user as accounts %}
 
