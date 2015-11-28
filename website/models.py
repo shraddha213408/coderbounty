@@ -267,13 +267,55 @@ signals.post_delete.connect(delete_issue, sender=Bounty)
 
 
 class Solution(models.Model):
+ 
+    IN_REVIEW = 'in review'
+    MERGED = 'Merged or accepted'
+    REQUESTED_REVISION = 'Requested for revision'
+    STATUS_CHOICES = (
+        (IN_REVIEW, 'In review'),
+        (MERGED, 'Merged or accepted'),
+        (REQUESTED_REVISION, 'Requested for revision'),
+    )
+ 
+
     issue = models.ForeignKey(Issue)
     submitted_by = models.ForeignKey(UserProfile)
     submitted_at = models.DateTimeField(auto_now_add=True)
     pr_link = models.URLField(help_text="Pull Request Link ")
+    status = models.CharField(max_length=250 ,choices=STATUS_CHOICES, default=IN_REVIEW)
 
     def __unicode__(self):
         return str(self.issue)+" solution"
+
+    def notify_owner(self):
+         """Email Bounty Owner
+         """
+         pass
+ 
+    def notify_coder(self, status):
+        "notify coder about solution status" 
+        pass
+
+    def notify_coderbounty(self):
+        "notify coderbounty to realse funds"
+        pass
+ 
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            #notify owner if there's a new solution
+            self.notify_owner()
+        
+        if self.status == Solution.REQUESTED_REVISION:
+            #notify coder to revision the solution
+            self.notify_coder(status=self.status)
+
+        if status.status == Solution.MERGED:
+            #ask cb to realease bounty
+            #notify coder that PR has been accepted
+            self.notify_coderbounty()
+            self.notify_coder(status=self.status)
+
+        super(Solution, self).save(*args, **kwargs)
 
 class Taker(models.Model):
     """
