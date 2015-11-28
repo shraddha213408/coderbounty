@@ -402,6 +402,7 @@ def issueTaken(request):
         response_data['issueTakenTime'] = _date
 
         # issue = Issue.objects.get(pk=issueId)
+
         issue_take_data = {
             "issue": issueId,
             "issueStartTime": today,
@@ -410,5 +411,15 @@ def issueTaken(request):
         }
         username = issue_take_data["user"]
         response_data['username'] = str(username)
+        # print request.user.userprofile
+        # import pdb; pdb.set_trace()
         issueTaken = submit_issue_taker(issue_take_data)
         return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+def issueTakenById(request,id):
+    print id
+    issue = Issue.objects.get(pk=id)
+    for taker in Taker.objects.all():
+        print taker
+    # print issue, taker
+    return HttpResponse("OK")

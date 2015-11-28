@@ -6,7 +6,9 @@ from django.views.generic.base import TemplateView
 from rest_framework import routers, serializers, viewsets
 from website.models import Issue, Service
 from django.contrib.auth.models import User
-
+from website import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 admin.autodiscover()
 
@@ -18,6 +20,7 @@ urlpatterns = patterns('',
     url(r'^list/$', 'website.views.list', name='list'),
     url(r"^issue/(?P<slug>\w+)/$", IssueDetailView.as_view(), name="issue"),
     url(r'^issueTaken/$', 'website.views.issueTaken', name="Taker"),
+    url(r'^issueTaken/(?P<id>\w+)/$', views.issueTakenById, name="Taker"),
     url(r'^profile/$', 'website.views.profile', name='profile'),
     url(r"^profile/(?P<slug>[\w-]+)/$", UserProfileDetailView.as_view(), name="profile"),
     url(r'^edit_profile/$', login_required(UserProfileEditView.as_view()), name="edit_profile"),

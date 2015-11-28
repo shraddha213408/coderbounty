@@ -186,36 +186,6 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.user.email
 
-class Taker(models.Model):
-    """
-     allow the user to take an issue
-    """
-    TAKEN = 'taken'
-    OPEN = 'open'
-    STATUS_ISSUE = (
-        (TAKEN, 'taken'),
-        (OPEN, 'open')
-    )
-    is_taken = models.BooleanField(default=True)
-    issue = models.ForeignKey(Issue)
-    user = models.ForeignKey(User)
-    status = models.CharField(max_length=255, choices=STATUS_ISSUE, default=OPEN)
-    issueTaken = models.DateTimeField(auto_now_add=True)
-    issueEnd = models.DateTimeField(null=True, blank=True)
-    
-
-    def time_end(self):
-        if self.status == self.TAKEN:
-            pass
-        pass
-            # return timeuntil(self.bounties().aggregate(Min('ends'))['ends__min'], datetime.datetime.now()).split(',')[0]
-        # return timeuntil(self.modified + datetime.timedelta(days=3), datetime.datetime.now()).split(',')[0]
-
-
-
-    def __unicode__(self):
-        return self.name
-
 def create_profile(sender, **kwargs):
     user = kwargs["instance"]
     if kwargs["created"]:

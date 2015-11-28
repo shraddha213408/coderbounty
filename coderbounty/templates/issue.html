@@ -7,13 +7,6 @@
   <!-- Content -->
 <style type="text/css">
 
-h1{
-  color: #396;
-  font-weight: 100;
-  font-size: 40px;
-  margin: 40px 0px 20px;
-}
-
 #clockdiv{
     font-family: sans-serif;
     color: #fff;
@@ -44,6 +37,54 @@ h1{
 </style>
 <script>
 $(document).ready(function(){
+    var issueId = window.location.pathname
+    issueId = issueId.split('/')
+    issueId = issueId[2]
+    console.log(issueId)
+      $.ajax({
+        url: "/issueTaken/"+issueId,
+        // data: { csrfmiddlewaretoken: "{{ csrf_token }}",   // < here 
+        //     status : "taken",
+        //     id: issueId,
+        //   },
+        type: "GET",
+        error: function(res) {
+          console.log("errr", res)
+        },
+        success: function(res) {
+          console.log("res", res)
+          // $(".username").html(res.username + ' has taken this issue and has this much time to submit a solution')
+          // $("#starttime").html(res.issueTakenTime)
+          // $("#takeBounty").html(res.status)
+          // $('#takeBounty').unbind('click');
+          // var issueTakenTime = res.issueTakenTime
+          // var d = new Date(issueTakenTime)
+          // var hrs = d.getHours()+24;
+          // var endtime = new Date(d.setHours(hrs));
+          // $("#endtime").html(endtime)
+          // initializeClock('clockdiv', endtime);
+          // $(".codeIssueTaker").show()
+          // var monthNames = [
+          //   "January", "February", "March",
+          //   "April", "May", "June", "July",
+          //   "August", "September", "October",
+          //   "November", "December"
+          // ];
+          // var day = d.getDate();
+          // var monthIndex = d.getMonth();
+          // var year = d.getFullYear();
+          // $("#takers").append(
+          // '<td class="thumb">'+
+          //     '<a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-05.jpg" %}"></a>'+
+          //       '</td>'+
+          // '<td class="text">'+
+          // '<p href="#">'+monthNames[monthIndex]+" "+day+" "+ year+'</p>'+
+          //     '<a href="#">'+res.username+'</a>'+
+          // '</td>')
+        }
+      });
+});
+$(document).ready(function(){
   $("#takeBounty").click(function(){
     var issueId = window.location.pathname
     issueId = issueId.split('/')
@@ -61,7 +102,7 @@ $(document).ready(function(){
         },
         success: function(res) {
           console.log("res", res)
-          $(".username").html(res.username)
+          $(".username").html(res.username + ' has taken this issue and has this much time to submit a solution')
           $("#starttime").html(res.issueTakenTime)
           $("#takeBounty").html(res.status)
           $('#takeBounty').unbind('click');
@@ -72,10 +113,21 @@ $(document).ready(function(){
           $("#endtime").html(endtime)
           initializeClock('clockdiv', endtime);
           $(".codeIssueTaker").show()
+          var monthNames = [
+            "January", "February", "March",
+            "April", "May", "June", "July",
+            "August", "September", "October",
+            "November", "December"
+          ];
+          var day = d.getDate();
+          var monthIndex = d.getMonth();
+          var year = d.getFullYear();
           $("#takers").append(
           '<td class="thumb">'+
-'              <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-05.jpg" %}"></a></td>'+
-'          <td class="text">'+
+              '<a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-05.jpg" %}"></a>'+
+                '</td>'+
+          '<td class="text">'+
+          '<p href="#">'+monthNames[monthIndex]+" "+day+" "+ year+'</p>'+
               '<a href="#">'+res.username+'</a>'+
           '</td>')
         }
@@ -267,16 +319,16 @@ function initializeClock(id, endtime){
                 </div>
             </div>
             <div class="codeIssueTaker" style="display:none;">
-               <div class="img-holder">
-                    <img src="{% static "images/temp/thumb-medium-00.jpg" %}" alt="" />
-                </div>
+               <!-- <div class="img-holder">
+                    <img src="{{leader.userprofile.large_avatar}}" alt="" />
+                </div> -->
               <div class="username"><strong>Test User</strong></div>
-              <p></p>
-              <strong>Start Time<p id="starttime"></p></strong>
+              <p></p><br>
+             <!--  <strong>Start Time<p id="starttime"></p></strong>
               <p></p>
               <strong>End Time<p id="endtime"></p></strong>
               <p></p>
-              <h1>Countdown Clock</h1>
+              <h1>Countdown Clock</h1> -->
                 <div id="clockdiv">
                   <div style="display:none">
                     <span class="days"></span>
@@ -294,7 +346,20 @@ function initializeClock(id, endtime){
                     <span class="seconds"></span>
                     <div class="smalltext">Seconds</div>
                   </div>
-                </div>
+                </div><br><br>
+                <form action="/post/" method="post" id="post_pull_request_url">
+                    <div class="col-15 bounty-post form-layout form-layout-horizontal">
+                      <div class="form-item">
+                        <label class="label" for="issueUrl">Pull-Request URL:</label>
+                        <div class="value">
+                             <input type="text" id="pullRequestUrl" name="pullRequestUrl" autocomplete="off" placeholder="Enter url of pull request" value="">
+                        </div>
+                      </div>
+                      <div>
+                       <button class="ribbon ribbon-normal ribbon-03 ribbon-brown">Submit</button>
+                      </div>
+                    </div>
+                  </form>
             </div>
             {% comment "Hide comments until they are integrated" %}
             <!-- comments -->
