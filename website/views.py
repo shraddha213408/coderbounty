@@ -286,7 +286,6 @@ def issueTakenById(request,id):
     print id
     issue = Issue.objects.get(pk=id)
     taker = Taker.objects.get(issue=issue)
-    print taker.issu_id
     response_data = {}
     response_data['status'] = str(taker.status)
     response_data['issueTakenTime'] = str(taker.issueTaken)

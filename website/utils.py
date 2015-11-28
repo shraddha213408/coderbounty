@@ -396,6 +396,8 @@ def submit_issue_taker(data):
     issueTaker = data["user"]
     issueEndtime = issuetakenTime + datetime.timedelta(hours=24)
     issue = Issue.objects.get(pk=issueID)
+    issue.status = "taken"
+    issue.save()
     taker = Taker(is_taken=True,issu_id=issueID,issue=issue,user=user,status="taken",issueTaken=issuetakenTime,issueEnd=issueEndtime)
     taker.save()
     return data
