@@ -281,7 +281,7 @@ def issueTaken(request):
         # import pdb; pdb.set_trace()
         issueTaken = submit_issue_taker(issue_take_data)
         return HttpResponse(json.dumps(response_data), content_type="application/json")
-<<<<<<< HEAD
+
 def issueTakenById(request,id):
     print id
     issue = Issue.objects.get(pk=id)
@@ -292,13 +292,3 @@ def issueTakenById(request,id):
     response_data['issueTakenTime'] = str(taker.issueTaken)
     response_data['username'] = str(taker.user)
     return HttpResponse(json.dumps(response_data), content_type="application/json")
-=======
-
-def issueTakenById(request,id):
-    print id
-    issue = Issue.objects.get(pk=id)
-    for taker in Taker.objects.all():
-        print taker
-    # print issue, taker
-    return HttpResponse("OK")
->>>>>>> 6fc10f727e20e95859652ab0a9d577142dd9f516
