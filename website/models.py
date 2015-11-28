@@ -189,7 +189,10 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.user.email
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6fc10f727e20e95859652ab0a9d577142dd9f516
 def create_profile(sender, **kwargs):
     user = kwargs["instance"]
     if kwargs["created"]:
