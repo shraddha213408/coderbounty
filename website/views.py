@@ -239,10 +239,10 @@ class IssueDetailView(DetailView):
 
     def post(self, request, *args, **kwargs):
         if self.get_object().status == 'open':
-            # if self.get_object().get_api_data()['state'] == 'closed':
-            issue = self.get_object()
-            issue.status = 'in review'
-            issue.save()
+            if self.get_object().get_api_data()['state'] == 'closed':
+                issue = self.get_object()
+                issue.status = 'in review'
+                issue.save()
         if self.request.POST.get('take'):
             taker = Taker(issue=self.get_object(), user=self.request.user)
             taker.save()
