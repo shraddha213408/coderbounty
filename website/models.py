@@ -33,6 +33,14 @@ class Service(models.Model):
         return self.name
 
 
+def process_comments(sender, instance, *args, **kwargs):
+    from .utils import get_comment_helper
+    comment_service_helper = get_comment_helper(instance.service)
+
+    if kwargs['created']:
+        comment_service_helper.load_comments(instance)
+
+
 class Issue(models.Model):
     """
     An issue from a web service entered into Coder Bounty
@@ -101,9 +109,11 @@ class Issue(models.Model):
         template = Template(service.template)
         return service.api_url + template.substitute({'user': self.user, 'project': self.project, 'number': self.number})
 
-    def get_api_data(self):
+    def get_api_data(self, url=None):
         if self.service.name == "Github":
-            return json.load(urllib2.urlopen(self.api_url()))
+            if not url:
+                url = self.api_url()
+            return json.load(urllib2.urlopen(url))
 
     def __unicode__(self):
         return "%s issue #%s" % (self.project, self.number)
@@ -132,6 +142,8 @@ class Issue(models.Model):
     #         action.send(self.user, verb="opened issue", target=self)
     #     elif self.status == Issue.PAID_STATUS:
     #         action.send(self.user, verb="was paid", target=self.number)
+
+signals.post_save.connect(process_comments, sender=Issue)
 
 
 class Bounty(models.Model):
@@ -340,3 +352,16 @@ class Taker(models.Model):
 
 #    def clean(self):
 #       raise ValidationError('The issue is already taken.')
+
+
+class Comment(models.Model):
+    issue = models.ForeignKey(Issue)
+    content = models.TextField()
+    service_comment_id = models.IntegerField()
+    username = models.CharField(max_length=255)
+    created = models.DateTimeField()
+    updated = models.DateTimeField()
+
+    def __unicode__(self):
+        return self.content
+
