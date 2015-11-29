@@ -157,6 +157,36 @@
                   </form>
             </div>
             {% endif %}
+            {% if object.comment_set.count %}
+                <div class="comments">
+                    <div class="comments-count clearfix">
+                        <span>{{ object.comment_set.count }}</span> comments
+                    </div>
+                    <div class="comments-main">
+                        {% for comment in object.comment_set.all %}
+                            <div class="item-comment clearfix">
+                                <!-- text -->
+                                <div class="text">
+                                  <div class="img-holder">
+                                    <img src="{% static "images/temp/thumb-medium-00.jpg" %}" alt="" />
+                                  </div>
+                                  <div class="user"><strong>{{ comment.username }}</strong></div>
+                                  <div class="description"><p>{{ comment.content }}</p></div>
+                                </div>
+                                <div class="actionbar">
+                                    <ul>
+                                        <li><a href="#"><strong>Reply</strong></a></li>
+                                        <li><a href="#"><span class="icon-thumbs-up2"></span>190</a></li>
+                                        <li><a href="#">Like</a></li>
+                                        <li><em>{{ comment.updated|date }}</em></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
             {% comment "Hide comments until they are integrated" %}
             <!-- comments -->
             <div class="comments">
