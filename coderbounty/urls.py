@@ -7,9 +7,7 @@ from django.views.generic.base import TemplateView
 from rest_framework import routers, serializers, viewsets
 from website.models import Issue, Service
 from django.contrib.auth.models import User
-from website import views
-from django.conf import settings
-from django.conf.urls.static import static
+
 
 admin.autodiscover()
 
