@@ -255,6 +255,7 @@ class IssueDetailView(DetailView):
         context = super(IssueDetailView, self).get_context_data(**kwargs)
         context['leaderboard'] = leaderboard()
         context['taker'] = self.get_object().get_taker()
+        context['takers'] = Taker.objects.filter(issue=self.get_object()).order_by('-created')
         if not context['taker'] and self.get_object().status == "taken":
             issue = self.get_object()
             issue.status = "open"

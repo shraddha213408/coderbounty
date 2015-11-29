@@ -22,9 +22,7 @@ class IssueAdmin(admin.ModelAdmin):
     readonly_fields = ("created","modified")
 
 class TakerAdmin(admin.ModelAdmin):
-    list_display=[] 
-    for x in Taker._meta.get_all_field_names(): 
-         list_display.append(str(x))
+    list_display=('user','issue','created')
 
 admin.site.unregister(User)
 

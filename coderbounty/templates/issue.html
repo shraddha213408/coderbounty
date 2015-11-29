@@ -77,7 +77,7 @@
                                   <a class="img-holder" href="/profile/{{bounty.user.username}}"><img alt="" src="{{bounty.user.userprofile.avatar}}"></a></td>
                               <td class="text">
                                   <a href="/profile/{{bounty.user.username}}">{{bounty.user.username}}</a>
-                                  {{ bounty.created }}
+                                  {{ bounty.created|date:"m/d/Y"}}
                               </td>
                               <td class="price">${{bounty.price}}</td>
                           </tr>
@@ -93,45 +93,30 @@
                   <h2 class="titlebar"><span class="ribbon ribbon-normal ribbon-04 ribbon-brown">Takers</span></h2>
                   <table class="table-list table-list-leader-board" id="takers">
                       <tbody>
-
-                      <!--
+                      {% for taker_item in takers %}
                           <tr>
                               <td class="thumb">
-                                  <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-05.jpg" %}"></a></td>
+                                  <a class="img-holder" href="/profile/{{taker_item.user.username}}"><img alt="" src="{{taker_item.user.userprofile.avatar}}"></a></td>
                               <td class="text">
-                                  <a href="#">Adam Smith</a>
+                                  <a href="/profile/{{taker_item.user.username}}">{{taker_item.user.username}}</a>
+                                  {{ taker_item.created|date:"m/d/Y" }}
+                              </td>
+                              <td class="price">
+                              {% if taker_item.expired %}
+                              <img src="{% static 'images/layout/bullet_hole.png' %}">
+                              {% else %}
+                              <i class="icon-clock"></i>
+                              {% endif %}
                               </td>
                           </tr>
-                          <tr>
-                              <td class="thumb">
-                                  <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-03.jpg" %}"></a></td>
-                              <td class="text">
-                                  <a href="#">Rodger Stone</a>
-                              </td>
-                          </tr>
-                          <tr>
-                              <td class="thumb">
-                                  <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-04.jpg" %}"></a></td>
-                              <td class="text">
-                                  <a href="#">Tim Novak</a>
-                              </td>
-                          </tr>
-                          <tr>
-                              <td class="thumb">
-                                  <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-02.jpg" %}"></a></td>
-                              <td class="text">
-                                  <a href="#">Kristin Simmons</a>
-                              </td>
-                          </tr>
-                          <tr>
-                              <td class="thumb">
-                                  <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-01.jpg" %}"></a></td>
-                              <td class="text">
-                                  <a href="#">Fill Jones</a>
-                              </td>
-                          </tr>-->
+                        {% endfor %}
                       </tbody>
                   </table>
+                  {% if not taker %}
+                <form action="#" method="post">{% csrf_token %}
+                    <button class="ribbon ribbon-normal ribbon-03 ribbon-green" name="take" value="take">take this bounty</button>
+                </form>
+                {% endif %}
                   <form class="center">
                     <button class="ribbon ribbon-normal ribbon-03 ribbon-green">take this bounty</button>
                   </form>
@@ -382,8 +367,7 @@
         <!-- frame - word cloud -->
         <div class="frame frame-light">
             <div class="frame-content">
-                <h2 class="titlebar"><span class="ribbon ribbon-normal ribbon-04 ribbon-brown">Word cloud</span></h2>
-
+                <h2 class="titlebar"><span class="ribbon ribbon-normal ribbon-04 ribbon-brown">Solutions</span></h2>
             </div>
         </div>
       </div>
