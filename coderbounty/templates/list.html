@@ -82,9 +82,11 @@
                         </ul>
                         <div class="button-wrapper">
                             {% if issue.get_taker %}
-                                <a href="/profile/{{issue.get_taker.user.username}}">
-                                <img src="{{issue.get_taker.user.userprofile.avatar}}" class="taker_time">
-                                <span class="taker_time">clock</br><span id="timer-{{issue.id}}">{{issue.get_taker.time_remaining}}</span></span>
+
+                                <button class="ribbon ribbon-normal ribbon-03 ribbon" name="take" value="take" style="width:85px;">
+                                    <div id="timer-{{issue.id}}">{{issue.get_taker.time_remaining}}</div>
+                                </button>
+                                
                                 <script>
                                     startTimer("{{issue.get_taker.time_remaining_seconds}}", document.querySelector('#timer-{{issue.id}}'));
                                 </script>

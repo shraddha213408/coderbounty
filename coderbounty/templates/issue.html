@@ -150,8 +150,6 @@
                     <button id="takeBounty" class="ribbon ribbon-large ribbon-03" name="take" value="take">Take</button>
                 </form>
                 {% endif %}
-
-                    <button class="ribbon ribbon-normal ribbon-03 ribbon-brown">Share</button>
                 </div>
             </div>
             {% if taker %}
@@ -162,8 +160,7 @@
                 
               <h1 class="titlebar-paper ">
               <span style="font-size:20px;">
-                  Taken by: {{taker.user}}</br> <div id="timer">{{taker.time_remaining}}</span>
-
+                  Taken by: {{taker.user}}</br><div id="timer">{{taker.time_remaining}}</span>
               </span></h1>
               <script>
                  startTimer("{{taker.time_remaining_seconds}}", document.querySelector('#timer'));
