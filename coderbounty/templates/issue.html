@@ -113,7 +113,7 @@
                       </tbody>
                   </table>
                   {% if not taker %}
-                <form action="#" method="post">{% csrf_token %}
+                <form class="center" action="#" method="post">{% csrf_token %}
                     <button class="ribbon ribbon-normal ribbon-03 ribbon-green" name="take" value="take">take this bounty</button>
                 </form>
                 {% endif %}
@@ -148,7 +148,7 @@
                  startTimer("{{taker.time_remaining_seconds}}", document.querySelector('#timer'));
               </script>
               </br></br></br>
-                <form action="/post/" method="post" id="post_pull_request_url">
+                <form action="#" method="post" id="post_pull_request_url">
                   <div class="value" style="width:100%; text-align:center;">
                        <input type="text" id="solution" name="solution" autocomplete="off" placeholder="Enter url of pull request or commit" value="">
                        </br></br>

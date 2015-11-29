@@ -20,6 +20,7 @@ from wepay import WePay
 from time import strftime
 import datetime
 import json
+from django.contrib.staticfiles.templatetags.staticfiles import static
 
 
 def parse_url_ajax(request):
@@ -267,3 +268,24 @@ class IssueDetailView(DetailView):
             object.views = object.views + 1
             object.save()
             return object
+
+
+def get_bounty_image(request, id):
+    issue = Issue.objects.get(id=id)
+    from PIL import Image
+    from PIL import ImageFont
+    from PIL import ImageDraw
+    MAP = {
+        6: 510,
+        5: 515,
+        4: 525,
+        3: 530,
+        2: 533,
+    }
+    img = Image.open("coderbounty/static/images/layout/github-poster.png")
+    draw = ImageDraw.Draw(img)
+    font = ImageFont.truetype("coderbounty/static/fonts/regulators/regulators.ttf", 24)
+    draw.text((MAP[len(str(issue.bounty()))], 46), "${:,}".format(issue.bounty()), (163,75,51),font=font)
+    response = HttpResponse(content_type="image/jpeg")
+    img.save(response, "JPEG")
+    return response
