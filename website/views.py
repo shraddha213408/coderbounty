@@ -245,11 +245,14 @@ class IssueDetailView(DetailView):
                 issue.status = 'in review'
                 issue.save()
         if self.request.POST.get('take'):
-            taker = Taker(issue=self.get_object(), user=self.request.user)
-            taker.save()
-            issue = self.get_object()
-            issue.status = "taken"
-            issue.save()
+            if self.request.user.is_authenticated():
+                taker = Taker(issue=self.get_object(), user=self.request.user)
+                taker.save()
+                issue = self.get_object()
+                issue.status = "taken"
+                issue.save()
+            else:
+                return redirect('/accounts/login/?next=/issue/' + str(self.get_object().id))
         return super(IssueDetailView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -275,7 +278,7 @@ def get_bounty_image(request, id):
     from PIL import Image
     from PIL import ImageFont
     from PIL import ImageDraw
-    MAP = {
+    size_map = {
         6: 510,
         5: 515,
         4: 525,
@@ -285,7 +288,7 @@ def get_bounty_image(request, id):
     img = Image.open("coderbounty/static/images/layout/github-poster.png")
     draw = ImageDraw.Draw(img)
     font = ImageFont.truetype("coderbounty/static/fonts/regulators/regulators.ttf", 24)
-    draw.text((MAP[len(str(issue.bounty()))], 46), "${:,}".format(issue.bounty()), (163,75,51),font=font)
+    draw.text((size_map[len(str(issue.bounty()))], 46), "${:,}".format(issue.bounty()), (163,75,51),font=font)
     response = HttpResponse(content_type="image/jpeg")
     img.save(response, "JPEG")
     return response
