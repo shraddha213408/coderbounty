@@ -240,15 +240,25 @@ class IssueDetailView(DetailView):
     def post(self, request, *args, **kwargs):
         if self.get_object().status == 'open':
             if self.get_object().get_api_data()['state'] == 'closed':
-                print "closed"
-                object = self.get_object()
-                object.status = 'in review'
-                object.save()
+                issue = self.get_object()
+                issue.status = 'in review'
+                issue.save()
+        if self.request.POST.get('take'):
+            taker = Taker(issue=self.get_object(), user=self.request.user)
+            taker.save()
+            issue = self.get_object()
+            issue.status = "taken"
+            issue.save()
         return super(IssueDetailView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(IssueDetailView, self).get_context_data(**kwargs)
         context['leaderboard'] = leaderboard()
+        context['taker'] = self.get_object().get_taker()
+        if not context['taker'] and self.get_object().status == "taken":
+            issue = self.get_object()
+            issue.status = "open"
+            issue.save()
         return context
 
     def get_object(self):
@@ -256,38 +266,3 @@ class IssueDetailView(DetailView):
             object.views = object.views + 1
             object.save()
             return object
-
-
-def issueTaken(request):
-    if request.method == 'POST':
-        issueId = request.POST.get('id')
-        _date = strftime("%c")
-        today = datetime.datetime.today()
-        response_data = {}
-        response_data['status'] = 'taken'
-        response_data['issueTakenTime'] = _date
-
-        # issue = Issue.objects.get(pk=issueId)
-
-        issue_take_data = {
-            "issue": issueId,
-            "issueStartTime": today,
-            "user": request.user,
-            "status": "taken"
-        }
-        username = issue_take_data["user"]
-        response_data['username'] = str(username)
-        # print request.user.userprofile
-        # import pdb; pdb.set_trace()
-        issueTaken = submit_issue_taker(issue_take_data)
-        return HttpResponse(json.dumps(response_data), content_type="application/json")
-
-def issueTakenById(request,id):
-    print id
-    issue = Issue.objects.get(pk=id)
-    taker = Taker.objects.get(issue=issue)
-    response_data = {}
-    response_data['status'] = str(taker.status)
-    response_data['issueTakenTime'] = str(taker.issueTaken)
-    response_data['username'] = str(taker.user)
-    return HttpResponse(json.dumps(response_data), content_type="application/json")

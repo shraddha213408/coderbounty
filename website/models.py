@@ -1,23 +1,20 @@
-from django.db import models
-from string import Template
-from django.contrib.auth.models import User
-from django.db.models import Sum, Min
-from django.utils.timesince import timeuntil
-from django.conf import settings
-from django.db.models.signals import post_save
-import datetime
-import urllib
-import hashlib
-from string import Template
-from django.db.models import signals
-import random
-import urllib2
 from actstream import action
-import os
+from django.conf import settings
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.db import models
+from django.db.models import signals
+from django.db.models import Sum
+from django.db.models.signals import post_save
+from django.utils.timesince import timeuntil
+from string import Template
+import datetime
+import hashlib
 import json
-
-
-YEAR_CHOICES = [(str(yr), str(yr)) for yr in range(1950, 2020)]
+import os
+import urllib
+import urllib2
+from django.utils.timezone import utc
 
 
 class Service(models.Model):
@@ -114,11 +111,16 @@ class Issue(models.Model):
     def get_absolute_url(self):
         return "/issue/%s" % self.id
 
+    def get_taker(self):
+        date_from = datetime.datetime.now() - datetime.timedelta(days=1)
+        try:
+            return Taker.objects.filter(issue=self, created__gte=date_from).order_by('-created')[0]
+        except:
+            return False
+
     class Meta:
         ordering = ['-created']
         unique_together = ("service", "number", "project")
-
-      
 
     # there was an issue when saving from admin   
     # def save(self, *args, **kwargs):
@@ -130,8 +132,6 @@ class Issue(models.Model):
     #         action.send(self.user, verb="opened issue", target=self)
     #     elif self.status == Issue.PAID_STATUS:
     #         action.send(self.user, verb="was paid", target=self.number)
-
-    
 
 
 class Bounty(models.Model):
@@ -153,11 +153,9 @@ class Bounty(models.Model):
     def get_twitter_message(self):
         msg = "Added $%s bounty for %s issue %s. http://coderbounty.com/#%s" % (self.price, self.issue.project, self.issue.number, self.issue.id)
         return msg
-   
-    def save(self, *args, **kwargs):
 
+    def save(self, *args, **kwargs):
         if self.pk is None:
-            target = self.issue.number
             action.send(self.user, verb='placed a $' + str(self.price) + ' bounty on ', target=self.issue)
 
         super(Bounty, self).save(*args, **kwargs)
@@ -167,13 +165,13 @@ class UserProfile(models.Model):
     CHOICE_PAYMANT_SERVICE = (
         ('wepay', u'WePay'),
     )
-    
+
     user = models.OneToOneField(User, related_name="userprofile")
     balance = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     payment_service = models.CharField(max_length=255, null=True, blank=True, choices=CHOICE_PAYMANT_SERVICE)
     payment_service_email = models.EmailField(max_length=255, null=True, blank=True, default='')
 
-    def avatar(self, size=28):
+    def avatar(self, size=36):
         for account in self.user.socialaccount_set.all():
             if 'avatar_url' in account.extra_data:
                 return account.extra_data['avatar_url']
@@ -194,6 +192,7 @@ class UserProfile(models.Model):
 
     def __unicode__(self):
         return self.user.email
+
 
 def create_profile(sender, **kwargs):
     user = kwargs["instance"]
@@ -266,13 +265,13 @@ def delete_issue(sender, instance, *args, **kwargs):
 #             instance.winner.email_user(email_subj % instance, email_text)
 
 # signals.post_save.connect(alert_winner, sender=Issue)
-#todo: fix this so it doesn't throw an error
+
 signals.post_save.connect(post_to_twitter, sender=Bounty)
 signals.post_delete.connect(delete_issue, sender=Bounty)
 
 
 class Solution(models.Model):
- 
+
     IN_REVIEW = 'in review'
     MERGED = 'Merged or accepted'
     REQUESTED_REVISION = 'Requested for revision'
@@ -281,68 +280,60 @@ class Solution(models.Model):
         (MERGED, 'Merged or accepted'),
         (REQUESTED_REVISION, 'Requested for revision'),
     )
- 
 
     issue = models.ForeignKey(Issue)
     submitted_by = models.ForeignKey(UserProfile)
     submitted_at = models.DateTimeField(auto_now_add=True)
     pr_link = models.URLField(help_text="Pull Request Link ")
-    status = models.CharField(max_length=250 ,choices=STATUS_CHOICES, default=IN_REVIEW)
+    status = models.CharField(max_length=250, choices=STATUS_CHOICES, default=IN_REVIEW)
 
     def __unicode__(self):
-        return str(self.issue)+" solution"
+        return str(self.issue) + " solution"
 
     def notify_owner(self):
-         """Email Bounty Owner
-         """
-         pass
- 
+        """Email Bounty Owner
+        """
+        pass
+
     def notify_coder(self, status):
-        "notify coder about solution status" 
+        "notify coder about solution status"
         pass
 
     def notify_coderbounty(self):
         "notify coderbounty to realse funds"
         pass
- 
+
     def save(self, *args, **kwargs):
         if self.pk is None:
-            #notify owner if there's a new solution
+            # notify owner if there's a new solution
             self.notify_owner()
-        
+
         if self.status == Solution.REQUESTED_REVISION:
-            #notify coder to revision the solution
+            # notify coder to revision the solution
             self.notify_coder(status=self.status)
 
-        if status.status == Solution.MERGED:
-            #ask cb to realease bounty
-            #notify coder that PR has been accepted
+        if self.status == Solution.MERGED:
+            # ask cb to realease bounty
+            # notify coder that PR has been accepted
             self.notify_coderbounty()
             self.notify_coder(status=self.status)
 
         super(Solution, self).save(*args, **kwargs)
 
+
 class Taker(models.Model):
-    """
-     allow the user to take an issue
-    """
-    TAKEN = 'taken'
-    OPEN = 'open'
-    STATUS_ISSUE = (
-        (TAKEN, 'taken'),
-        (OPEN, 'open')
-    )
-    is_taken = models.BooleanField(default=True)
     issue = models.ForeignKey(Issue)
     user = models.ForeignKey(User)
-    status = models.CharField(max_length=255, choices=STATUS_ISSUE, default=OPEN)
-    issueTaken = models.DateTimeField(auto_now_add=True)
-    issueEnd = models.DateTimeField(null=True, blank=True)
-    
+    created = models.DateTimeField(auto_now_add=True)
 
-    def time_end(self):
-        if self.status == self.TAKEN:
-            pass
-        pass
-        # return timeuntil(self.bounties().aggregate(Min('ends'))['ends__min'], datetime.datetime.now()).split(',')[0]
-        # return timeuntil(self.modified + datetime.timedelta(days=3), datetime.datetime.now()).split(',')[0]
+    def time_remaining(self):
+        date_from = self.created + datetime.timedelta(hours=24)
+        end_time = (date_from - datetime.datetime.utcnow().replace(tzinfo=utc))
+        return str(end_time).split(".")[0]
+
+    def time_remaining_seconds(self):
+        date_from = self.created + datetime.timedelta(hours=24)
+        return (date_from - datetime.datetime.utcnow().replace(tzinfo=utc)).seconds
+
+    def clean(self):
+        raise ValidationError('The issue is already taken.')

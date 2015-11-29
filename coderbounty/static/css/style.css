@@ -1632,3 +1632,12 @@ span#email-help-text{
 .section-login .btn-login-wrapper .btn-login:hover {
 	background-position: -775px -53px;
 }
+
+.taker_time{
+	font-size:12px;
+	color:#A34B33;
+	display: block;
+	float:right;
+	margin-left:7px;
+	top:3px;
+}

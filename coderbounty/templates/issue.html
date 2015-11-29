@@ -4,155 +4,7 @@
 {{ object.project }} | Issue #{{object.number}} | {{object.title}} | 
 {% endblock %}
 {% block content %}
-  <!-- Content -->
-<style type="text/css">
-
-#clockdiv{
-    font-family: sans-serif;
-    color: #fff;
-    display: inline-block;
-    font-weight: 100;
-    text-align: center;
-    font-size: 30px;
-}
-
-#clockdiv > div{
-    padding: 10px;
-    border-radius: 3px;
-    background: #00BF96;
-    display: inline-block;
-}
-
-#clockdiv div > span{
-    padding: 15px;
-    border-radius: 3px;
-    background: #00816A;
-    display: inline-block;
-}
-
-.smalltext{
-    padding-top: 5px;
-    font-size: 16px;
-}
-</style>
-<script>
-$(document).ready(function(){
-    var issueId = window.location.pathname
-    issueId = issueId.split('/')
-    issueId = issueId[2]
-    console.log(issueId)
-      $.ajax({
-        url: "/issueTaken/"+issueId,
-        // data: { csrfmiddlewaretoken: "{{ csrf_token }}",   // < here 
-        //     status : "taken",
-        //     id: issueId,
-        //   },
-        type: "GET",
-        error: function(res) {
-          console.log("errr", res)
-        },
-        success: function(res) {
-          console.log("res", res)
-          loadData(res);
-        }
-      });
-});
-$(document).ready(function(){
-  $("#takeBounty").click(function(){
-    var issueId = window.location.pathname
-    issueId = issueId.split('/')
-    issueId = issueId[2]
-    console.log(issueId)
-      $.ajax({
-        url: "/issueTaken/",
-        data: { csrfmiddlewaretoken: "{{ csrf_token }}",   // < here 
-            status : "taken",
-            id: issueId,
-          },
-        type: "POST",
-        error: function(res) {
-          console.log("errr", res)
-        },
-        success: function(res) {
-          console.log("res", res)
-          loadData(res);
-        }
-      });
-  })
-});
-function loadData(res){
-  $(".username").html(res.username + ' has taken this issue and has this much time to submit a solution')
-  $("#starttime").html(res.issueTakenTime)
-  $("#takeBounty").html(res.status)
-  $('#takeBounty').unbind('click');
-  var issueTakenTime = res.issueTakenTime
-  var d = new Date(issueTakenTime)
-  var hrs = d.getHours()+24;
-  var endtime = new Date(d.setHours(hrs));
-  console.log(issueTakenTime, endtime)
-  $("#endtime").html(endtime)
-  initializeClock('clockdiv', endtime);
-  $(".codeIssueTaker").show()
-  var monthNames = [
-    "January", "February", "March",
-    "April", "May", "June", "July",
-    "August", "September", "October",
-    "November", "December"
-  ];
-  var day = d.getDate();
-  var monthIndex = d.getMonth();
-  var year = d.getFullYear();
-  $("#takers").append(
-  '<td class="thumb">'+
-      '<a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-05.jpg" %}"></a>'+
-        '</td>'+
-  '<td class="text">'+
-  '<p href="#">'+monthNames[monthIndex]+" "+day+" "+ year+'</p>'+
-      '<a href="#">'+res.username+'</a>'+
-  '</td>')
-}
-function getTimeRemaining(endtime){
-  var t = Date.parse(endtime) - Date.parse(new Date());
-  var seconds = Math.floor( (t/1000) % 60 );
-  var minutes = Math.floor( (t/1000/60) % 60 );
-  var hours = Math.floor( (t/(1000*60*60)) % 24 );
-  var days = Math.floor( t/(1000*60*60*24) );
-  return {
-    'total': t,
-    'days': days,
-    'hours': hours,
-    'minutes': minutes,
-    'seconds': seconds
-  };
-}
-
-function initializeClock(id, endtime){
-  var clock = document.getElementById(id);
-  var daysSpan = clock.querySelector('.days');
-  var hoursSpan = clock.querySelector('.hours');
-  var minutesSpan = clock.querySelector('.minutes');
-  var secondsSpan = clock.querySelector('.seconds');
-
-  function updateClock(){
-    var t = getTimeRemaining(endtime);
-    daysSpan.innerHTML = t.days;
-    hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
-    minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
-    secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
-
-    if(t.total<=0){
-      clearInterval(timeinterval);
-    }
-  }
-
-  updateClock();
-  var timeinterval = setInterval(updateClock,1000);
-}
-
-// var deadline = 'December 31 2015 00:00:50 UTC+0200';
-// initializeClock('clockdiv', deadline);
-</script>
-
+<script src="{% static "js/all.js" %}"></script>
 <div class="wrapper-section">
   <div class="content wrapper-global">
     <div class="grid">
@@ -293,58 +145,39 @@ function initializeClock(id, endtime){
                 <div class="text"><p>{{ object.content }}.</p></div>
                 <!-- buttons -->
                 <div class="button-wrapper clearfix">
-                <button id="takeBounty" class="ribbon ribbon-large ribbon-03">Take</button>
-                  <form>
-                    <!-- // <button class="ribbon ribbon-large ribbon-03">Take</button>
-                    <button id="takeBounty" class="ribbon ribbon-large ribbon-03">Take</button>
-                  <form> -->
+                {% if not taker %}
+                <form action="#" method="post">{% csrf_token %}
+                    <button id="takeBounty" class="ribbon ribbon-large ribbon-03" name="take" value="take">Take</button>
+                </form>
+                {% endif %}
+
                     <button class="ribbon ribbon-normal ribbon-03 ribbon-brown">Share</button>
-                  </form>
                 </div>
             </div>
-            <div class="codeIssueTaker" style="display:none;">
-               <!-- <div class="img-holder">
-                    <img src="{{leader.userprofile.large_avatar}}" alt="" />
-                </div> -->
-              <div class="username"><strong>Test User</strong></div>
-              <p></p><br>
-             <!--  <strong>Start Time<p id="starttime"></p></strong>
-              <p></p>
-              <strong>End Time<p id="endtime"></p></strong>
-              <p></p>
-              <h1>Countdown Clock</h1> -->
-                <div id="clockdiv">
-                  <div style="display:none">
-                    <span class="days"></span>
-                    <div class="smalltext">Days</div>
-                  </div>
-                  <div>
-                    <span class="hours"></span>
-                    <div class="smalltext">Hours</div>
-                  </div>
-                  <div>
-                    <span class="minutes"></span>
-                    <div class="smalltext">Minutes</div>
-                  </div>
-                  <div>
-                    <span class="seconds"></span>
-                    <div class="smalltext">Seconds</div>
-                  </div>
-                </div><br><br>
+            {% if taker %}
+            <div class="img-holder" style="width: 100%; text-align:center;">
+                    <img src="{{taker.user.userprofile.avatar_large}}" alt="" />
+                </div> 
+            <div class="codeIssueTaker frame" >
+                
+              <h1 class="titlebar-paper ">
+              <span style="font-size:20px;">
+                  Taken by: {{taker.user}}</br> <div id="timer">{{taker.time_remaining}}</span>
+
+              </span></h1>
+              <script>
+                 startTimer("{{taker.time_remaining_seconds}}", document.querySelector('#timer'));
+              </script>
+              </br></br></br>
                 <form action="/post/" method="post" id="post_pull_request_url">
-                    <div class="col-15 bounty-post form-layout form-layout-horizontal">
-                      <div class="form-item">
-                        <label class="label" for="issueUrl">Pull-Request URL:</label>
-                        <div class="value">
-                             <input type="text" id="pullRequestUrl" name="pullRequestUrl" autocomplete="off" placeholder="Enter url of pull request" value="">
-                        </div>
-                      </div>
-                      <div>
-                       <button class="ribbon ribbon-normal ribbon-03 ribbon-brown">Submit</button>
-                      </div>
-                    </div>
+                  <div class="value" style="width:100%; text-align:center;">
+                       <input type="text" id="solution" name="solution" autocomplete="off" placeholder="Enter url of pull request or commit" value="">
+                       </br></br>
+                    <button class="ribbon ribbon-normal ribbon-03 ribbon-brown-dark">Submit Solution</button>
+                  </div>
                   </form>
             </div>
+            {% endif %}
             {% comment "Hide comments until they are integrated" %}
             <!-- comments -->
             <div class="comments">
