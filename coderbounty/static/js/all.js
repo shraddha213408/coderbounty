@@ -16,3 +16,6 @@ function startTimer(duration, display) {
         }
     }, 1000);
 }
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip(); 
+});
