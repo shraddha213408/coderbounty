@@ -5,7 +5,7 @@ from django.core.mail import send_mail, EmailMultiAlternatives
 from django.conf import settings
 
 from string import Template
-from models import Service, Issue, Bounty, Taker
+from models import Service, Issue, Bounty, Taker, Comment
 from django.contrib.auth.models import User
 from django.db.models import Sum
 from urlparse import urlparse
@@ -145,6 +145,14 @@ class GoogleCodeIssueHelper(AbstractIssueHelper):
         return data
 
 
+def get_helper_instance(service, type):
+    # ex.: converts "Google Code" to "GoogleCode"
+    helper_name = ''.join([x.title() for x in service.name.split(' ')])
+    helper = globals()['{}{}'.format(helper_name, type)]()
+    helper.service = service
+    return helper
+
+
 def get_issue_helper(request, url):
     parsed_url = urlparse(url)
 
@@ -154,10 +162,7 @@ def get_issue_helper(request, url):
         messages.error(request, 'Not specified service')
         return False
 
-    # ex.: converts "Google Code" to "GoogleCode"
-    helper_name = ''.join([x.title() for x in service.name.split(' ')])
-    helper = globals()['{}IssueHelper'.format(helper_name)]()
-    helper.service = service
+    helper = get_helper_instance(service, 'IssueHelper')
 
     return helper
 
@@ -407,3 +412,65 @@ def timecounter(issuetakenTime, duration):
 
 
 # time.struct_time(tm_year=2015, tm_mon=11, tm_mday=22, tm_hour=17, tm_min=25, tm_sec=21, tm_wday=6, tm_yday=326, tm_isdst=-1)
+
+
+class AbstractCommentHelper(object):
+
+    service = None
+
+    def load_comments(self, issue):
+        raise NotImplementedError('Please Implement this method')
+
+    def sync_comments(self, issue):
+        raise NotImplementedError('Please Implement this method')
+
+    def post_comment(self, issue, comment):
+        raise NotImplementedError('Please Implement this method')
+
+
+class GithubCommentHelper(AbstractCommentHelper):
+
+    def load_comments(self, issue):
+        url = issue.api_url() + "/comments"
+        comments = issue.get_api_data(url)
+
+        for comment in comments:
+            Comment.objects.create(issue=issue, content=comment['body'],
+                                   service_comment_id=comment['id'], username=comment['user']['login'],
+                                   created=comment['created_at'], updated=comment['updated_at'])
+
+    def sync_comments(self, issue):
+        pass
+
+    def post_comment(self, issue, comment):
+        pass
+
+
+class BitbucketCommentHelper(AbstractCommentHelper):
+
+    def load_comments(self, issue):
+        pass
+
+    def sync_comments(self, issue):
+        pass
+
+    def post_comment(self, issue, comment):
+        pass
+
+
+class GoogleCodeCommentHelper(AbstractCommentHelper):
+
+    def load_comments(self, issue):
+        pass
+
+    def sync_comments(self, issue):
+        pass
+
+    def post_comment(self, issue, comment):
+        pass
+
+
+def get_comment_helper(service):
+    helper = get_helper_instance(service, 'CommentHelper')
+    return helper
+
