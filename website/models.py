@@ -195,7 +195,6 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.user.email
 
-
 def create_profile(sender, **kwargs):
     user = kwargs["instance"]
     if kwargs["created"]:
@@ -335,6 +334,7 @@ class Taker(models.Model):
     )
     is_taken = models.BooleanField(default=True)
     issue = models.ForeignKey(Issue)
+    issu_id = models.CharField(max_length=255, null=True, blank=True)
     user = models.ForeignKey(User)
     status = models.CharField(max_length=255, choices=STATUS_ISSUE, default=OPEN)
     issueTaken = models.DateTimeField(auto_now_add=True)
