@@ -15,7 +15,7 @@ from django.shortcuts import render_to_response, RequestContext, redirect, rende
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView
 from models import Issue, UserProfile, Bounty, Service, Taker
-from utils import get_issue_helper, leaderboard, post_to_slack, submit_issue_taker
+from utils import get_issue_helper, leaderboard, post_to_slack, submit_issue_taker, get_comment_helper
 from wepay import WePay
 from time import strftime
 import datetime
@@ -239,6 +239,8 @@ class IssueDetailView(DetailView):
         return super(IssueDetailView, self).get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        comment_service_helper = get_comment_helper(self.get_object().service)       
+        comment_service_helper.load_comments(self.get_object())
         if self.get_object().status == 'open':
             if self.get_object().get_api_data()['state'] == 'closed':
                 issue = self.get_object()
