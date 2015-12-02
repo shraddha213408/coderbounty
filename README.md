@@ -4,7 +4,7 @@
 
 #### Join us on Slack:
 
-[![Slack Status](https://coderbounty-slackin.herokuapp.com/badge.svg)](https://coderbounty-slackin.herokuapp.com)
+[![Slack Status](https://coderbounty-slackin.herokuapp.com/badge.svg)](https://coderbounty-slackin.herokuapp.com)[![Codacy Badge](https://api.codacy.com/project/badge/grade/e7dd6887193546529274f78fc0c9993b)](https://www.codacy.com/app/sean_2/coderbounty)
 
 To contribute, take an issue, and submit a pull request with the issue number in it win bounty!
 
