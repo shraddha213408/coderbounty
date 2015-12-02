@@ -202,6 +202,9 @@ class UserProfile(models.Model):
             action.send(self.user, verb='signed up')
         super(UserProfile, self).save(*args, **kwargs)
 
+    def bounties_placed(self):
+        return Bounty.objects.filter(user=self.user).aggregate(Sum('price'))['price__sum'] or 0
+
     def __unicode__(self):
         return self.user.email
 
@@ -339,12 +342,12 @@ class Taker(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def time_remaining(self):
-        date_from = self.created + datetime.timedelta(hours=24)
+        date_from = self.created + datetime.timedelta(hours=6)
         end_time = (date_from - datetime.datetime.utcnow().replace(tzinfo=utc))
         return str(end_time).split(".")[0]
 
     def time_remaining_seconds(self):
-        date_from = self.created + datetime.timedelta(hours=24)
+        date_from = self.created + datetime.timedelta(hours=6)
         return (date_from - datetime.datetime.utcnow().replace(tzinfo=utc)).seconds
 
     def expired(self):

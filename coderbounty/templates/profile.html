@@ -26,13 +26,13 @@
 							{% if account.provider == 'bitbucket' %}
 								<li><a href="{{account.extra_data.link }}" target="_new" class="icon-bitbucket2"></a></li>
 							{% endif %}
-                        </ul>
                         {% endfor %}
+                        </ul>
                         <ul class="stats">
                         	<li><span class="label">Won:</span><span class="value">${{object.userprofile.balance|default:"0"}}</span></li>
-                            <li><span class="label">Posted:</span><span class="value">$0</span></li>
-                            <li><span class="label">Taken:</span><span class="value">0</span></li>
-                            <li><span class="label">Closed:</span><span class="value">0</span></li>
+                            <li><span class="label">Posted:</span><span class="value">${{object.userprofile.bounties_placed}}</span></li>
+                            <li><span class="label">Taken:</span><span class="value">{{object.taken_set.all|length}}</span></li>
+                            <li><span class="label">Solutions:</span><span class="value">{{object.solution_set.all|length}}</span></li>
                         </ul>
                         {% if request.user.is_authenticated %}
                         {% if object.username == request.user.username %}
@@ -42,9 +42,11 @@
 						<button class="ribbon ribbon-03 ribbon-type-01 ribbon-normal"><span></span>Invite</button>
 						{% get_social_accounts user as accounts %}
 
-						{% if not accounts.github.0 %}
-                        <button class="ribbon ribbon-03 ribbon-type-01 ribbon-normal" onclick="location.href='{% provider_login_url "github" process="connect" %}';" ><i class="icon-github6" style="font-size: 1.5em;"></i> Connect</button>
-                        {% endif %}
+						{% if object.username == request.user.username %}	
+							{% if not accounts.github.0 %}
+	                        <button class="ribbon ribbon-03 ribbon-type-01 ribbon-normal" onclick="location.href='{% provider_login_url "github" process="connect" %}';" ><i class="icon-github6" style="font-size: 1.5em;"></i> Connect</button>
+	                        {% endif %}
+	                    {% endif %}
 
 					</div>
 					<span class="bugfix-bottom"></span>

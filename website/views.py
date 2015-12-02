@@ -110,6 +110,8 @@ def create_issue_and_bounty(request):
                     service=service)
 
             bounty_instance = Bounty(user=user, issue=issue, price=price)
+            if request.user.userprofile.balance >= request.POST.get('grand_total'):
+                pass
 
             data = serializers.serialize('xml', [bounty_instance, ])
 
@@ -239,7 +241,8 @@ class IssueDetailView(DetailView):
         return super(IssueDetailView, self).get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        comment_service_helper = get_comment_helper(self.get_object().service)       
+        comment_service_helper = get_comment_helper(self.get_object().service)
+
         comment_service_helper.load_comments(self.get_object())
         if self.get_object().status == 'open':
             if self.get_object().get_api_data()['state'] == 'closed':
