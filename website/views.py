@@ -110,28 +110,32 @@ def create_issue_and_bounty(request):
                     service=service)
 
             bounty_instance = Bounty(user=user, issue=issue, price=price)
-            if request.user.userprofile.balance >= request.POST.get('grand_total'):
-                pass
+            if int(request.user.userprofile.balance) >= int(request.POST.get('grand_total')):
+                profile = request.user.userprofile
+                profile.balance = int(request.user.userprofile.balance) - int(request.POST.get('grand_total'))
+                profile.save()
+                bounty_instance.save()
+                return redirect(issue.get_absolute_url())
+            else:
+                data = serializers.serialize('xml', [bounty_instance, ])
 
-            data = serializers.serialize('xml', [bounty_instance, ])
-
-            wepay = WePay(settings.WEPAY_IN_PRODUCTION, settings.WEPAY_ACCESS_TOKEN)
-            wepay_data = wepay.call('/checkout/create', {
-                'account_id': settings.WEPAY_ACCOUNT_ID,
-                'amount': request.POST.get('grand_total'),
-                'short_description': 'CoderBounty',
-                'long_description': data,
-                'type': 'service',
-                'redirect_uri': request.build_absolute_uri(issue.get_absolute_url()),
-                'currency': 'USD'
-            })
-            if "error_code" in wepay_data:
-                messages.error(request, wepay_data['error_description'])
-                return render(request, 'post.html', {
-                    'languages': languages
+                wepay = WePay(settings.WEPAY_IN_PRODUCTION, settings.WEPAY_ACCESS_TOKEN)
+                wepay_data = wepay.call('/checkout/create', {
+                    'account_id': settings.WEPAY_ACCOUNT_ID,
+                    'amount': request.POST.get('grand_total'),
+                    'short_description': 'CoderBounty',
+                    'long_description': data,
+                    'type': 'service',
+                    'redirect_uri': request.build_absolute_uri(issue.get_absolute_url()),
+                    'currency': 'USD'
                 })
+                if "error_code" in wepay_data:
+                    messages.error(request, wepay_data['error_description'])
+                    return render(request, 'post.html', {
+                        'languages': languages
+                    })
 
-            return redirect(wepay_data['checkout_uri'])
+                return redirect(wepay_data['checkout_uri'])
 
         else:
             return render(request, 'post.html', {
