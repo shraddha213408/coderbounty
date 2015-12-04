@@ -15,6 +15,7 @@ import os
 import urllib
 import urllib2
 from django.utils.timezone import utc
+import tweepy
 
 
 class Service(models.Model):
@@ -232,7 +233,7 @@ def post_to_twitter(sender, instance, *args, **kwargs):
         return False
 
     # check if there's a twitter account configured
-    import tweepy
+
     try:
         consumer_key = os.environ['TWITTER_CONSUMER_KEY']
         consumer_secret = os.environ['TWITTER_CONSUMER_SECRET']
@@ -253,14 +254,15 @@ def post_to_twitter(sender, instance, *args, **kwargs):
         size = len(mesg + '...') - TWITTER_MAXLENGTH
         mesg = u'%s...' % (text[:-size])
 
-    try:
-        auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-        auth.set_access_token(access_key, access_secret)
-        api = tweepy.API(auth)
-        api.update_status(mesg)
-    except urllib2.HTTPError, ex:
-        print 'ERROR:', str(ex)
-        return False
+    if not settings.DEBUG:
+        try:
+            auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+            auth.set_access_token(access_key, access_secret)
+            api = tweepy.API(auth)
+            api.update_status(mesg)
+        except urllib2.HTTPError, ex:
+            print 'ERROR:', str(ex)
+            return False
 
 
 def delete_issue(sender, instance, *args, **kwargs):
