@@ -1641,3 +1641,11 @@ span#email-help-text{
 	margin-left:7px;
 	top:3px;
 }
+.signup input[type="text"], .signup input[type="email"], .signup input[type="number"], .signup input[type="password"], .signup select, .signup textarea{
+	width: 100% !important;
+	padding: 10px !important;
+}
+
+#id_username{
+	width: 100% !important;
+}
