@@ -112,7 +112,7 @@ def create_issue_and_bounty(request):
                     service=service)
 
             bounty_instance = Bounty(user=user, issue=issue, price=price)
-            if int(request.user.userprofile.balance) >= int(request.POST.get('grand_total')):
+            if int(request.user.userprofile.balance or 0) >= int(request.POST.get('grand_total')):
                 profile = request.user.userprofile
                 profile.balance = int(request.user.userprofile.balance) - int(request.POST.get('grand_total'))
                 profile.save()
