@@ -136,7 +136,7 @@
             </div>
             {% if taker %}
             <div class="img-holder" style="width: 100%; text-align:center;">
-                    <img width="200px" src="{{taker.user.userprofile.avatar_large}}" alt="" />
+                    <img width="250px" src="{{taker.user.userprofile.avatar_large}}" alt="" />
                 </div> 
             <div class="codeIssueTaker frame" >
                 
@@ -149,6 +149,7 @@
               </script>
               </br></br></br>
                 <form action="#" method="post" id="post_pull_request_url">
+                {% csrf_token %}
                   <div class="value" style="width:100%; text-align:center;">
                        <input type="text" id="solution" name="solution" autocomplete="off" placeholder="Enter url of pull request or commit" value="">
                        </br></br>
@@ -395,7 +396,23 @@
         <div class="frame frame-light">
             <div class="frame-content">
                 <h2 class="titlebar"><span class="ribbon ribbon-normal ribbon-04 ribbon-brown">Solutions</span></h2>
-            </div>
+            
+            <table class="table-list table-list-leader-board">
+                    <tbody>
+                      {% for solution in solutions %}
+                          <tr>
+                              <td class="thumb">
+                                  <a href="/profile/{{ solution.user.username }}" class="img-holder"><img src="{{ solution.user.userprofile.avatar }}" alt="" /></a></td>
+                              <td class="text">
+                                  <a href="/profile/{{ solution.user.username }}">{{ solution.user.username}}</a></br>
+                                  <a href="{{solution.url}}" target="_new">{{ solution.status}}</a>
+                              </td>
+                              <td class="price"><a href="{{solution.url}}" target="_new"> #{{solution.id}}</a></td>
+                          </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>
+                </div>
         </div>
       </div>
     </div>

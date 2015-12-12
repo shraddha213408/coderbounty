@@ -299,13 +299,17 @@ class Solution(models.Model):
     )
 
     issue = models.ForeignKey(Issue)
-    submitted_by = models.ForeignKey(UserProfile)
-    submitted_at = models.DateTimeField(auto_now_add=True)
-    pr_link = models.URLField(help_text="Pull Request Link ")
+    user = models.ForeignKey(User)
+    created = models.DateTimeField(auto_now_add=True)
+    url = models.URLField(help_text="Pull Request Link ")
     status = models.CharField(max_length=250, choices=STATUS_CHOICES, default=IN_REVIEW)
 
+
+    def get_absolute_url(self):
+        return self.url
+
     def __unicode__(self):
-        return str(self.issue) + " solution"
+        return "solution #%s" % self.id
 
     def notify_owner(self):
         """Email Bounty Owner

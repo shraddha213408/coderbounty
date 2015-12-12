@@ -14,7 +14,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response, RequestContext, redirect, render
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView
-from models import Issue, UserProfile, Bounty, Service, Taker
+from models import Issue, UserProfile, Bounty, Service, Taker, Solution
 from utils import get_issue_helper, leaderboard, post_to_slack, submit_issue_taker, get_comment_helper
 from wepay import WePay
 from time import strftime
@@ -264,6 +264,18 @@ class IssueDetailView(DetailView):
                 issue.save()
             else:
                 return redirect('/accounts/login/?next=/issue/' + str(self.get_object().id))
+        if self.request.POST.get('solution'):
+            if self.request.user.is_authenticated():
+                solution = Solution(
+                    issue=self.get_object(),
+                    user=self.request.user,
+                    url=request.POST.get('solution'))
+                solution.save()
+                action.send(self.request.user, verb='posted ', action_object=solution, target=self.get_object())
+
+            else:
+                return redirect('/accounts/login/?next=/issue/' + str(self.get_object().id))
+
         return super(IssueDetailView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -271,6 +283,7 @@ class IssueDetailView(DetailView):
         context['leaderboard'] = leaderboard()
         context['taker'] = self.get_object().get_taker()
         context['takers'] = Taker.objects.filter(issue=self.get_object()).order_by('-created')
+        context['solutions'] = Solution.objects.filter(issue=self.get_object()).order_by('-created')
         if not context['taker'] and self.get_object().status == "taken":
             issue = self.get_object()
             issue.status = "open"
