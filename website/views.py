@@ -15,7 +15,7 @@ from django.shortcuts import render_to_response, RequestContext, redirect, rende
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView
 from models import Issue, UserProfile, Bounty, Service, Taker, Solution
-from utils import get_issue_helper, leaderboard, post_to_slack, submit_issue_taker, get_comment_helper
+from utils import get_issue_helper, leaderboard, post_to_slack, submit_issue_taker, get_comment_helper, create_comment
 from wepay import WePay
 from time import strftime
 import datetime
@@ -117,6 +117,8 @@ def create_issue_and_bounty(request):
                 profile.balance = int(request.user.userprofile.balance) - int(request.POST.get('grand_total'))
                 profile.save()
                 bounty_instance.save()
+                if not settings.DEBUG:
+                    create_comment(issue)
                 return redirect(issue.get_absolute_url())
             else:
                 data = serializers.serialize('xml', [bounty_instance, ])
@@ -243,6 +245,8 @@ class IssueDetailView(DetailView):
                 obj.save()
                 action.send(self.request.user, verb='placed a $' + str(obj.object.price) + ' bounty on ', target=obj.object.issue)
                 post_to_slack(obj.object)
+                if not settings.DEBUG:
+                    create_comment(obj.object.issue)
 
         return super(IssueDetailView, self).get(request, *args, **kwargs)
 

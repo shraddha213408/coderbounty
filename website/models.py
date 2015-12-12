@@ -164,7 +164,7 @@ class Bounty(models.Model):
         return timeuntil(self.ends, self.created).split(',')[0]
 
     def get_twitter_message(self):
-        msg = "Added $%s bounty for %s issue %s. http://coderbounty.com/#%s" % (self.price, self.issue.project, self.issue.number, self.issue.id)
+        msg = "Added $%s bounty for %s issue %s. http://coderbounty.com/issue/%s" % (self.price, self.issue.project, self.issue.number, self.issue.id)
         return msg
 
     def save(self, *args, **kwargs):

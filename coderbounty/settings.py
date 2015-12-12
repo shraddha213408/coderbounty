@@ -159,6 +159,9 @@ WEPAY_IN_PRODUCTION = os.environ.get('WEPAY_IN_PRODUCTION', not DEBUG)
 WEPAY_ACCOUNT_ID = os.environ.get('WEPAY_ACCOUNT_ID', '941349')
 WEPAY_ACCESS_TOKEN = os.environ.get('WEPAY_ACCESS_TOKEN', 'STAGE_9c8476245785f470fd87b6bb1fad6ccb5c6cae5522337c378b7b0984d909401d')
 
+GITHUB_USERNAME = os.environ.get('GITHUB_USERNAME', 'coderbounty-cowboy')
+GITHUB_PASSWORD = os.environ.get('GITHUB_PASSWORD', 'removed')
+
 STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
 
