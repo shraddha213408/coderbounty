@@ -16,7 +16,10 @@ import urllib
 import urllib2
 from django.utils.timezone import utc
 import tweepy
-
+from allauth.account.signals import user_signed_up
+from django.dispatch import receiver
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 
 class Service(models.Model):
     """
@@ -217,6 +220,21 @@ def create_profile(sender, **kwargs):
         profile.save()
 
 post_save.connect(create_profile, sender=User)
+
+
+@receiver(user_signed_up, dispatch_uid="some.unique.string.id.for.allauth.user_signed_up")
+def user_signed_up_(request, user, **kwargs):
+
+    msg_plain = render_to_string('email/welcome.txt', {'user': user})
+    msg_html = render_to_string('email/welcome.txt', {'user': user})
+
+    send_mail(
+        'Welcome to Coderbounty!',
+        msg_plain,
+        'support@coderbounty.com',
+        [user.email],
+        html_message=msg_html,
+    )
 
 
 TWITTER_MAXLENGTH = getattr(settings, 'TWITTER_MAXLENGTH', 140)

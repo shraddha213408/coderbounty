@@ -305,7 +305,7 @@ def get_facebook_count():
 
 def create_comment(issue=None, comment=None):
     if not comment:
-        comment = "A bounty has been placed at Codebounty! http://coderbounty.com/issue/"+str(issue.id)
+        comment = "Coderbounty posted: http://coderbounty.com/issue/"+str(issue.id)
     #see if we've commented already and just update
     #try to have one comment that we update
     return globals()["post_"+issue.service.name.replace(" ", "_").lower()+"_comment"](issue, comment)

@@ -150,6 +150,7 @@ ALLOWED_HOSTS = ['*']
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "none"
 
 
 # python -m smtpd -n -c DebuggingServer localhost:1025
