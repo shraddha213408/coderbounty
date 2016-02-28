@@ -59,11 +59,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=’#B3A896, en
 // console.log('test');
 
 $(document).ready(function(){
-    console.log("Ready");
 
     $('#issueUrl').liveUrl({
        success : function(data)
-       {   
+       {
         $.post( "/parse_url_ajax/", {
                 url: data['url'],
                 csrfmiddlewaretoken: "{{ csrf_token }}"
@@ -71,8 +70,6 @@ $(document).ready(function(){
                 var issue = jQuery.parseJSON(data)
                 $('#title').val(issue['title']);
                 $('#content').val(issue['content']);
-                console.log("Live URL Completed"); 
-                mixpanel.track("Live URL Completed");
             });
         }
     });
@@ -189,7 +186,7 @@ $(document).ready(function(){
                                 </div>
                                
                                 <div class="col-4 bounty-info">
-                                    <h2>Project Title<a href="/post_all">view all issues</a></h2>
+                                    <h2>Project Title<a href="#">view all issues</a></h2>
                                     <a class="avatar" href="#"><img src="{% static "images/temp/thumb-medium-00.jpg" %}" alt="" /></a>
                                     <div class="bounty-info-add-image">
                                     	<div class="arrow">

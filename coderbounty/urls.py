@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from website.views import UserProfileDetailView, \
-    IssueDetailView, UserProfileEditView, LeaderboardView
+    IssueDetailView, UserProfileEditView, LeaderboardView, PostAll
 from django.views.generic.base import TemplateView
 from rest_framework import routers, serializers, viewsets
 from website.models import Issue, Service
@@ -25,6 +25,7 @@ urlpatterns = patterns('',
     url(r'^get_bounty_image/(?P<id>\w+)/$', 'website.views.get_bounty_image', name='get_bounty_image'),
     url(r'^parse_url_ajax/$', 'website.views.parse_url_ajax', name='parse_url_ajax'),
     url(r'^post/$', 'website.views.create_issue_and_bounty', name='post'),
+    url(r'^post_all/$', PostAll.as_view(), name='post_all'),
     url(r'^profile/$', 'website.views.profile', name='profile'),
     url(r'^profile/(?P<slug>[^/]+)/$', UserProfileDetailView.as_view(), name="profile"),
     url(r'^robots.txt$', TemplateView.as_view(template_name='robots.txt')),

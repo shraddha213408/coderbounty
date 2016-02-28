@@ -68,7 +68,8 @@ MIDDLEWARE_CLASSES = (
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.request',
-    'allauth.account.context_processors.account',
+    # coment these two out for new Django
+	'allauth.account.context_processors.account',
     'allauth.socialaccount.context_processors.socialaccount',
     'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.static',
@@ -159,6 +160,10 @@ ACCOUNT_EMAIL_VERIFICATION = "none"
 WEPAY_IN_PRODUCTION = os.environ.get('WEPAY_IN_PRODUCTION', not DEBUG)
 WEPAY_ACCOUNT_ID = os.environ.get('WEPAY_ACCOUNT_ID', '941349')
 WEPAY_ACCESS_TOKEN = os.environ.get('WEPAY_ACCESS_TOKEN', 'STAGE_9c8476245785f470fd87b6bb1fad6ccb5c6cae5522337c378b7b0984d909401d')
+
+CLIENT_ID = os.environ.get('CLIENT_ID', 'AQkquBDf1zctJOWGKWUEtKXm6qVhueUEMvXO_-MCI4DQQ4-LWvkDLIN2fGsd')
+CLIENT_SECRET = os.environ.get('CLIENT_SECRET', 'EL1tVxAjhT7cJimnz5-Nsx9k2reTKSVfErNQF-CmrwJgxRtylkGTKlU4RvrX')
+MODE = os.environ.get('MODE', 'sandbox')
 
 GITHUB_USERNAME = os.environ.get('GITHUB_USERNAME', 'coderbounty-cowboy')
 GITHUB_PASSWORD = os.environ.get('GITHUB_PASSWORD', 'removed')

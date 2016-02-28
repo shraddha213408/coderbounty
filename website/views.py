@@ -12,7 +12,7 @@ from django.core.urlresolvers import reverse
 from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, RequestContext, redirect, render
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, FormView, TemplateView
 from django.views.generic.edit import UpdateView
 from models import Issue, UserProfile, Bounty, Service, Taker, Solution
 from utils import get_issue_helper, leaderboard, post_to_slack, submit_issue_taker, get_comment_helper, create_comment
@@ -21,6 +21,9 @@ from time import strftime
 import datetime
 import json
 from django.contrib.staticfiles.templatetags.staticfiles import static
+import urllib2
+from allauth.socialaccount.models import SocialToken, SocialApp, SocialAccount, SocialLogin
+import requests
 
 
 def parse_url_ajax(request):
@@ -122,24 +125,55 @@ def create_issue_and_bounty(request):
                 return redirect(issue.get_absolute_url())
             else:
                 data = serializers.serialize('xml', [bounty_instance, ])
-
-                wepay = WePay(settings.WEPAY_IN_PRODUCTION, settings.WEPAY_ACCESS_TOKEN)
-                wepay_data = wepay.call('/checkout/create', {
-                    'account_id': settings.WEPAY_ACCOUNT_ID,
-                    'amount': request.POST.get('grand_total'),
-                    'short_description': 'CoderBounty',
-                    'long_description': data,
-                    'type': 'service',
-                    'redirect_uri': request.build_absolute_uri(issue.get_absolute_url()),
-                    'currency': 'USD'
+                # https://devtools-paypal.com/guide/pay_paypal/python?env=sandbox
+                import paypalrestsdk
+                paypalrestsdk.configure({
+                  'mode': settings.MODE,
+                  'client_id': settings.CLIENT_ID,
+                  'client_secret': settings.CLIENT_SECRET
                 })
-                if "error_code" in wepay_data:
-                    messages.error(request, wepay_data['error_description'])
-                    return render(request, 'post.html', {
-                        'languages': languages
-                    })
 
-                return redirect(wepay_data['checkout_uri'])
+                payment = paypalrestsdk.Payment({
+                  "intent": "sale",
+                  "payer": {
+                    "payment_method": "paypal" },
+                  "redirect_urls": {
+                    "return_url": request.build_absolute_uri(issue.get_absolute_url()),
+                    "cancel_url": "https://coderbounty.com/post" },
+
+                  "transactions": [ {
+                    "amount": {
+                      "total": request.POST.get('grand_total'),
+                      "currency": "USD" },
+                    "description": "Coderbounty #" + str(issue.id)} ] } )
+
+                payment.create()
+
+              
+
+                # wepay = WePay(settings.WEPAY_IN_PRODUCTION, settings.WEPAY_ACCESS_TOKEN)
+                # wepay_data = wepay.call('/checkout/create', {
+                #     'account_id': settings.WEPAY_ACCOUNT_ID,
+                #     'amount': request.POST.get('grand_total'),
+                #     'short_description': 'CoderBounty',
+                #     'long_description': data,
+                #     'type': 'service',
+                #     'redirect_uri': request.build_absolute_uri(issue.get_absolute_url()),
+                #     'currency': 'USD'
+                # })
+                # if "error_code" in wepay_data:
+                #     messages.error(request, wepay_data['error_description'])
+                #     return render(request, 'post.html', {
+                #         'languages': languages
+                #     })
+
+                # 
+                for link in payment.links:
+                    if link.method == "REDIRECT":
+                            redirect_url = link.href
+                return redirect(redirect_url)
+
+
 
         else:
             return render(request, 'post.html', {
@@ -213,6 +247,63 @@ class UserProfileEditView(SuccessMessageMixin, UpdateView):
         return self.success_message
 
 
+class PostAll(TemplateView):
+    template_name = "post_all.html"
+
+    def get_context_data(self, **kwargs):
+        #find all github issues
+        accounts = {}
+        for account in self.request.user.socialaccount_set.all().iterator():
+            providers = accounts.setdefault(account.provider, [])
+            providers.append(account)
+
+        service = Service.objects.get(name="Github")
+        access_token = SocialToken.objects.get(account__user=self.request.user, account__provider='github')
+
+
+        #the_url = service.api_url + "/" + accounts['github'][0].extra_data['login'] + "/user/issues"
+
+        # the_url = service.api_url + "/issues"
+        # print the_url
+
+        # resp = requests.get(the_url, params={'access_token': access_token}, headers={"content-type": 'application/vnd.github+json'})
+        # gres = resp.json()
+        # print gres
+
+        
+        #the_url = service.api_url + "/user/issues?filter=all"
+
+        the_url = 'https://api.github.com/user'
+        
+        #/user/issues?filter=all
+
+        resp = requests.get(the_url, params={'access_token': access_token})
+        user_info = resp.json()
+        print user_info
+        print user_info['repos_url']
+        print user_info['organizations_url']
+
+        resp = requests.get(user_info['repos_url'], params={'access_token': access_token})
+        repos = resp.json()
+        for repo in repos:
+           if repo['open_issues_count'] > 1:
+               print repo['name'], repo['open_issues_count']
+
+
+        resp = requests.get(user_info['organizations_url'], params={'access_token': access_token})
+        repos = resp.json()
+        print repos
+        #for repo in repos:
+        #   if repo['open_issues_count'] > 1:
+        #       print repo['name'], repo['open_issues_count']
+
+
+        #'organizations_url': u'https://api.github.com/users/seanauriti/orgs'
+        context = super(PostAll, self).get_context_data(**kwargs)
+        #context['leaderboard'] = leaderboard()
+        return context
+
+
 class LeaderboardView(ListView):
     template_name = "leaderboard.html"
 
@@ -233,6 +324,7 @@ class IssueDetailView(DetailView):
     template_name = "issue.html"
 
     def get(self, request, *args, **kwargs):
+
         if self.request.GET.get('checkout_id'):
             wepay = WePay(settings.WEPAY_IN_PRODUCTION, settings.WEPAY_ACCESS_TOKEN)
             wepay_data = wepay.call('/checkout/', {
