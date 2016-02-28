@@ -325,6 +325,26 @@ class IssueDetailView(DetailView):
 
     def get(self, request, *args, **kwargs):
 
+        # ?paymentId=PAY-34234234&token=EC-234234234&PayerID=234234234
+
+        # new paypal code here
+
+        # if self.request.GET.get('paymentId'):
+
+        #     wepay = WePay(settings.WEPAY_IN_PRODUCTION, settings.WEPAY_ACCESS_TOKEN)
+        #     wepay_data = wepay.call('/checkout/', {
+        #         'checkout_id': self.request.GET.get('checkout_id'),
+        #     })
+
+        #     for obj in serializers.deserialize("xml", wepay_data['long_description'], ignorenonexistent=True):
+        #         obj.object.created = datetime.datetime.now()
+        #         obj.object.checkout_id = self.request.GET.get('checkout_id')
+        #         obj.save()
+        #         action.send(self.request.user, verb='placed a $' + str(obj.object.price) + ' bounty on ', target=obj.object.issue)
+        #         post_to_slack(obj.object)
+        #         if not settings.DEBUG:
+        #             create_comment(obj.object.issue)
+
         if self.request.GET.get('checkout_id'):
             wepay = WePay(settings.WEPAY_IN_PRODUCTION, settings.WEPAY_ACCESS_TOKEN)
             wepay_data = wepay.call('/checkout/', {
