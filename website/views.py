@@ -124,7 +124,7 @@ def create_issue_and_bounty(request):
                     create_comment(issue)
                 return redirect(issue.get_absolute_url())
             else:
-                data = serializers.serialize('xml', [bounty_instance, ])
+                data = serializers.serialize('json', [bounty_instance, ])
                 # https://devtools-paypal.com/guide/pay_paypal/python?env=sandbox
                 import paypalrestsdk
                 paypalrestsdk.configure({
@@ -145,11 +145,20 @@ def create_issue_and_bounty(request):
                     "amount": {
                       "total": request.POST.get('grand_total'),
                       "currency": "USD" },
-                    "description": "Coderbounty #" + str(issue.id)} ] } )
+                    "description": "Coderbounty #" + str(issue.id),
+                    "custom": data} ] } )
 
-                payment.create()
+                if payment.create():
+                    for link in payment.links:
+                        if link.method == "REDIRECT":
+                                redirect_url = link.href
+                    return redirect(redirect_url)
+                else:
+                    messages.error(request, payment.error)
+                    return render(request, 'post.html', {
+                        'languages': languages
+                    })
 
-              
 
                 # wepay = WePay(settings.WEPAY_IN_PRODUCTION, settings.WEPAY_ACCESS_TOKEN)
                 # wepay_data = wepay.call('/checkout/create', {
@@ -168,10 +177,7 @@ def create_issue_and_bounty(request):
                 #     })
 
                 # 
-                for link in payment.links:
-                    if link.method == "REDIRECT":
-                            redirect_url = link.href
-                return redirect(redirect_url)
+
 
 
 
@@ -325,25 +331,24 @@ class IssueDetailView(DetailView):
 
     def get(self, request, *args, **kwargs):
 
-        # ?paymentId=PAY-34234234&token=EC-234234234&PayerID=234234234
+        if self.request.GET.get('paymentId'):
+            import paypalrestsdk
+            paypalrestsdk.configure({
+                'mode': settings.MODE,
+                'client_id': settings.CLIENT_ID,
+                'client_secret': settings.CLIENT_SECRET
+            })
+            payment = paypalrestsdk.Payment.find(self.request.GET.get('paymentId'))
+            print payment.transactions[0].custom
 
-        # new paypal code here
-
-        # if self.request.GET.get('paymentId'):
-
-        #     wepay = WePay(settings.WEPAY_IN_PRODUCTION, settings.WEPAY_ACCESS_TOKEN)
-        #     wepay_data = wepay.call('/checkout/', {
-        #         'checkout_id': self.request.GET.get('checkout_id'),
-        #     })
-
-        #     for obj in serializers.deserialize("xml", wepay_data['long_description'], ignorenonexistent=True):
-        #         obj.object.created = datetime.datetime.now()
-        #         obj.object.checkout_id = self.request.GET.get('checkout_id')
-        #         obj.save()
-        #         action.send(self.request.user, verb='placed a $' + str(obj.object.price) + ' bounty on ', target=obj.object.issue)
-        #         post_to_slack(obj.object)
-        #         if not settings.DEBUG:
-        #             create_comment(obj.object.issue)
+            for obj in serializers.deserialize("json", payment.transactions[0].custom, ignorenonexistent=True):
+                obj.object.created = datetime.datetime.now()
+                obj.object.checkout_id = self.request.GET.get('checkout_id')
+                obj.save()
+                action.send(self.request.user, verb='placed a $' + str(obj.object.price) + ' bounty on ', target=obj.object.issue)
+                post_to_slack(obj.object)
+                if not settings.DEBUG:
+                    create_comment(obj.object.issue)
 
         if self.request.GET.get('checkout_id'):
             wepay = WePay(settings.WEPAY_IN_PRODUCTION, settings.WEPAY_ACCESS_TOKEN)
