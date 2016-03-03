@@ -341,8 +341,10 @@ class IssueDetailView(DetailView):
 
             payment = paypalrestsdk.Payment.find(self.request.GET.get('paymentId'))
 
+            custom = payment.transactions[0].custom
+
             if payment.execute({"payer_id": self.request.GET.get('PayerID')}):
-                for obj in serializers.deserialize("json", payment.transactions[0].custom, ignorenonexistent=True):
+                for obj in serializers.deserialize("json", custom, ignorenonexistent=True):
                     obj.object.created = datetime.datetime.now()
                     obj.object.checkout_id = self.request.GET.get('checkout_id')
                     obj.save()
