@@ -338,17 +338,20 @@ class IssueDetailView(DetailView):
                 'client_id': settings.CLIENT_ID,
                 'client_secret': settings.CLIENT_SECRET
             })
-            payment = paypalrestsdk.Payment.find(self.request.GET.get('paymentId'))
-            print payment.transactions[0].custom
 
-            for obj in serializers.deserialize("json", payment.transactions[0].custom, ignorenonexistent=True):
-                obj.object.created = datetime.datetime.now()
-                obj.object.checkout_id = self.request.GET.get('checkout_id')
-                obj.save()
-                action.send(self.request.user, verb='placed a $' + str(obj.object.price) + ' bounty on ', target=obj.object.issue)
-                post_to_slack(obj.object)
-                if not settings.DEBUG:
-                    create_comment(obj.object.issue)
+            payment = paypalrestsdk.Payment.find(self.request.GET.get('paymentId'))
+
+            if payment.execute({"payer_id": self.request.GET.get('PayerID')}):
+                for obj in serializers.deserialize("json", payment.transactions[0].custom, ignorenonexistent=True):
+                    obj.object.created = datetime.datetime.now()
+                    obj.object.checkout_id = self.request.GET.get('checkout_id')
+                    obj.save()
+                    action.send(self.request.user, verb='placed a $' + str(obj.object.price) + ' bounty on ', target=obj.object.issue)
+                    post_to_slack(obj.object)
+                    if not settings.DEBUG:
+                        create_comment(obj.object.issue)
+            else:
+                messages.error(request, payment.error)
 
         if self.request.GET.get('checkout_id'):
             wepay = WePay(settings.WEPAY_IN_PRODUCTION, settings.WEPAY_ACCESS_TOKEN)
