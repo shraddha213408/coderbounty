@@ -55,7 +55,8 @@ def create_issue_and_bounty(request):
         if url:
             helper = get_issue_helper(request, url)
             issue_data = helper.get_issue(request, url)
-            if not issue_data:
+
+            if not "title" in issue_data:
                 messages.error(request, 'Please provide an valid issue url')
                 return redirect('/post')
 
