@@ -43,3 +43,21 @@ class MySeleniumTests(LiveServerTestCase):
         password_input.send_keys('secret')
         self.selenium.find_element_by_xpath('//*[@id="signup_form"]/button').click()
         assert "myuser" in self.selenium.title.lower()
+
+    @override_settings(DEBUG=True)
+    def test_post_bounty(self):
+        self.selenium.get('%s%s' % (self.live_server_url, '/accounts/login/'))
+        username_input = self.selenium.find_element_by_name("login")
+        username_input.send_keys('myuser')
+        password_input = self.selenium.find_element_by_name("password")
+        password_input.send_keys('secret')
+        self.selenium.find_element_by_xpath('/html/body/div/div[1]/div/section/div/div/form/div/button').click()
+        response = self.selenium.get('%s%s' % (self.live_server_url, '/post/'))
+        username_input = self.selenium.find_element_by_name("issueUrl")
+        username_input.send_keys('https://github.com/CoderBounty/coderbounty/issues/16')
+        username_input = self.selenium.find_element_by_name("title")
+        username_input.send_keys('test')
+        username_input = self.selenium.find_element_by_name("content")
+        username_input.send_keys('test')
+        self.selenium.find_element_by_xpath('//*[@id="post_bounty"]/div[2]/div[3]/button').click()
+        assert "paypal" in self.selenium.current_url
