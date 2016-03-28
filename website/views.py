@@ -223,7 +223,7 @@ class UserProfileDetailView(DetailView):
             UserProfile.objects.get_or_create(user=user)
             return user
         except Http404:
-            messages.error(request, 'That user was not found.')
+            messages.error(self.request, 'That user was not found.')
             return redirect("/")
 
     def get_context_data(self, **kwargs):
@@ -431,7 +431,7 @@ class IssueDetailView(DetailView):
                 object.save()
             return object
         except Http404:
-            messages.error(request, 'That issue was not found.')
+            messages.error(self.request, 'That issue was not found.')
             return redirect("/")
 
 
