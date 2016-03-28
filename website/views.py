@@ -24,6 +24,7 @@ from django.contrib.staticfiles.templatetags.staticfiles import static
 import urllib2
 from allauth.socialaccount.models import SocialToken, SocialApp, SocialAccount, SocialLogin
 import requests
+from django.http import Http404
 
 
 def parse_url_ajax(request):
@@ -217,9 +218,13 @@ class UserProfileDetailView(DetailView):
     template_name = "profile.html"
 
     def get_object(self, queryset=None):
-        user = super(UserProfileDetailView, self).get_object(queryset)
-        UserProfile.objects.get_or_create(user=user)
-        return user
+        try:
+            user = super(UserProfileDetailView, self).get_object(queryset)
+            UserProfile.objects.get_or_create(user=user)
+            return user
+        except Http404:
+            messages.error(request, 'That user was not found.')
+            return redirect(url)
 
     def get_context_data(self, **kwargs):
         context = super(UserProfileDetailView, self).get_context_data(**kwargs)
