@@ -418,8 +418,8 @@ class IssueDetailView(DetailView):
         return context
 
     def get_object(self):
+        object = super(IssueDetailView, self).get_object()
         if self.request.user.is_authenticated():
-            object = super(IssueDetailView, self).get_object()
             object.views = object.views + 1
             object.save()
         return object
