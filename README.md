@@ -1,4 +1,4 @@
-<img src="https://5870bc34f7844171580d2297ee71012d18f7ba71.googledrive.com/host/0B9LVk4xbDIJTMjFrSkNWYm1mM00" alt="coder bounty logo"/>
+<img src="http://www.coderbounty.com/static/images/coder-bounty.760234281c34.png" alt="coder bounty logo"/>
 
 #### Join us on Slack:
 
