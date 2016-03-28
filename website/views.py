@@ -224,7 +224,7 @@ class UserProfileDetailView(DetailView):
             return user
         except Http404:
             messages.error(request, 'That user was not found.')
-            return redirect(url)
+            return redirect("/")
 
     def get_context_data(self, **kwargs):
         context = super(UserProfileDetailView, self).get_context_data(**kwargs)
@@ -394,6 +394,7 @@ class IssueDetailView(DetailView):
                 issue = self.get_object()
                 issue.status = "taken"
                 issue.save()
+                "yippie kay yay - someone took your coderbounty issue #1234 - they will have 4 hours before "
             else:
                 return redirect('/accounts/login/?next=/issue/' + str(self.get_object().id))
         if self.request.POST.get('solution'):
@@ -423,11 +424,16 @@ class IssueDetailView(DetailView):
         return context
 
     def get_object(self):
-        object = super(IssueDetailView, self).get_object()
-        if self.request.user.is_authenticated():
-            object.views = object.views + 1
-            object.save()
-        return object
+        try:
+            object = super(IssueDetailView, self).get_object()
+            if self.request.user.is_authenticated():
+                object.views = object.views + 1
+                object.save()
+            return object
+        except Http404:
+            messages.error(request, 'That issue was not found.')
+            return redirect("/")
+
 
 
 def get_bounty_image(request, id):
