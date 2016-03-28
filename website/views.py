@@ -418,10 +418,11 @@ class IssueDetailView(DetailView):
         return context
 
     def get_object(self):
+        if self.request.user.is_authenticated():
             object = super(IssueDetailView, self).get_object()
             object.views = object.views + 1
             object.save()
-            return object
+        return object
 
 
 def get_bounty_image(request, id):
