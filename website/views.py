@@ -217,14 +217,18 @@ class UserProfileDetailView(DetailView):
     slug_field = "username"
     template_name = "profile.html"
 
-    def get_object(self, queryset=None):
+    def get(self, request, *args, **kwargs):
         try:
-            user = super(UserProfileDetailView, self).get_object(queryset)
-            UserProfile.objects.get_or_create(user=user)
-            return user
+            self.object = self.get_object()
         except Http404:
             messages.error(self.request, 'That user was not found.')
             return redirect("/")
+        return super(UserProfileDetailView, self).get(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        user = super(UserProfileDetailView, self).get_object(queryset)
+        UserProfile.objects.get_or_create(user=user)
+        return user
 
     def get_context_data(self, **kwargs):
         context = super(UserProfileDetailView, self).get_context_data(**kwargs)
@@ -336,7 +340,13 @@ class IssueDetailView(DetailView):
     template_name = "issue.html"
 
     def get(self, request, *args, **kwargs):
-
+        try:
+            self.object = self.get_object()
+        except Http404:
+            messages.error(self.request, 'That issue was not found.')
+            return redirect("/")
+        context = self.get_context_data(object=self.object)
+        return self.render_to_response(context)
         if self.request.GET.get('paymentId'):
             import paypalrestsdk
             paypalrestsdk.configure({
@@ -394,7 +404,7 @@ class IssueDetailView(DetailView):
                 issue = self.get_object()
                 issue.status = "taken"
                 issue.save()
-                "yippie kay yay - someone took your coderbounty issue #1234 - they will have 4 hours before "
+                #"yippie kay yay - someone took your coderbounty issue #1234 - they will have 4 hours before "
             else:
                 return redirect('/accounts/login/?next=/issue/' + str(self.get_object().id))
         if self.request.POST.get('solution'):
@@ -424,15 +434,12 @@ class IssueDetailView(DetailView):
         return context
 
     def get_object(self):
-        try:
-            object = super(IssueDetailView, self).get_object()
-            if self.request.user.is_authenticated():
-                object.views = object.views + 1
-                object.save()
-            return object
-        except Http404:
-            messages.error(self.request, 'That issue was not found.')
-            return redirect("/")
+        object = super(IssueDetailView, self).get_object()
+        if self.request.user.is_authenticated():
+            object.views = object.views + 1
+            object.save()
+        return object
+
 
 
 
