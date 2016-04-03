@@ -194,10 +194,29 @@ def create_issue_and_bounty(request):
 
 
 def list(request):
-    issues = Issue.objects.all().order_by('-created')
+    status = request.GET.get('status','open')
+    language = request.GET.get('language')
+    sort = request.GET.get('sort','-created')
+
+
+    if status == "all":
+        issues = Issue.objects.all().order_by(sort)
+    else:
+        issues = Issue.objects.filter(status=status).order_by(sort)
+    
+    if language:
+        issues = issues.filter(language=language)
+
+    languages = []
+    for lang in Issue.LANGUAGES:
+        languages.append(lang[0])
 
     context = {
         'issues': issues,
+        'language': language,
+        'languages': languages,
+        'status': status,
+        'sort': sort,
     }
     response = render_to_response('list.html', context, context_instance=RequestContext(request))
     return response
@@ -396,6 +415,7 @@ class IssueDetailView(DetailView):
             if self.get_object().get_api_data()['state'] == 'closed':
                 issue = self.get_object()
                 if Solution.objects.filter(issue=issue):
+                    # process the payment here and mark it as paid if the solution was accepted
                     issue.status = 'in review'
                 else:
                     issue.status = 'closed'

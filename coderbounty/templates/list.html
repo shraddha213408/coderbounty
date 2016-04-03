@@ -8,27 +8,38 @@
     <!-- headbar -->
     <div class="headbar frame listing">
         <h1 class="titlebar-paper"><span >Open Bountie$</span></h1>
-        <!--
+
             <div class="filter">
-                <form>
+                <form action="" method="GET">
                 <label for="filterAll">Language:</label>
-                <select id="filterAll">
-                    <option>Any</option>
-                    <option>Issue #1</option>
-                    <option>Issue #2</option>
-                    <option>Issue #3</option>
-                    <option>Issue #4</option>
+                <select id="filterAll" name="language">
+                    <option value="">Any</option>
+                    {% for language_item in languages %}
+                    <option value="{{language_item}}" {% if language_item == language %}selected{% endif %} >{{language_item}}</option>
+                    {% endfor %}
                 </select>
+
+                <label for="filterSort">Status:</label>
+                <select id="filterSort" name="status">
+                    <option value="open" {% if status == "open" %}selected{% endif %}>Open</option>
+                    <option value="in review" {% if status == "in review" %}selected{% endif %}>In Review</option>
+                    <option value="paid" {% if status == "paid" %}selected{% endif %}>Paid</option>
+                    <option value="closed" {% if status == "closed" %}selected{% endif %}>Closed</option>
+                    <option value="all" {% if status == "all" %}selected{% endif %}>All</option>
+                </select>
+             
                 <label for="filterSort">Sort by:</label>
-                <select id="filterSort">
-                    <option>Most Recent</option>
-                    <option>Highest Bounty</option>
-                    <option>Most Views</option>
+                <select id="filterSort" name="sort">
+                    <option value="-created" {% if sort == "-created" %}selected{% endif %}>Most Recent</option>
+                    <option value="-bounty" {% if sort == "-bounty" %}selected{% endif %}>Highest Bounty</option>
+                    <option value="-views" {% if sort == "-views" %}selected{% endif %}>Most Views</option>
+                    <option value="-modified" {% if sort == "-modified" %}selected{% endif %}>Last Modified</option>
                 </select>
+            
                     <button class="ribbon ribbon-normal ribbon-green ribbon-03">Find</button>
                     </form>
             </div>
-        -->
+
     </div>
     <!-- issues -->
     <div class="issues">
