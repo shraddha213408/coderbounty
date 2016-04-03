@@ -309,20 +309,21 @@ signals.post_delete.connect(delete_issue, sender=Bounty)
 
 class Solution(models.Model):
 
-    IN_REVIEW = 'in review'
-    MERGED = 'Merged or accepted'
-    REQUESTED_REVISION = 'Requested for revision'
+    OPEN = 'open'
+    MERGED = 'merged'
+    CLOSED = 'closed'
     STATUS_CHOICES = (
-        (IN_REVIEW, 'In review'),
-        (MERGED, 'Merged or accepted'),
-        (REQUESTED_REVISION, 'Requested for revision'),
+        (OPEN, 'open'),
+        (MERGED, 'merged'),
+        (CLOSED, 'closed'),
     )
 
     issue = models.ForeignKey(Issue)
     user = models.ForeignKey(User)
     created = models.DateTimeField(auto_now_add=True)
-    url = models.URLField(help_text="Pull Request Link ")
-    status = models.CharField(max_length=250, choices=STATUS_CHOICES, default=IN_REVIEW)
+    modified = models.DateTimeField(auto_now=True)
+    url = models.URLField(help_text="Pull Request URL")
+    status = models.CharField(max_length=250, choices=STATUS_CHOICES, default=OPEN)
 
 
     def get_absolute_url(self):
