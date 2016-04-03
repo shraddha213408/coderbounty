@@ -392,10 +392,13 @@ class IssueDetailView(DetailView):
         comment_service_helper = get_comment_helper(self.get_object().service)
 
         comment_service_helper.load_comments(self.get_object())
-        if self.get_object().status == 'open':
+        if self.get_object().status in ('open', 'in review'):
             if self.get_object().get_api_data()['state'] == 'closed':
                 issue = self.get_object()
-                issue.status = 'in review'
+                if Solution.objects.filter(issue=issue):
+                    issue.status = 'in review'
+                else:
+                    issue.status = 'closed'
                 issue.save()
         if self.request.POST.get('take'):
             if self.request.user.is_authenticated():
