@@ -2,7 +2,8 @@
 
 #### Join us on Slack:
 
-[![Slack Status](https://coderbounty-slackin.herokuapp.com/badge.svg)](https://coderbounty-slackin.herokuapp.com)[![Codacy Badge](https://api.codacy.com/project/badge/grade/e7dd6887193546529274f78fc0c9993b)](https://www.codacy.com/app/sean_2/coderbounty)
+[![Slack Status](https://coderbounty-slackin.herokuapp.com/badge.svg)](https://coderbounty-slackin.herokuapp.com) [![Codacy Badge](https://api.codacy.com/project/badge/grade/e7dd6887193546529274f78fc0c9993b)](https://www.codacy.com/app/sean_2/coderbounty) [![Codeship Status](https://codeship.com/projects/79d8f370-6de1-0133-9c97-6eccd6fcb9f2/status?branch=master)](https://codeship.com/projects/115741)
+
 
 To contribute, take an issue, and submit a pull request with the issue number in it win bounty!
 
@@ -16,6 +17,8 @@ https://goo.gl/xvb6CI
 In addition to our github issues, we are
 <a href="https://zenhub.io"><img src="https://raw.githubusercontent.com/ZenHubIO/support/master/zenhub-badge.png"></a>
 Install ZenHub's browser extension to view our issues and kanban board.
+
+<a href="http://burndown.io/#Coderbounty/coderbounty/summary/90">90 day burndown chart</a>
 
 #### Notes on getting started:
 ###### Run the server with:
