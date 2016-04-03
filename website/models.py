@@ -52,10 +52,12 @@ class Issue(models.Model):
     OPEN_STATUS = 'open'
     IN_REVIEW_STATUS = 'in review'
     PAID_STATUS = 'paid'
+    CLOSED_STATUS = 'closed'
     STATUS_CHOICES = (
         (OPEN_STATUS, 'open'),
         (IN_REVIEW_STATUS, 'in review'),
         (PAID_STATUS, 'paid'),
+        (CLOSED_STATUS, 'closed'),
     )
     LANGUAGES = (
         ('C#', 'C#'),
@@ -384,7 +386,7 @@ class Taker(models.Model):
 class Comment(models.Model):
     issue = models.ForeignKey(Issue)
     content = models.TextField()
-    service_comment_id = models.IntegerField()
+    service_comment_id = models.IntegerField(unique=True)
     username = models.CharField(max_length=255)
     created = models.DateTimeField()
     updated = models.DateTimeField()
