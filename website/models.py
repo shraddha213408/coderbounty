@@ -348,15 +348,20 @@ class Solution(models.Model):
     def save(self, *args, **kwargs):
         if self.pk is None:
             # notify owner if there's a new solution
+            # a solution for project issue #34 has been submitted by username!  Please take a look at it here0link
+            # and either approve or reject it.
             self.notify_owner()
 
-        if self.status == Solution.REQUESTED_REVISION:
+        if self.status == Solution.CLOSED:
             # notify coder to revision the solution
+            # your solution was not approved, please revise it and submit another solution.
+
             self.notify_coder(status=self.status)
 
         if self.status == Solution.MERGED:
             # ask cb to realease bounty
             # notify coder that PR has been accepted
+            # your solution has been approved, the payment is on it's way!
             self.notify_coderbounty()
             self.notify_coder(status=self.status)
 

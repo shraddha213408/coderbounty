@@ -25,9 +25,11 @@ class IssueAdmin(admin.ModelAdmin):
 class TakerAdmin(admin.ModelAdmin):
     list_display=('user','issue','created')
 
-
 class CommentAdmin(admin.ModelAdmin):
     list_display=('username','issue','service_comment_id','created','updated','content')
+
+class SolutionAdmin(admin.ModelAdmin):
+    list_display=('issue','user','url','status')
 
 admin.site.unregister(User)
 
@@ -38,6 +40,6 @@ admin.site.register(Service, ServiceAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(Bounty, BountyAdmin)
 admin.site.register(User, UserAdmin)
-admin.site.register(Solution)
+admin.site.register(Solution, SolutionAdmin)
 admin.site.register(Taker, TakerAdmin)
 admin.site.register(Comment, CommentAdmin)
