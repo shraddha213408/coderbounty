@@ -27,7 +27,7 @@ class TakerAdmin(admin.ModelAdmin):
 
 
 class CommentAdmin(admin.ModelAdmin):
-    pass
+    list_display=('username','issue','service_comment_id','created','updated','content')
 
 admin.site.unregister(User)
 
