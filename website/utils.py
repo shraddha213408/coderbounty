@@ -435,7 +435,7 @@ class GithubCommentHelper(AbstractCommentHelper):
         comments = issue.get_api_data(url)
 
         for comment in comments:
-            Comment.objects.create(issue=issue, content=comment['body'],
+            Comment.objects.update_or_create(issue=issue, content=comment['body'],
                                    service_comment_id=comment['id'], username=comment['user']['login'],
                                    created=comment['created_at'], updated=comment['updated_at'])
 
