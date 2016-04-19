@@ -7,13 +7,13 @@ from django.views.generic.base import TemplateView
 from rest_framework import routers, serializers, viewsets
 from website.models import Issue, Service
 from django.contrib.auth.models import User
-
+import website
 
 admin.autodiscover()
 
 
-urlpatterns = patterns('',
-    url(r'^$', 'website.views.home', name='home'),
+urlpatterns = (
+    url(r'^$', website.views.home, name='home'),
     url(r'^about/$',  TemplateView.as_view(template_name='about.html'), name='about'),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^admin/', include(admin.site.urls)),
@@ -21,15 +21,15 @@ urlpatterns = patterns('',
     url(r'^help/$', TemplateView.as_view(template_name='help.html'), name='help'),
     url(r'^issue/(?P<slug>\w+)/$', IssueDetailView.as_view(), name="issue"),
     url(r'^leaderboard/$', LeaderboardView.as_view(), name="leaderboard"),
-    url(r'^list/$', 'website.views.list', name='list'),
-    url(r'^get_bounty_image/(?P<id>\w+)/$', 'website.views.get_bounty_image', name='get_bounty_image'),
-    url(r'^parse_url_ajax/$', 'website.views.parse_url_ajax', name='parse_url_ajax'),
-    url(r'^post/$', 'website.views.create_issue_and_bounty', name='post'),
+    url(r'^list/$', website.views.list, name='list'),
+    url(r'^get_bounty_image/(?P<id>\w+)/$', website.views.get_bounty_image, name='get_bounty_image'),
+    url(r'^parse_url_ajax/$', website.views.parse_url_ajax, name='parse_url_ajax'),
+    url(r'^post/$', website.views.create_issue_and_bounty, name='post'),
     url(r'^post_all/$', PostAll.as_view(), name='post_all'),
-    url(r'^profile/$', 'website.views.profile', name='profile'),
+    url(r'^profile/$', website.views.profile, name='profile'),
     url(r'^profile/(?P<slug>[^/]+)/$', UserProfileDetailView.as_view(), name="profile"),
     url(r'^robots.txt$', TemplateView.as_view(template_name='robots.txt')),
-    url(r'^terms/$', TemplateView.as_view(template_name='terms.html'), name='terms'),
+    url(r'^terms/$', TemplateView.as_view(template_name='terms.html'), name='terms')
 )
 
 

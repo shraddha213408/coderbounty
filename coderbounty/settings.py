@@ -25,7 +25,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', "ci7svvv6wp+5cyk3(ju6w*6v-xldo#an3e3zu
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 ADMINS = (('Sean', 'sean@alphaonelabs.com'))
-TEMPLATE_DEBUG = True
+
 
 ALLOWED_HOSTS = []
 
@@ -65,15 +65,7 @@ MIDDLEWARE_CLASSES = (
     'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.request',
-    # coment these two out for new Django
-	'allauth.account.context_processors.account',
-    'allauth.socialaccount.context_processors.socialaccount',
-    'django.contrib.messages.context_processors.messages',
-    'django.core.context_processors.static',
-)
+
 
 ROOT_URLCONF = 'coderbounty.urls'
 
@@ -175,10 +167,22 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'templates'),
-)
-
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': ['coderbounty/templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.contrib.auth.context_processors.auth',
+                'django.core.context_processors.request',
+                'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.static',
+            ]
+        }
+    },
+]
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/

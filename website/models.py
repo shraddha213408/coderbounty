@@ -388,6 +388,14 @@ class Taker(models.Model):
 #    def clean(self):
 #       raise ValidationError('The issue is already taken.')
 
+class Payment(models.Model):
+    issue = models.ForeignKey(Issue)
+    solution = models.ForeignKey(Solution)
+    user = models.ForeignKey(User)
+    amount = models.DecimalField(max_digits=10, decimal_places=0)
+    created = models.DateTimeField()
+    updated = models.DateTimeField()
+
 
 class Comment(models.Model):
     issue = models.ForeignKey(Issue)
