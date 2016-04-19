@@ -1,12 +1,12 @@
 from django.contrib import admin
-from website.models import Issue, Service, UserProfile, Bounty, Solution, Taker, Comment
+from website.models import Issue, Service, UserProfile, Bounty, Solution, Taker, Comment, Payment
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
 class ServiceAdmin(admin.ModelAdmin):
      list_display=[] 
-     for x in Service._meta.get_all_field_names(): 
-         list_display.append(str(x))
+     for x in Service._meta.get_fields(): 
+         list_display.append(str(x.name))
 
 class BountyAdmin(admin.ModelAdmin):
     list_display = ('issue','price','user','created','ends','checkout_id')
@@ -16,9 +16,9 @@ class UserProfileAdmin(admin.ModelAdmin):
 
 class IssueAdmin(admin.ModelAdmin):
     list_display=[]
-    for x in Issue._meta.get_all_field_names():
-        if x not in "service_id,winner_id,taker,solution,comment":
-            list_display.append(str(x))
+    for x in Issue._meta.get_fields():
+        if x.name not in "service_id,winner_id,taker,solution,comment":
+            list_display.append(str(x.name))
     readonly_fields = ("created","modified")
     list_display_links = ("title",)
 
@@ -43,3 +43,4 @@ admin.site.register(User, UserAdmin)
 admin.site.register(Solution, SolutionAdmin)
 admin.site.register(Taker, TakerAdmin)
 admin.site.register(Comment, CommentAdmin)
+admin.site.register(Payment)
