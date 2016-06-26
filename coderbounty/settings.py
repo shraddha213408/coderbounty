@@ -175,10 +175,10 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
+                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.core.context_processors.request',
                 'django.contrib.messages.context_processors.messages',
-                'django.core.context_processors.static'
+                'django.core.context_processors.static',
             ]
         }
     },

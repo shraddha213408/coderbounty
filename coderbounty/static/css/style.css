@@ -753,6 +753,7 @@ form textarea {
 form input[type="text"]:focus,
 form input[type="email"]:focus,
 form input[type="number"]:focus,
+form input[type="password"]:focus,
 form select:focus,
 form textarea:focus {
 	border-color:#75857B;
@@ -1603,12 +1604,15 @@ span#email-help-text{
 .section-login .form-login {
 }
 .section-login .form-login input[type="text"],
+.section-login .form-login input[type="email"],
 .section-login .form-login input[type="password"] {
 	margin-bottom: 5px;
 	padding: 10px;
 	width: 100%;
 }
-.section-login .form-login input[type="text"] {
+.section-login .form-login input[type="text"],
+.section-login .form-login input[type="email"],
+.section-login .form-login input[type="password"]{
 	margin-bottom: 20px;
 }
 
