@@ -41,7 +41,7 @@ class MySeleniumTests(LiveServerTestCase):
         password_input.send_keys('secret')
         password_input = self.selenium.find_element_by_name("password2")
         password_input.send_keys('secret')
-        self.selenium.find_element_by_xpath('//*[@id="signup_form"]/button').click()
+        self.selenium.find_element_by_xpath('//*[@id="signup_form"]/div/button').click()
         assert "myuser" in self.selenium.title.lower()
 
     @override_settings(DEBUG=True)
