@@ -305,7 +305,11 @@ class PostAll(TemplateView):
             providers.append(account)
 
         service = Service.objects.get(name="Github")
-        access_token = SocialToken.objects.get(account__user=self.request.user, account__provider='github')
+        try:
+            access_token = SocialToken.objects.get(account__user=self.request.user, account__provider='github')
+        except Exception, e:
+            messages.error(request, str(e))
+            return str(e) + 'Not implemented yet - https://github.com/CoderBounty/coderbounty/issues/16'
 
 
         #the_url = service.api_url + "/" + accounts['github'][0].extra_data['login'] + "/user/issues"
