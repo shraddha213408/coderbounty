@@ -309,7 +309,7 @@ class PostAll(TemplateView):
             access_token = SocialToken.objects.get(account__user=self.request.user, account__provider='github')
         except Exception, e:
             messages.error(self.request, str(e))
-            return str(e) + 'Not implemented yet - https://github.com/CoderBounty/coderbounty/issues/16'
+            #return str(e) + 'Not implemented yet - https://github.com/CoderBounty/coderbounty/issues/16'
 
 
         #the_url = service.api_url + "/" + accounts['github'][0].extra_data['login'] + "/user/issues"
@@ -324,26 +324,24 @@ class PostAll(TemplateView):
         
         #the_url = service.api_url + "/user/issues?filter=all"
 
-        the_url = 'https://api.github.com/user'
+        #the_url = 'https://api.github.com/user'
         
         #/user/issues?filter=all
 
-        resp = requests.get(the_url, params={'access_token': access_token})
-        user_info = resp.json()
-        print user_info
-        print user_info['repos_url']
-        print user_info['organizations_url']
-
-        resp = requests.get(user_info['repos_url'], params={'access_token': access_token})
-        repos = resp.json()
-        for repo in repos:
-           if repo['open_issues_count'] > 1:
-               print repo['name'], repo['open_issues_count']
+        #resp = requests.get(the_url, params={'access_token': access_token})
+        #user_info = resp.json()
 
 
-        resp = requests.get(user_info['organizations_url'], params={'access_token': access_token})
-        repos = resp.json()
-        print repos
+        #resp = requests.get(user_info['repos_url'], params={'access_token': access_token})
+        #repos = resp.json()
+        #for repo in repos:
+        #   if repo['open_issues_count'] > 1:
+        #       print repo['name'], repo['open_issues_count']
+
+
+        #resp = requests.get(user_info['organizations_url'], params={'access_token': access_token})
+        #repos = resp.json()
+        #print repos
         #for repo in repos:
         #   if repo['open_issues_count'] > 1:
         #       print repo['name'], repo['open_issues_count']
