@@ -47,30 +47,27 @@ class AbstractIssueHelper(object):
 
     def _get_api_request(self, request, url):
         parsed_url = urlparse(url)
-        path_and_query = parsed_url.path+"?"+parsed_url.query
+        path_and_query = parsed_url.path
+        if parsed_url.query:
+            path_and_query = path_and_query+"?"+parsed_url.query
         netloc = parsed_url.netloc
         try:
             service = Service.objects.get(domain=netloc)
         except:
-            error = "Please enter a Github, Google Code or Bitbucket issue"
-            if not request:
-                return error
-            messages.error(request, error)
-            return False
+            messages.error(request, str(e))
+            return str(e)
         template = Template(service.template)
         regex = re.compile(service.regex)
         r = regex.search(path_and_query)
         try:
             replaced_url = service.api_url+template.substitute(r.groupdict())
-        except Exception:
-            error = "I'm sorry, I couldn't find that "+service.name+" issue."
-            if not request:
-                return error
-            messages.error(request, error)
-            return False
-        self.issue_data = r.groupdict()
-        req = urllib2.Request(replaced_url, None, {'Content-Type': 'application/' + service.type})
+            self.issue_data = r.groupdict()
+            req = urllib2.Request(replaced_url, None, {'Content-Type': 'application/' + service.type})
 
+        except Exception, e:
+            messages.error(request, str(e))
+            return str(e)
+        
         return req
 
 
@@ -80,10 +77,15 @@ class GithubIssueHelper(AbstractIssueHelper):
         req = self._get_api_request(request, url)
 
         try:
-            result = json.load(urllib2.urlopen(req))
+            opened_url = urllib2.urlopen(req)
         except Exception, e:
-            return str(e)
-
+            messages.error(request, str(e) + url)
+            return str(e) + url
+        try:
+            result = json.load(opened_url)
+        except Exception, e:
+            messages.error(request, str(e) + str(opened_url))
+            return str(e) + str(opened_url)
         data = self.issue_data
         data['status'] = result['state']
         data['title'] = result['title']

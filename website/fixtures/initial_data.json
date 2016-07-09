@@ -3,7 +3,7 @@
         "pk":1,
         "model":"website.service",
         "fields":{
-            "regex":"/(?P<user>\\w*?)/(?P<project>\\w*?)/issues/(?P<number>\\w*)",
+            "regex":"/(?P<user>\\w*?)/(?P<project>[-\\w]*?)/issues/(?P<number>\\w*)",
             "domain":"github.com",
             "name":"Github",
             "link_template":"/$user/$project/issues/$number",
