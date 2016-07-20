@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from website.views import UserProfileDetailView, \
-    IssueDetailView, UserProfileEditView, LeaderboardView, PostAll
+    IssueDetailView, UserProfileEditView, LeaderboardView, PostAll, PayView
 from django.views.generic.base import TemplateView
 from rest_framework import routers, serializers, viewsets
 from website.models import Issue, Service
@@ -29,7 +29,8 @@ urlpatterns = (
     url(r'^profile/$', website.views.profile, name='profile'),
     url(r'^profile/(?P<slug>[^/]+)/$', UserProfileDetailView.as_view(), name="profile"),
     url(r'^robots.txt$', TemplateView.as_view(template_name='robots.txt')),
-    url(r'^terms/$', TemplateView.as_view(template_name='terms.html'), name='terms')
+    url(r'^terms/$', TemplateView.as_view(template_name='terms.html'), name='terms'),
+    url(r'^pay/(?P<pk>\d+)/$', PayView.as_view(), name='pay')
 )
 
 

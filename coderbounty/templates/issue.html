@@ -103,17 +103,21 @@
                                   {{ taker_item.created|date:"m/d/Y" }}
                               </td>
                               <td class="price">
-                              {% if taker_item.expired %}
-                              <img src="{% static 'images/layout/bullet_hole.png' %}">
+                              {% if taker_item.user == issue.winner %}
+                              <img src="{% static 'images/layout/money_bag.png' %}">
                               {% else %}
-                              <i class="icon-clock"></i>
+                                {% if taker_item.expired %}
+                                <img src="{% static 'images/layout/bullet_hole.png' %}">
+                                {% else %}
+                                <i class="icon-clock"></i>
+                                {% endif %}
                               {% endif %}
                               </td>
                           </tr>
                         {% endfor %}
                       </tbody>
                   </table>
-                  {% if not taker %}
+                  {% if not taker and not issue.winner %}
                 <form class="center" action="#" method="post">{% csrf_token %}
                     <button class="ribbon ribbon-normal ribbon-03 ribbon-green" name="take" value="take">take this bounty</button>
                 </form>
@@ -135,7 +139,20 @@
                 {% endif %}
                 </div>
             </div>
-            {% if taker %}
+            {% if issue.winner %}
+            <div class="img-holder" style="width: 100%; text-align:center;">
+                    <img width="250px" src="{{issue.winner.userprofile.avatar_large}}" alt="" />
+                </div> 
+            <div class="codeIssueTaker frame" >
+                
+              <h1 class="titlebar-paper ">
+              <span style="font-size:20px;">
+                  Winner: {{issue.winner}}</br></span>
+              </span></h1>
+              </br></br></br>
+            </div>
+
+            {% elif taker %}
             <div class="img-holder" style="width: 100%; text-align:center;">
                     <img width="250px" src="{{taker.user.userprofile.avatar_large}}" alt="" />
                 </div> 
@@ -188,140 +205,6 @@
                     </div>
                 </div>
             {% endif %}
-
-            {% comment "Hide comments until they are integrated" %}
-            <!-- comments -->
-            <div class="comments">
-              <!-- comments count -->
-              <div class="comments-count clearfix">
-                <span>20,203</span> comments
-                <a class="add" href="#">Add a comment</a>
-              </div>
-              <!-- comments main -->
-              <div class="comments-main">
-                <!-- item-content -->
-                <div class="item-comment clearfix">
-                  <!-- text -->
-                  <div class="text">
-                    <div class="img-holder">
-                      <img src="{% static "images/temp/thumb-medium-00.jpg" %}" alt="" />
-                    </div>
-                    <div class="user"><strong>davis234@hotmail.com</strong></div>
-                    <div class="description"><p>Hey guys... I implemented facebook comments on my site, you can have a look: http://freemoviepublic.com Btw, it's a site to watch movies for free...</p></div>
-                  </div>
-                  <!-- actionbar -->
-                  <div class="actionbar">
-                    <ul>
-                      <li><a href="#"><strong>Reply</strong></a></li>
-                      <li><a href="#"><span class="icon-thumbs-up2"></span>190</a></li>
-                      <li><a href="#">Like</a></li>
-                      <li><em>October 24th at 10:34pm</em></li>
-                    </ul>
-                  </div>
-                  <!-- item-content -->
-                  <div class="item-comment clearfix">
-                    <!-- text -->
-                    <div class="text">
-                      <div class="img-holder">
-                        <img src="{% static "images/temp/thumb-medium-00.jpg" %}" alt="" />
-                      </div>
-                      <div class="user"><strong>Test User</strong></div>
-                      <div class="description"><p>Nice one... I just looked at coderbounty.com good implemetation there...</p></div>
-                    </div>
-                    <!-- actionbar -->
-                    <div class="actionbar">
-                      <ul>
-                        <li><a href="#"><strong>Reply</strong></a></li>
-                        <li><a href="#"><span class="icon-thumbs-up2"></span>190</a></li>
-                        <li><a href="#">Like</a></li>
-                        <li><em>October 24th at 10:34pm</em></li>
-                      </ul>
-                    </div>
-                  </div>
-                  <!-- item-content -->
-                  <div class="item-comment clearfix">
-                    <!-- text -->
-                    <div class="text">
-                      <div class="img-holder">
-                        <img src="{% static "images/temp/thumb-medium-00.jpg" %}" alt="" />
-                      </div>
-                      <div class="user"><strong>Test User</strong></div>
-                      <div class="description"><p>Nice one... I just looked at coderbounty.com good implemetation there...</p></div>
-                    </div>
-                    <!-- actionbar -->
-                    <div class="actionbar">
-                      <ul>
-                        <li><a href="#"><strong>Reply</strong></a></li>
-                        <li><a href="#"><span class="icon-thumbs-up2"></span>190</a></li>
-                        <li><a href="#">Like</a></li>
-                        <li><em>October 24th at 10:34pm</em></li>
-                      </ul>
-                    </div>
-                  </div>
-                  <!-- item-content -->
-                  <div class="item-comment clearfix">
-                    <!-- text -->
-                    <div class="text">
-                      <div class="img-holder">
-                        <img src="{% static "images/temp/thumb-medium-00.jpg" %}" alt="" />
-                      </div>
-                      <div class="user"><strong>Test User</strong></div>
-                      <div class="description"><p>Nice one... I just looked at coderbounty.com good implemetation there...</p></div>
-                    </div>
-                    <!-- actionbar -->
-                    <div class="actionbar">
-                      <ul>
-                        <li><a href="#"><strong>Reply</strong></a></li>
-                        <li><a href="#"><span class="icon-thumbs-up2"></span>190</a></li>
-                        <li><a href="#">Like</a></li>
-                        <li><em>October 24th at 10:34pm</em></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <!-- item-content -->
-                <div class="item-comment clearfix">
-                  <!-- text -->
-                  <div class="text">
-                    <div class="img-holder">
-                      <img src="{% static "images/temp/thumb-medium-00.jpg" %}" alt="" />
-                    </div>
-                    <div class="user"><strong>Test User</strong></div>
-                    <div class="description"><p>Nice one... I just looked at coderbounty.com good implemetation there...</p></div>
-                  </div>
-                  <!-- actionbar -->
-                  <div class="actionbar">
-                    <ul>
-                      <li><a href="#"><strong>Reply</strong></a></li>
-                      <li><a href="#"><span class="icon-thumbs-up2"></span>190</a></li>
-                      <li><a href="#">Like</a></li>
-                      <li><em>October 24th at 10:34pm</em></li>
-                    </ul>
-                  </div>
-                  <!-- item-content -->
-                  <div class="item-comment clearfix">
-                    <!-- text -->
-                    <div class="text">
-                      <div class="img-holder">
-                        <img src="{% static "images/temp/thumb-medium-00.jpg" %}" alt="" />
-                      </div>
-                      <div class="user"><strong>Test User</strong></div>
-                      <div class="description"><p>Nice one... I just looked at coderbounty.com good implemetation there...</p></div>
-                    </div>
-                    <!-- actionbar -->
-                    <div class="actionbar">
-                      <ul>
-                        <li><a href="#"><strong>Reply</strong></a></li>
-                        <li><a href="#"><span class="icon-thumbs-up2"></span>190</a></li>
-                        <li><a href="#">Like</a></li>
-                        <li><em>October 24th at 10:34pm</em></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {% endcomment %}
           </div>
         </div>
       </div>
@@ -347,53 +230,7 @@
                 </table>
             </div>
         </div>
-        <!-- frame - accepted by 
-        <div class="frame frame-light frame-noLines">
-            <div class="frame-content">
-                <h2 class="titlebar"><span class="ribbon ribbon-normal ribbon-04 ribbon-brown">Accepted by</span></h2>
-                <table class="table-list table-list-leader-board">
-                    <tbody>
-                        <tr>
-                            <td class="thumb">
-                                <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-03.jpg" %}"></a></td>
-                            <td class="text">
-                                <a href="#">Adam Smith</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="thumb">
-                                <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-02.jpg" %}"></a></td>
-                            <td class="text">
-                                <a href="#">Rodger Stone</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="thumb">
-                                <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-01.jpg" %}"></a></td>
-                            <td class="text">
-                                <a href="#">Tim Novak</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="thumb">
-                                <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-05.jpg" %}"></a></td>
-                            <td class="text">
-                                <a href="#">Kristin Simmons</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="thumb">
-                                <a class="img-holder" href="#"><img alt="" src="{% static "images/temp/thumb-04.jpg" %}"></a></td>
-                            <td class="text">
-                                <a href="#">Fill Jones</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        -->
-        <!-- frame - word cloud -->
+
         <div class="frame frame-light">
             <div class="frame-content">
                 <h2 class="titlebar"><span class="ribbon ribbon-normal ribbon-04 ribbon-brown">Solutions</span></h2>
@@ -407,6 +244,9 @@
                               <td class="text">
                                   <a href="/profile/{{ solution.user.username }}">{{ solution.user.username}}</a></br>
                                   <a href="{{solution.url}}" target="_new">{{ solution.status}}</a>
+                                  {% if solution.status != "paid" %}
+                                  <a href="/pay/{{solution.id}}" target="_new">pay</a>
+                                  {% endif %}
                               </td>
                               <td class="price"><a href="{{solution.url}}" target="_new"> #{{solution.id}}</a></td>
                           </tr>

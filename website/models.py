@@ -79,6 +79,7 @@ class Issue(models.Model):
         ('VB', 'VB'),
     )
 
+    #creator = models.ForeignKey(User, related_name="+", null=True, blank=True)
     service = models.ForeignKey(Service, related_name='+')
     number = models.IntegerField()
     project = models.CharField(max_length=255)
@@ -311,11 +312,11 @@ class Solution(models.Model):
 
     OPEN = 'open'
     MERGED = 'merged'
-    CLOSED = 'closed'
+    PAID = 'paid'
     STATUS_CHOICES = (
         (OPEN, 'open'),
         (MERGED, 'merged'),
-        (CLOSED, 'closed'),
+        (PAID, 'paid'),
     )
 
     issue = models.ForeignKey(Issue)
@@ -352,7 +353,7 @@ class Solution(models.Model):
             # and either approve or reject it.
             self.notify_owner()
 
-        if self.status == Solution.CLOSED:
+        if self.status == Solution.PAID:
             # notify coder to revision the solution
             # your solution was not approved, please revise it and submit another solution.
 

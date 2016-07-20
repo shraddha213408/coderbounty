@@ -12,8 +12,9 @@ from django.core.urlresolvers import reverse
 from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, RequestContext, redirect, render
-from django.views.generic import ListView, DetailView, FormView, TemplateView
+from django.views.generic import ListView, DetailView, FormView, TemplateView, View
 from django.views.generic.edit import UpdateView
+from django.views.generic.detail import SingleObjectMixin
 from models import Issue, UserProfile, Bounty, Service, Taker, Solution
 from utils import get_issue_helper, leaderboard, post_to_slack, submit_issue_taker, get_comment_helper, create_comment
 from wepay import WePay
@@ -25,6 +26,7 @@ import urllib2
 from allauth.socialaccount.models import SocialToken, SocialApp, SocialAccount, SocialLogin
 import requests
 from django.http import Http404
+
 
 
 def parse_url_ajax(request):
@@ -347,11 +349,9 @@ class PostAll(TemplateView):
         #       print repo['name'], repo['open_issues_count']
 
 
-        #'organizations_url': u'https://api.github.com/users/seanauriti/orgs'
         context = super(PostAll, self).get_context_data(**kwargs)
         #context['leaderboard'] = leaderboard()
         return context
-
 
 class LeaderboardView(ListView):
     template_name = "leaderboard.html"
@@ -365,6 +365,72 @@ class LeaderboardView(ListView):
         context = super(LeaderboardView, self).get_context_data(**kwargs)
         context['leaderboard'] = leaderboard()
         return context
+
+class LeaderboardView(ListView):
+    template_name = "leaderboard.html"
+
+    def get_queryset(self):
+        return User.objects.all().annotate(
+            null_position=Count('userprofile__balance')).order_by(
+            '-null_position', '-userprofile__balance', '-last_login')
+
+    def get_context_data(self, **kwargs):
+        context = super(LeaderboardView, self).get_context_data(**kwargs)
+        context['leaderboard'] = leaderboard()
+        return context
+
+class PayView(DetailView):
+    model = Solution
+    def get(self, request, **kwargs):
+        self.object = self.get_object()
+        # temporarally until we add creator to issues
+        if Bounty.objects.filter(user=self.request.user).filter(issue=self.object.issue):
+
+            import paypalrestsdk
+            import random
+            import string
+
+            paypalrestsdk.configure({
+              'mode': settings.MODE,
+              'client_id': settings.CLIENT_ID,
+              'client_secret': settings.CLIENT_SECRET
+            })
+            sender_batch_id = ''.join(
+                random.choice(string.ascii_uppercase) for i in range(12))
+
+            payout = paypalrestsdk.Payout({
+                "sender_batch_header": {
+                    "sender_batch_id": sender_batch_id,
+                    "email_subject": "You have a payment from Coderbounty"
+                },
+                "items": [
+                    {
+                        "recipient_type": "EMAIL",
+                        "amount": {
+                            "value": self.object.issue.bounty(),
+                            "currency": "USD"
+                        },
+                        "receiver": self.object.user.email,
+                        "note": "Thank you for your solution",
+                        "sender_item_id": str(self.object.issue)
+                    }
+                ]
+            })
+
+            if payout.create():
+                messages.success(self.request, "payout[%s] created successfully" %
+                      (payout.batch_header.payout_batch_id))
+                self.object.status = Solution.PAID
+                self.object.save()
+                self.object.issue.winner = self.object.user
+                self.object.issue.status = Issue.PAID_STATUS
+				self.object.issue.paid = self.object.issue.bounty()
+                self.object.issue.save()
+
+            else:
+                messages.error(self.request, payout.error)
+        
+        return redirect('/issue/' + str(self.object.issue.id))
 
 
 class IssueDetailView(DetailView):

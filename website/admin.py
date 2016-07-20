@@ -17,7 +17,7 @@ class UserProfileAdmin(admin.ModelAdmin):
 class IssueAdmin(admin.ModelAdmin):
     list_display=[]
     for x in Issue._meta.get_fields():
-        if x.name not in "service_id,winner_id,taker,solution,comment":
+        if x.name not in "service_id,winner_id,taker,solution,comment,payment":
             list_display.append(str(x.name))
     readonly_fields = ("created","modified")
     list_display_links = ("title",)
