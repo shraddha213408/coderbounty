@@ -1,11 +1,21 @@
-smenu = document.getElementsByClassName("js-select-button")[0];
-var btn = document.createElement("button");
-btn.innerHTML = 'Add a Bounty';
-btn.onclick = function(){
-	window.location = "http://coderbounty.com/post/?url=" + location.protocol+'//'+location.host+location.pathname;
-};
-btn.style.background='#9A8C76'
-btn.style.color='#FFF'
-btn.className = "btn";
+"use strict";
 
-smenu.parentNode.parentNode.appendChild(btn);
+var bountyButton, bountyButtonId, hasBountyButton, selectMenu;
+
+bountyButtonId = "cbe-bounty-button";
+selectMenu = document.getElementsByClassName("js-select-menu")[0];
+hasBountyButton = selectMenu.querySelector("#" + bountyButtonId) !== null;
+
+if (!hasBountyButton) {
+    bountyButton = document.createElement("button");
+    bountyButton.innerHTML = "Add a Bounty";
+    bountyButton.setAttribute("id", bountyButtonId);
+    bountyButton.className = "btn";
+    bountyButton.onclick = function bountyButtonClick() {
+        window.location = "http://coderbounty.com/post/?url=" + location.protocol + "//" + location.host+location.pathname;
+    };
+    bountyButton.style.background = "#9A8C76";
+    bountyButton.style.color = "#FFF";
+
+    selectMenu.appendChild(bountyButton);
+}
