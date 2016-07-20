@@ -424,7 +424,7 @@ class PayView(DetailView):
                 self.object.save()
                 self.object.issue.winner = self.object.user
                 self.object.issue.status = Issue.PAID_STATUS
-				self.object.issue.paid = self.object.issue.bounty()
+                self.object.issue.paid = self.object.issue.bounty()
                 self.object.issue.save()
 
             else:
