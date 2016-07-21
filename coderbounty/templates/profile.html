@@ -31,7 +31,7 @@
                         <ul class="stats">
                         	<li><span class="label">Won:</span><span class="value">${{object.userprofile.balance|default:"0"}}</span></li>
                             <li><span class="label">Posted:</span><span class="value">${{object.userprofile.bounties_placed}}</span></li>
-                            <li><span class="label">Taken:</span><span class="value">{{object.taken_set.all|length}}</span></li>
+                            <li><span class="label">Taken:</span><span class="value">{{object.taker_set.all|length}}</span></li>
                             <li><span class="label">Solutions:</span><span class="value">{{object.solution_set.all|length}}</span></li>
                         </ul>
                         {% if request.user.is_authenticated %}
