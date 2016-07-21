@@ -7,7 +7,7 @@
 
 {% block meta %}
   <meta name="description" content="{{object.title|safe}}">
-  <meta property="og:url"           content="http://coderbounty.com/{{object.get_absolute_url}}" />
+  <meta property="og:url"           content="http://coderbounty.com{{object.get_absolute_url}}" />
   <meta property="og:type"          content="website" />
   <meta property="og:title"         content="{{object.project}} - {{object.title}}" />
   <meta property="og:description"   content="{{object.description|safe}}" />
@@ -40,7 +40,7 @@
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));</script>
   <div class="fb-share-button" 
-    data-href="http://coderbounty.com/{{object.get_absolute_url}}" 
+    data-href="http://coderbounty.com{{object.get_absolute_url}}" 
     data-layout="button_count">
   </div>
           <h1>{{ object.title }}</h1>
