@@ -132,7 +132,7 @@
                 <div class="text"><p>{{ object.content }}.</p></div>
                 <!-- buttons -->
                 <div class="button-wrapper clearfix">
-                {% if not taker %}
+                {% if not taker and not issue.winner %}
                 <form action="#" method="post">{% csrf_token %}
                     <button id="takeBounty" class="ribbon ribbon-large ribbon-03" name="take" value="take">Take</button>
                 </form>

@@ -25,12 +25,12 @@ urlpatterns = (
     url(r'^get_bounty_image/(?P<id>\w+)/$', website.views.get_bounty_image, name='get_bounty_image'),
     url(r'^parse_url_ajax/$', website.views.parse_url_ajax, name='parse_url_ajax'),
     url(r'^post/$', website.views.create_issue_and_bounty, name='post'),
-    url(r'^post_all/$', PostAll.as_view(), name='post_all'),
+    url(r'^post_all/$', login_required(PostAll.as_view()), name='post_all'),
     url(r'^profile/$', website.views.profile, name='profile'),
     url(r'^profile/(?P<slug>[^/]+)/$', UserProfileDetailView.as_view(), name="profile"),
     url(r'^robots.txt$', TemplateView.as_view(template_name='robots.txt')),
     url(r'^terms/$', TemplateView.as_view(template_name='terms.html'), name='terms'),
-    url(r'^pay/(?P<pk>\d+)/$', PayView.as_view(), name='pay')
+    url(r'^pay/(?P<pk>\d+)/$', login_required(PayView.as_view()), name='pay')
 )
 
 

@@ -159,8 +159,8 @@ WEPAY_IN_PRODUCTION = os.environ.get('WEPAY_IN_PRODUCTION', not DEBUG)
 WEPAY_ACCOUNT_ID = os.environ.get('WEPAY_ACCOUNT_ID', '941349')
 WEPAY_ACCESS_TOKEN = os.environ.get('WEPAY_ACCESS_TOKEN', 'STAGE_9c8476245785f470fd87b6bb1fad6ccb5c6cae5522337c378b7b0984d909401d')
 
-CLIENT_ID = os.environ.get('CLIENT_ID', 'AQkquBDf1zctJOWGKWUEtKXm6qVhueUEMvXO_-MCI4DQQ4-LWvkDLIN2fGsd')
-CLIENT_SECRET = os.environ.get('CLIENT_SECRET', 'EL1tVxAjhT7cJimnz5-Nsx9k2reTKSVfErNQF-CmrwJgxRtylkGTKlU4RvrX')
+CLIENT_ID = os.environ.get('CLIENT_ID', 'PAYPAL_CLIENT_ID')
+CLIENT_SECRET = os.environ.get('CLIENT_SECRET', 'PAYPAL_CLIENT_SECRET')
 MODE = os.environ.get('MODE', 'sandbox')
 
 GITHUB_USERNAME = os.environ.get('GITHUB_USERNAME', 'coderbounty-cowboy')
