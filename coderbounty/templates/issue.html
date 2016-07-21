@@ -1,8 +1,19 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+
 {% block title %}
 {{ object.project }} | Issue #{{object.number}} | {{object.title}} | 
 {% endblock %}
+
+{% block meta %}
+  <meta name="description" content="{{object.title|safe}}">
+  <meta property="og:url"           content="http://coderbounty.com/{{object.get_absolute_url}}" />
+  <meta property="og:type"          content="website" />
+  <meta property="og:title"         content="{{object.project}} - {{object.title}}" />
+  <meta property="og:description"   content="{{object.description|safe}}" />
+  <meta property="og:image"         content="http://coderbounty.com/get_bounty_image/{{object.id}}" />
+{% endblock %}
+
 {% block content %}
 <script src="{% static "js/all.js" %}"></script>
 <div class="wrapper-section">
@@ -19,6 +30,19 @@
                   <li><a href="#">{{object.status}}</a></li>
               </ul>
           </div>
+            <!-- Your share button code -->
+              <div id="fb-root"></div>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
+  <div class="fb-share-button" 
+    data-href="http://coderbounty.com/{{object.get_absolute_url}}" 
+    data-layout="button_count">
+  </div>
           <h1>{{ object.title }}</h1>
           <form action="#" method="post" id="refresh_form">{% csrf_token %}
           <div class="status">

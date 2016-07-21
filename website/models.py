@@ -389,6 +389,7 @@ class Taker(models.Model):
 #    def clean(self):
 #       raise ValidationError('The issue is already taken.')
 
+# use paypal IPN tracking
 class Payment(models.Model):
     issue = models.ForeignKey(Issue)
     solution = models.ForeignKey(Solution)
