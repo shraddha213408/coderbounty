@@ -9,11 +9,13 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
 import os
+import sys
 import dj_database_url
 from django.http import Http404
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 
+TESTING = sys.argv[1:2] == ['test']
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # Quick-start development settings - unsuitable for production
