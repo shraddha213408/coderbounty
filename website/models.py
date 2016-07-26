@@ -16,7 +16,8 @@ import urllib
 import urllib2
 from django.utils.timezone import utc
 import tweepy
-from allauth.account.signals import user_signed_up
+from slacker import Slacker
+from allauth.account.signals import user_signed_up, user_logged_in
 from django.dispatch import receiver
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
@@ -238,6 +239,11 @@ def user_signed_up_(request, user, **kwargs):
         [user.email],
         html_message=msg_html,
     )
+
+@receiver(user_logged_in, dispatch_uid="some.unique.string.id.for.allauth.user_logged_in")
+def user_logged_in_(request, user, **kwargs):
+    slack = Slacker(settings.SLACK_API_TOKEN)
+    slack.chat.post_message('#logins', request.user.username + " logged in")
 
 
 TWITTER_MAXLENGTH = getattr(settings, 'TWITTER_MAXLENGTH', 140)

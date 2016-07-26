@@ -29,6 +29,7 @@ rollbar==0.13.0
 selenium==2.53.1
 simplejson==3.8.2
 six==1.10.0
+slacker==0.9.24
 SQLAlchemy==1.0.12
 tweepy==3.5.0
 wepay==0.3.2
