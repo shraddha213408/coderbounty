@@ -183,7 +183,7 @@ class Bounty(models.Model):
 
 class UserProfile(models.Model):
     CHOICE_PAYMANT_SERVICE = (
-        ('wepay', u'WePay'),
+        ('paypal', u'Paypal'),
     )
 
     user = models.OneToOneField(User, related_name="userprofile")
