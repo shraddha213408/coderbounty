@@ -34,3 +34,5 @@ SQLAlchemy==1.0.12
 tweepy==3.5.0
 wepay==0.3.2
 whitenoise==3.0
+pylibmc==1.5.1
+django-pylibmc==0.6.1

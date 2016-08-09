@@ -26,6 +26,7 @@ import urllib2
 from allauth.socialaccount.models import SocialToken, SocialApp, SocialAccount, SocialLogin
 import requests
 from django.http import Http404
+from django.views.decorators.cache import cache_page
 
 
 
@@ -36,6 +37,7 @@ def parse_url_ajax(request):
     return HttpResponse(json.dumps(issue))
 
 
+@cache_page(432000) #5 days
 def home(request, template="index.html"):
     activities = Action.objects.all()[0:10]
     context = {
