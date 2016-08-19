@@ -21,6 +21,7 @@ from allauth.account.signals import user_signed_up, user_logged_in
 from django.dispatch import receiver
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from django.core.cache import cache
 
 class Service(models.Model):
     """
@@ -177,6 +178,7 @@ class Bounty(models.Model):
     def save(self, *args, **kwargs):
         if self.pk is None:
             action.send(self.user, verb='placed a $' + str(self.price) + ' bounty on ', target=self.issue)
+            cache.delete('/')
 
         super(Bounty, self).save(*args, **kwargs)
 
@@ -208,6 +210,7 @@ class UserProfile(models.Model):
     def save(self, *args, **kwargs):
         if self.pk is None:
             action.send(self.user, verb='signed up')
+            cache.delete('/')
         super(UserProfile, self).save(*args, **kwargs)
 
     def bounties_placed(self):
