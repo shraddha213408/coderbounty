@@ -355,6 +355,7 @@ class PostAll(TemplateView):
         #context['leaderboard'] = leaderboard()
         return context
 
+@cache_page(432000) #5 days
 class LeaderboardView(ListView):
     template_name = "leaderboard.html"
 
