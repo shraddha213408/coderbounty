@@ -8,6 +8,9 @@ from rest_framework import routers, serializers, viewsets
 from website.models import Issue, Service
 from django.contrib.auth.models import User
 import website
+from django.conf.urls.static import static
+
+favicon_view = RedirectView.as_view(url='/static/favicon.ico', permanent=True)
 
 admin.autodiscover()
 
@@ -30,7 +33,8 @@ urlpatterns = (
     url(r'^profile/(?P<slug>[^/]+)/$', UserProfileDetailView.as_view(), name="profile"),
     url(r'^robots.txt$', TemplateView.as_view(template_name='robots.txt')),
     url(r'^terms/$', TemplateView.as_view(template_name='terms.html'), name='terms'),
-    url(r'^pay/(?P<pk>\d+)/$', login_required(PayView.as_view()), name='pay')
+    url(r'^pay/(?P<pk>\d+)/$', login_required(PayView.as_view()), name='pay'),
+    url(r'^favicon\.ico$', favicon_view),
 )
 
 
