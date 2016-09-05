@@ -8,6 +8,7 @@ from rest_framework import routers, serializers, viewsets
 from website.models import Issue, Service
 from django.contrib.auth.models import User
 import website
+from django.views.generic.base import RedirectView
 from django.conf.urls.static import static
 
 favicon_view = RedirectView.as_view(url='/static/favicon.ico', permanent=True)
