@@ -178,7 +178,7 @@ class Bounty(models.Model):
     def save(self, *args, **kwargs):
         if self.pk is None:
             action.send(self.user, verb='placed a $' + str(self.price) + ' bounty on ', target=self.issue)
-            cache.delete('/')
+            cache.clear()
 
         super(Bounty, self).save(*args, **kwargs)
 
@@ -210,7 +210,7 @@ class UserProfile(models.Model):
     def save(self, *args, **kwargs):
         if self.pk is None:
             action.send(self.user, verb='signed up')
-            cache.delete('/')
+            cache.clear()
         super(UserProfile, self).save(*args, **kwargs)
 
     def bounties_placed(self):
