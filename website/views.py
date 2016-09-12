@@ -37,7 +37,7 @@ def parse_url_ajax(request):
     return HttpResponse(json.dumps(issue))
 
 
-@cache_page(432000) #5 days
+#@cache_page(432000) #5 days
 def home(request, template="index.html"):
     activities = Action.objects.all()[0:10]
     context = {
@@ -355,7 +355,7 @@ class PostAll(TemplateView):
         #context['leaderboard'] = leaderboard()
         return context
 
-@cache_page(432000) #5 days
+#@cache_page(432000) #5 days
 class LeaderboardView(ListView):
     template_name = "leaderboard.html"
 
