@@ -23,6 +23,7 @@
                 <select id="filterSort" name="status">
                     <option value="open" {% if status == "open" %}selected{% endif %}>Open</option>
                     <option value="in review" {% if status == "in review" %}selected{% endif %}>In Review</option>
+                    <option value="taken" {% if status == "taken" %}selected{% endif %}>Taken</option>
                     <option value="paid" {% if status == "paid" %}selected{% endif %}>Paid</option>
                     <option value="closed" {% if status == "closed" %}selected{% endif %}>Closed</option>
                     <option value="all" {% if status == "all" %}selected{% endif %}>All</option>
