@@ -490,6 +490,7 @@ class IssueDetailView(DetailView):
 
         return super(IssueDetailView, self).get(request, *args, **kwargs)
 
+    @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
         comment_service_helper = get_comment_helper(self.get_object().service)
 
