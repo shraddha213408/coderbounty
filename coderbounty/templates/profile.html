@@ -37,12 +37,12 @@
                         {% if request.user.is_authenticated %}
                         {% if object.username == request.user.username %}
                         	<a href="/edit_profile/" class="ribbon ribbon-03 ribbon-type-01 ribbon-normal ribbon-brown-dark">Edit profile</a>
-						{% endif %}                  
-						{% endif %}      
+						{% endif %}
+						{% endif %}
 						<button class="ribbon ribbon-03 ribbon-type-01 ribbon-normal"><span></span>Invite</button>
 						{% get_social_accounts user as accounts %}
 
-						{% if object.username == request.user.username %}	
+						{% if object.username == request.user.username %}
 							{% if not accounts.github.0 %}
 	                        <button class="ribbon ribbon-03 ribbon-type-01 ribbon-normal" onclick="location.href='{% provider_login_url "github" process="connect" %}';" ><i class="icon-github6" style="font-size: 1.5em;"></i> Connect</button>
 	                        {% endif %}
@@ -62,7 +62,6 @@
 					<div class="frame-content">
                     	<h2 class="titlebar"><span class="ribbon ribbon-normal ribbon-04 ribbon-brown">Recent Activity</span></h2>
                         <ul class="additional-links" style="margin-top:-15px;">
-                        	<li><a href="">Show issues I've posted</a></li>
                             <!-- note: you can place also other additional links, if you do remove inline style for margin top -->
                         </ul>
                         <table class="table-list table-list-activity">
@@ -88,7 +87,7 @@
 
                             </tbody>
                             {% endfor %}
-                        </table>                               
+                        </table>
 					</div>
 				</section>
 			</div>
