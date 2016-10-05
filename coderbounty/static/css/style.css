@@ -1665,3 +1665,33 @@ span#email-help-text{
 #id_username{
 	width: 100% !important;
 }
+
+/*
+=====================
+ HEADER STYLES ======
+=====================
+*/
+
+.codeImageheader:hover {
+    background-image: url(../images/layout/codeSelected.png);
+    background-repeat: no-repeat;
+    background-position-x: 85px;
+    background-position-y: 13px;
+}
+
+.postImageHeader:hover {
+    background-image: url(../images/layout/postSelected.png);
+    background-repeat: no-repeat;
+    background-position-x: 13px;
+    background-position-y: 13px;
+}
+
+
+
+.winImageHeader:hover {
+    background-image: url(../images/layout/winSelected.png);
+    background-repeat: no-repeat;
+    background-position-x: 88px;
+    background-position-y: 13px;
+}
+
