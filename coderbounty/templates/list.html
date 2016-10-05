@@ -57,6 +57,9 @@
                                 <input type="hidden" name="url" value="{{issue.html_url}}">
                                 <button class="ribbon ribbon-normal ribbon-03 ribbon-brown-dark">Add $</button>
                             </form>
+                            <div class="logo-tech">
+                                <span class="icon-{{issue.language|slugify}}" style="font-size:21px;"></span>{{issue.language}}
+                            </div>
                         </div>
                         
                         <div class="issue-status">
@@ -78,11 +81,8 @@
                                 <li class="owner">{{issue.project}}</li>
                             </ul> 
                             <h3>{{issue.title}}</h3>
-                            <p>{{issue.content}}</p>
-                            <div class="logo-tech">
-                                <span class="icon-{{issue.language|slugify}}" style="font-size:21px;"></span>{{issue.language}}
-                            </div>
-                            <div class="posted"><em>Posted: <time>{{issue.created|date:"m/d/Y"}}</time></em> <em>Views: <time>{{issue.views}}</time></em></div>
+                            <p class="desc">{{issue.content}}</p>
+                            <div class="posted"><em>Posted: <time>{{issue.created|date:"m/d/Y"}}</time></em><br><em>Views: <time>{{issue.views}}</time></em></div>
                         </div>
                     </div>
                     <!-- people -->
