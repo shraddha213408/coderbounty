@@ -1140,6 +1140,16 @@ form .errorlist {
 .issues .issue-status .icon-clock {color:#C9816F;}
 .issues .issue-status .icon-trophy {color:#D3C9B9;}
 
+p.desc {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+    line-height: 100%;
+    word-break: break-word;
+}
+
 .issues .issue-id {
 	font-family:'CalistoMtBold',serif;
 	color:#A34B33;
@@ -1173,8 +1183,10 @@ form .errorlist {
 	max-width:100px;
 	display:block;}
 .issues .posted {
-	font-size:14px;}
-
+	font-size: 14px;
+    position: absolute;
+    bottom: 0;
+}
 .issues .issue-people {
 	padding-top:12px;
 	padding-left:20px;
