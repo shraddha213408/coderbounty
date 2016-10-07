@@ -1,4 +1,4 @@
-<img src="http://www.coderbounty.com/static/images/coder-bounty.760234281c34.png" alt="coder bounty logo"/>
+<img src="http://www.coderbounty.com/static/images/coder-bounty-logo.9e4b0ca1564d.png" alt="coder bounty logo"/>
 
 #### Join us on Slack:
 
@@ -10,7 +10,7 @@ To contribute, take an issue, and submit a pull request with the issue number in
 #### Google Drive folder:
 ###### With design docs and notes. 
 <a href="https://drive.google.com/folderview?id=0B27eQuixxEoiNWhIT2ZQeVhJaW8&usp=sharing">
-<img width="77" src="https://c6d44f97bf52c46b8913ba5f570d8612c9b8fed7.googledrive.com/host/0B9LVk4xbDIJTc0MtWnRNb2t5R28" alt="google drive icon"/> 
+<img width="77" src="http://icons.iconarchive.com/icons/alecive/flatwoken/512/Apps-Google-Drive-icon.png" alt="google drive icon"/> 
 https://goo.gl/xvb6CI
 </a>
 
