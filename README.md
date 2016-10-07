@@ -14,10 +14,6 @@ To contribute, take an issue, and submit a pull request with the issue number in
 https://goo.gl/xvb6CI
 </a>
 
-In addition to our github issues, we are
-<a href="https://zenhub.io"><img src="https://raw.githubusercontent.com/ZenHubIO/support/master/zenhub-badge.png"></a>
-Install ZenHub's browser extension to view our issues and kanban board.
-
 <a href="http://burndown.io/#Coderbounty/coderbounty/summary/90">90 day burndown chart</a>
 
 #### Notes on getting started:
@@ -28,8 +24,12 @@ Install ZenHub's browser extension to view our issues and kanban board.
 The first time you may need to run:
 - `cd coderbounty`
 - `virtualenv venv`
+- `venv\Scripts\activate` (windows)
+- `source venv/bin/activate` (mac)
 - `pip install -r requirements.txt`
 - `python manage.py migrate`
+- `python manage.py createsuperuser` (then go to /admin) and add filler information for social auth accounts
+- `python manage.py runserver`
 
 #### License:
 
