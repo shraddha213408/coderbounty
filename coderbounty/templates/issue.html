@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block title %}
-{{ object.project }} | Issue #{{object.number}} | {{object.title}} | 
+{{ object.project }} | Issue #{{object.number}} | {{object.title}} |
 {% endblock %}
 
 {% block meta %}
@@ -49,7 +49,7 @@
               <ul>
                   <li class="id"><strong>#{{ object.number }}</strong> {{object.project}}</li>
                   <li>
-                    Status: 
+                    Status:
                     <span class="icon-{{object.status|slugify}}">
                         <span> {{object.status}}</span>
                     </span>
@@ -107,7 +107,7 @@
                               <td class="price">${{bounty.price}}</td>
                           </tr>
                           {% endfor %}
-                         
+
                       </tbody>
                   </table>
                 </div>
@@ -166,9 +166,9 @@
             {% if issue.winner %}
             <div class="img-holder" style="width: 100%; text-align:center;">
                     <img width="250px" src="{{issue.winner.userprofile.avatar_large}}" alt="" />
-                </div> 
+                </div>
             <div class="codeIssueTaker frame" >
-                
+
               <h1 class="titlebar-paper ">
               <span style="font-size:20px;">
                   Winner: {{issue.winner}}</br></span>
@@ -179,9 +179,9 @@
             {% elif taker %}
             <div class="img-holder" style="width: 100%; text-align:center;">
                     <img width="250px" src="{{taker.user.userprofile.avatar_large}}" alt="" />
-                </div> 
+                </div>
             <div class="codeIssueTaker frame" >
-                
+
               <h1 class="titlebar-paper ">
               <span style="font-size:20px;">
                   Taken by: {{taker.user}}</br><div id="timer">{{taker.time_remaining}}</span>
@@ -220,7 +220,6 @@
                                     <ul>
                                         <li><a href="#"><strong>Reply</strong></a></li>
                                         <li><a href="#"><span class="icon-thumbs-up2"></span>190</a></li>
-                                        <li><a href="#">Like</a></li>
                                         <li><em>{{ comment.updated|date }}</em></li>
                                     </ul>
                                 </div>
@@ -258,7 +257,7 @@
         <div class="frame frame-light">
             <div class="frame-content">
                 <h2 class="titlebar"><span class="ribbon ribbon-normal ribbon-04 ribbon-brown">Solutions</span></h2>
-            
+
             <table class="table-list table-list-leader-board">
                     <tbody>
                       {% for solution in solutions %}
