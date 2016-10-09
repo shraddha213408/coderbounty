@@ -214,7 +214,7 @@
                                     <img src="{% static "images/temp/thumb-medium-00.jpg" %}" alt="" />
                                   </div>
                                   <div class="user"><strong>{{ comment.username }}</strong></div>
-                                  <div class="description"><p>{{ comment.content }}</p></div>
+                                  <div class="description"><p>{{ comment.content | urlize }}</p></div>
                                 </div>
                                 <div class="actionbar">
                                     <ul>
