@@ -1173,6 +1173,7 @@ p.desc {
     	color: #463527;
     	margin-bottom: 5px;
     	overflow: hidden;
+    	height:75px;
     	}
 .issues .text h3:hover {
     	white-space: normal;
