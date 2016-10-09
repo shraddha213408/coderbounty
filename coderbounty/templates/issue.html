@@ -210,10 +210,14 @@
                             <div class="item-comment clearfix">
                                 <!-- text -->
                                 <div class="text">
-                                  <div class="img-holder">
-                                    <img src="{{ comment.useravatar }}" alt="" />
-                                  </div>
-                                  <div class="user"><strong>{{ comment.username }}</strong></div>
+                                  <a href="{% url 'profile' comment.username %}">
+                                    <div class="img-holder">
+                                      <img src="{{ comment.useravatar }}" alt="" />
+                                    </div>
+                                  </a>
+                                  <a href="{% url 'profile' comment.username %}">
+                                    <div class="user"><strong>{{ comment.username }}</strong></div>
+                                  </a>
                                   <div class="description"><p>{{ comment.content | urlize }}</p></div>
                                 </div>
                                 <div class="actionbar">
