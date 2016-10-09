@@ -554,19 +554,19 @@ class IssueDetailView(DetailView):
         context['taker'] = self.get_object().get_taker()
         context['takers'] = Taker.objects.filter(issue=self.get_object()).order_by('-created')
         context['solutions'] = Solution.objects.filter(issue=self.get_object()).order_by('-created')
-        comment_set = context['object'].comment_set.all()
-        context['object'] = context['object'].__dict__
-        context['object']['comment_set'] = []
-        for comment in comment_set:
-            comment = comment.__dict__
-            try:
-                comment_user = User.objects.get(username=comment['username'])
-                comment['useravatar'] = UserProfile.objects.get(user=comment_user).avatar()
-            except User.DoesNotExist, UserProfile.DoesNotExist:
-                # github usernames are different from the coderbounty usernames.
-                # Then, show default useravatar.
-                comment['useravatar'] = static('images/temp/thumb-medium-00.jpg')
-            context['object']['comment_set'].append(comment)
+        # comment_set = context['object'].comment_set.all()
+        # context['object'] = context['object'].__dict__
+        # context['object']['comment_set'] = []
+        # for comment in comment_set:
+        #     comment = comment.__dict__
+        #     try:
+        #         comment_user = User.objects.get(username=comment['username'])
+        #         comment['useravatar'] = UserProfile.objects.get(user=comment_user).avatar()
+        #     except User.DoesNotExist, UserProfile.DoesNotExist:
+        #         # github usernames are different from the coderbounty usernames.
+        #         # Then, show default useravatar.
+        #         comment['useravatar'] = static('images/temp/thumb-medium-00.jpg')
+        #     context['object']['comment_set'].append(comment)
         if not context['taker'] and self.get_object().status == "taken":
             issue = self.get_object()
             issue.status = "open"
