@@ -20,7 +20,7 @@
                             <tbody>
                                 <tr>
                                  <td class="status">
-                                        #{{forloop.counter}}
+                                        #{{object_list.start_index|add:forloop.counter0}}
                                     </td>
                                     <td class="thumb">
                                         <a href="/profile/{{ user.username }}" class="img-holder"><img src="{{ user.userprofile.avatar }}" alt="" /></a></td>
