@@ -34,6 +34,24 @@
                                 
                             </tbody>
                             {% endfor %}
+                            <tfoot>
+                              <tr>
+                              <td colspan="4" align="center">
+                               {% if is_paginated %}
+                                  {% if page_obj.has_previous %}
+                                      <span><a href="?page={{ page_obj.previous_page_number }}">Previous</a></span>
+                                      
+                                  {% endif %}
+                                      <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
+                                  {% if page_obj.has_next %}
+                                      <span><a href="?page={{ page_obj.next_page_number }}">Next</a></span>
+                                      
+                                  {% endif %}
+                                
+                               {% endif %}
+                               </td>
+                              </tr>
+                            </tfoot>
                         </table>                        
                     </div>
                 </div>
