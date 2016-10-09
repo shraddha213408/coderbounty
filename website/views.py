@@ -558,9 +558,14 @@ class IssueDetailView(DetailView):
         context['object'] = context['object'].__dict__
         context['object']['comment_set'] = []
         for comment in comment_set:
-            comment_user = User.objects.get(username=comment.username)
             comment = comment.__dict__
-            comment['useravatar'] = UserProfile.objects.get(user=comment_user).avatar()
+            try:
+                comment_user = User.objects.get(username=comment['username'])
+                comment['useravatar'] = UserProfile.objects.get(user=comment_user).avatar()
+            except User.DoesNotExist, UserProfile.DoesNotExist:
+                # github usernames are different from the coderbounty usernames.
+                # Then, show default useravatar.
+                comment['useravatar'] = static('images/temp/thumb-medium-00.jpg')
             context['object']['comment_set'].append(comment)
         if not context['taker'] and self.get_object().status == "taken":
             issue = self.get_object()
