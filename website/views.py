@@ -399,7 +399,8 @@ class LeaderboardView(ListView):
         except EmptyPage:
             leaderboard_users_paginated = paginator.page(paginator.num_pages)
 
-        context['leaderboard'] = leaderboard_users_paginated
+        context['leaderboard'] = leaderboard()
+        context['object_list'] = leaderboard_users_paginated
         return context
 
 class PayView(DetailView):
