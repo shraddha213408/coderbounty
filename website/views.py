@@ -567,7 +567,11 @@ class IssueDetailView(DetailView):
 
 
 def get_bounty_image(request, id):
-    issue = Issue.objects.get(id=id)
+    try:
+        issue = Issue.objects.get(id=id)
+    except Issue.DoesNotExist:
+        raise Http404("That issue was not found.")
+
     from PIL import Image
     from PIL import ImageFont
     from PIL import ImageDraw
