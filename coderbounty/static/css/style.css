@@ -1143,11 +1143,9 @@ form .errorlist {
 p.desc {
     overflow: hidden;
     text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 5;
     line-height: 100%;
     word-break: break-word;
+    height:71px;
 }
 
 .issues .issue-id {
@@ -1174,9 +1172,8 @@ p.desc {
     	font-size: 16px;
     	color: #463527;
     	margin-bottom: 5px;
-    	white-space: nowrap;
     	overflow: hidden;
-    	text-overflow: ellipsis;}
+    	}
 .issues .text h3:hover {
     	white-space: normal;
     	overflow: overlay;}
@@ -1192,6 +1189,7 @@ p.desc {
 	font-size: 14px;
     position: absolute;
     bottom: 0;
+    right: 0;
 }
 .issues .issue-people {
 	padding-top:12px;

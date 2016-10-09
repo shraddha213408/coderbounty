@@ -49,6 +49,7 @@
             <section class="frame frame-light">
                 <div class="frame-content">
                     <!--info-->
+                   
                     <div class="issue-info clearfix">
                         <div class="side-info">
                             <a href="/issue/{{issue.id}}" class="img-holder"><img src="{% static "images/temp/thumb-github.jpg" %}" alt="" /></a>
@@ -58,7 +59,7 @@
                                 <button class="ribbon ribbon-normal ribbon-03 ribbon-brown-dark">Add $</button>
                             </form>
                             <div class="logo-tech">
-                                <span class="icon-{{issue.language|slugify}}" style="font-size:21px;"></span>{{issue.language}}
+                                
                             </div>
                         </div>
                         
@@ -73,7 +74,7 @@
                             {% endif %}
                             </a>
                         </div>
-                        
+                        <a href="/issue/{{issue.id}}" style="color:#675B4D;">
                         <div class="text">
                             
                             <ul class="issue-id">
@@ -82,9 +83,12 @@
                             </ul> 
                             <h3>{{issue.title}}</h3>
                             <p class="desc">{{issue.content}}</p>
-                            <div class="posted"><em>Posted: <time>{{issue.created|date:"m/d/Y"}}</time></em><br><em>Views: <time>{{issue.views}}</time></em></div>
+                            <div class="posted">
+                            <i class="icon-calendar" ></i> {{issue.created|date:"m/d/Y"}} <i class="icon-eye" ></i> {{issue.views}} <i class="icon-{{issue.language|slugify}}"  title="{{issue.language}}"></i></div>
                         </div>
+                         </a>
                     </div>
+
                     <!-- people -->
                     <div class="issue-people clearfix">
                         <ul class="clearfix">
