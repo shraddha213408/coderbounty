@@ -1170,10 +1170,16 @@ p.desc {
 .issues .issue-id li:first-child:before {
 	content:'';}
 .issues .text h3 {
-	font-family:'CalistoMtBold',serif;
-	font-size:16px;
-	color:#463527;
-	margin-bottom:5px;}
+	font-family: 'CalistoMtBold',serif;
+    	font-size: 16px;
+    	color: #463527;
+    	margin-bottom: 5px;
+    	white-space: nowrap;
+    	overflow: hidden;
+    	text-overflow: ellipsis;}
+.issues .text h3:hover {
+    	white-space: normal;
+    	overflow: overlay;}
 .issues .text > p {
 	font-size:14px;}
 .issues .logo-tech {
@@ -1694,4 +1700,3 @@ span#email-help-text{
     background-position-x: 88px;
     background-position-y: 13px;
 }
-
