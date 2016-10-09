@@ -200,19 +200,20 @@
                   </form>
             </div>
             {% endif %}
-            {% if object.comment_set %}
+            {% if object.comment_set.count %}
                 <div class="comments">
                     <div class="comments-count clearfix">
                         <span>{{ object.comment_set.count }}</span> comments
                     </div>
                     <div class="comments-main">
-                        {% for comment in object.comment_set %}
+                        {% for comment in object.comment_set.all %}
                             <div class="item-comment clearfix">
                                 <!-- text -->
                                 <div class="text">
                                   <a href="{% url 'profile' comment.username %}">
                                     <div class="img-holder">
-                                      <img src="{{ comment.useravatar }}" alt="" />
+                                      <img src="https://github.com/{{comment.username}}.png?size=75" alt="" 
+                                      onerror="this.src='{% static "images/temp/thumb-medium-00.jpg" %}';"/>
                                     </div>
                                   </a>
                                   <a href="{% url 'profile' comment.username %}">
