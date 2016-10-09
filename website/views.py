@@ -28,7 +28,7 @@ from allauth.socialaccount.models import SocialToken, SocialApp, SocialAccount, 
 import requests
 from django.http import Http404
 from django.views.decorators.cache import cache_page
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def parse_url_ajax(request):
@@ -371,6 +371,8 @@ class LeaderboardView(ListView):
         return context
 
 class LeaderboardView(ListView):
+    model = User
+    paginate_by = 25
     template_name = "leaderboard.html"
 
     def get_queryset(self):
@@ -380,7 +382,20 @@ class LeaderboardView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(LeaderboardView, self).get_context_data(**kwargs)
-        context['leaderboard'] = leaderboard()
+        leaderboard_users = User.objects.all().annotate(
+            null_position=Count('userprofile__balance')).order_by(
+            '-null_position', '-userprofile__balance', '-last_login')
+        paginator = Paginator(leaderboard_users, self.paginate_by)
+        page = self.request.GET.get('page')
+
+        try:
+            leaderboard_users_paginated = paginator.page(page)
+        except PageNotAnInteger:
+            leaderboard_users_paginated = paginator.page(1)
+        except EmptyPage:
+            leaderboard_users_paginated = paginator.page(paginator.num_pages)
+
+        context['leaderboard'] = leaderboard_users_paginated
         return context
 
 class PayView(DetailView):
