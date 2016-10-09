@@ -22,6 +22,7 @@ https://goo.gl/xvb6CI
  `python manage.py runserver`
 
 The first time you may need to run:
+- `If postgresql is not installed`, `brew install postgresql` (mac), `sudo apt-get install postgresql` (Ubuntu)
 - `cd coderbounty`
 - `virtualenv venv`
 - `venv\Scripts\activate` (windows)
