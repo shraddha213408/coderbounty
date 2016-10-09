@@ -309,7 +309,11 @@ class PostAll(TemplateView):
             providers = accounts.setdefault(account.provider, [])
             providers.append(account)
 
-        service = Service.objects.get(name="Github")
+        try:
+            service = Service.objects.get(name="Github")
+        except Service.DoesNotExist:
+            raise Http404("That service was not found.")
+
         try:
             access_token = SocialToken.objects.get(account__user=self.request.user, account__provider='github')
         except Exception, e:
