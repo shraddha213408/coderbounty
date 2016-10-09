@@ -562,6 +562,7 @@ def get_bounty_image(request, id):
         4: 525,
         3: 530,
         2: 533,
+        1: 533
     }
     img = Image.open("coderbounty/static/images/layout/github-poster.png")
     draw = ImageDraw.Draw(img)
