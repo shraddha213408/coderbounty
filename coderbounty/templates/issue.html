@@ -200,18 +200,18 @@
                   </form>
             </div>
             {% endif %}
-            {% if object.comment_set.count %}
+            {% if object.comment_set %}
                 <div class="comments">
                     <div class="comments-count clearfix">
                         <span>{{ object.comment_set.count }}</span> comments
                     </div>
                     <div class="comments-main">
-                        {% for comment in object.comment_set.all %}
+                        {% for comment in object.comment_set %}
                             <div class="item-comment clearfix">
                                 <!-- text -->
                                 <div class="text">
                                   <div class="img-holder">
-                                    <img src="{% static "images/temp/thumb-medium-00.jpg" %}" alt="" />
+                                    <img src="{{ comment.useravatar }}" alt="" />
                                   </div>
                                   <div class="user"><strong>{{ comment.username }}</strong></div>
                                   <div class="description"><p>{{ comment.content | urlize }}</p></div>
