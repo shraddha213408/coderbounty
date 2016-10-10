@@ -447,7 +447,7 @@ class PayView(DetailView):
                             "value": self.object.issue.bounty(),
                             "currency": "USD"
                         },
-                        "receiver": self.object.user.email,
+                        "receiver": self.object.user.userprofile.payment_service_email,
                         "note": "Thank you for your solution",
                         "sender_item_id": str(self.object.issue)
                     }
