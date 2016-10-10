@@ -534,7 +534,24 @@ class IssueDetailView(DetailView):
                 issue = self.get_object()
                 issue.status = "taken"
                 issue.save()
-                #"yippie kay yay - someone took your coderbounty issue #1234 - they will have 4 hours before "
+                msg_plain = render_to_string('email/issue_taken.txt', {
+                    'user': self.request.user, 
+                    'issue':self.get_object(),
+                    'time_remaining':taker.time_remaining
+                    })
+                msg_html = render_to_string('email/issue_taken.txt', {
+                    'user': self.request.user, 
+                    'issue':self.get_object(),
+                    'time_remaining':taker.time_remaining
+                    })
+
+                send_mail(
+                    'You have taken issue: '+self.get_object().project + " issue #" + str(self.get_object().id),
+                    msg_plain,
+                    'support@coderbounty.com',
+                    [self.request.user.email],
+                    html_message=msg_html,
+                )
             else:
                 return redirect('/accounts/login/?next=/issue/' + str(self.get_object().id))
         if self.request.POST.get('solution'):
