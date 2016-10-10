@@ -245,7 +245,7 @@ def user_signed_up_(request, user, **kwargs):
 
 @receiver(user_logged_in, dispatch_uid="some.unique.string.id.for.allauth.user_logged_in")
 def user_logged_in_(request, user, **kwargs):
-    if not settings.TESTING:
+    if not settings.TESTING and not settings.DEBUG:
         slack = Slacker(settings.SLACK_API_TOKEN)
         slack.chat.post_message('#logins', request.user.username + " logged in")
 

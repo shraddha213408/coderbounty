@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core import serializers
 from django.core.urlresolvers import reverse
+from django.core.mail import send_mail
 from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, RequestContext, redirect, render
@@ -29,6 +30,7 @@ import requests
 from django.http import Http404
 from django.views.decorators.cache import cache_page
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.template.loader import render_to_string
 
 
 def parse_url_ajax(request):
@@ -536,16 +538,35 @@ class IssueDetailView(DetailView):
             else:
                 return redirect('/accounts/login/?next=/issue/' + str(self.get_object().id))
         if self.request.POST.get('solution'):
-            if self.request.user.is_authenticated():
-                solution = Solution(
-                    issue=self.get_object(),
-                    user=self.request.user,
-                    url=request.POST.get('solution'))
-                solution.save()
-                action.send(self.request.user, verb='posted ', action_object=solution, target=self.get_object())
+            if self.get_object().status not in ('closed', 'in review'):
 
-            else:
-                return redirect('/accounts/login/?next=/issue/' + str(self.get_object().id))
+                if self.request.user.is_authenticated():
+                    solution = Solution(
+                        issue=self.get_object(),
+                        user=self.request.user,
+                        url=request.POST.get('solution'))
+                    solution.save()
+                    issue = self.get_object()
+                    issue.status = "in review"
+                    issue.save()
+                    action.send(self.request.user, verb='posted ', action_object=solution, target=self.get_object())
+
+
+                    bounty_poster = Bounty.objects.filter(issue=self.get_object())[:1].get()
+
+                    msg_plain = render_to_string('email/solution_posted.txt', {'user': bounty_poster.user, 'issue':self.get_object() })
+                    msg_html = render_to_string('email/solution_posted.txt', {'user': bounty_poster.user, 'issue':self.get_object() })
+
+                    send_mail(
+                        'Coderbounty solution posted on '+self.get_object().project + " issue #" + str(self.get_object().id),
+                        msg_plain,
+                        'support@coderbounty.com',
+                        [bounty_poster.user.email],
+                        html_message=msg_html,
+                    )
+
+                else:
+                    return redirect('/accounts/login/?next=/issue/' + str(self.get_object().id))
 
         return super(IssueDetailView, self).get(request, *args, **kwargs)
 

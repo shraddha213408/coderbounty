@@ -79,7 +79,11 @@
 
             <!-- road sign -->
             <div class="element-roadSign">
-                <p><span>${% bounty_total %}</span> in bounties won</p>
+            {% if request.user.is_authenticated %}
+                <p><span>${{ request.user.userprofile.balance|default:"0" }}</span> account balance</p>
+            {% else %}
+                 <p><span>${% bounty_total %}</span> in bounties won</p>
+            {% endif %}
             </div>
         </div>
     </header>
@@ -91,7 +95,7 @@
         <div class="footer-symbol"></div>
         <div class="copyrights">
             <div class="wrapper-global">
-                <p>Â© {% now "Y" %} CoderBounty, Inc. All Rights Reserved. <a href="/terms">Terms & Conditions</a></p>
+                <p>© {% now "Y" %} CoderBounty, Inc. All Rights Reserved. <a href="/terms">Terms & Conditions</a></p>
                 <ul class="footer-links">
                     <li><a href="http://coderbounty.uservoice.com" target="_new">Feedback</a></li>
                     <li><a href="{% url 'help' %}">FAQ</a></li>

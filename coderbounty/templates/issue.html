@@ -190,6 +190,7 @@
                  startTimer("{{taker.time_remaining_seconds}}", document.querySelector('#timer'));
               </script>
               </br></br></br>
+              {% if object.status != "in review" %}
                 <form action="#" method="post" id="post_pull_request_url">
                 {% csrf_token %}
                   <div class="value" style="width:100%; text-align:center;">
@@ -198,6 +199,7 @@
                     <button class="ribbon ribbon-normal ribbon-03 ribbon-brown-dark">Submit Solution</button>
                   </div>
                   </form>
+                  {% endif %}
             </div>
             {% endif %}
             {% if object.comment_set.count %}

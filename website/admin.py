@@ -29,7 +29,7 @@ class CommentAdmin(admin.ModelAdmin):
     list_display=('username','issue','service_comment_id','created','updated','content')
 
 class SolutionAdmin(admin.ModelAdmin):
-    list_display=('issue','user','url','status')
+    list_display=('issue','user','url','status','created','modified')
 
 admin.site.unregister(User)
 
