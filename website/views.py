@@ -534,6 +534,7 @@ class IssueDetailView(DetailView):
                 issue = self.get_object()
                 issue.status = "taken"
                 issue.save()
+                action.send(self.request.user, verb='has taken ', target=self.get_object())
                 msg_plain = render_to_string('email/issue_taken.txt', {
                     'user': self.request.user, 
                     'issue':self.get_object(),
