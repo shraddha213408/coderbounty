@@ -576,7 +576,7 @@ class IssueDetailView(DetailView):
                     msg_html = render_to_string('email/solution_posted.txt', {'user': bounty_poster.user, 'issue':self.get_object() })
 
                     send_mail(
-                        'Coderbounty solution posted on '+self.get_object().project + " issue #" + str(self.get_object().id),
+                        'Coderbounty solution posted on '+self.get_object().project + " issue #" + str(self.get_object().number),
                         msg_plain,
                         'support@coderbounty.com',
                         [bounty_poster.user.email],
