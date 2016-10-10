@@ -217,6 +217,17 @@ def list(request):
     language = request.GET.get('language')
     sort = request.GET.get('sort','-created')
 
+    if sort not in ['-created','-bounty','-views','-modified']:
+        messages.error(request, 'invalid sort option')
+        return redirect('/list')
+
+    if not any(language in lang for lang in Issue.LANGUAGES) and language:
+        messages.error(request, 'invalid language')
+        return redirect('/list')
+
+    if not any(status in stat for stat in Issue.STATUS_CHOICES) and status != "all":
+        messages.error(request, 'invalid status')
+        return redirect('/list')
 
     if status == "all":
         issues = Issue.objects.all().order_by(sort)

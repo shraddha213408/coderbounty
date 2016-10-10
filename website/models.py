@@ -55,9 +55,11 @@ class Issue(models.Model):
     IN_REVIEW_STATUS = 'in review'
     PAID_STATUS = 'paid'
     CLOSED_STATUS = 'closed'
+    TAKEN_STATUS = 'taken'
     STATUS_CHOICES = (
         (OPEN_STATUS, 'open'),
         (IN_REVIEW_STATUS, 'in review'),
+        (TAKEN_STATUS, 'taken'),
         (PAID_STATUS, 'paid'),
         (CLOSED_STATUS, 'closed'),
     )
