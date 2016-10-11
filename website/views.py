@@ -419,7 +419,12 @@ class LeaderboardView(ListView):
 class PayView(DetailView):
     model = Solution
     def get(self, request, **kwargs):
-        self.object = self.get_object()
+        try:
+            self.object = self.get_object()
+        except Http404:
+            messages.error(self.request, 'That solution was not found.')
+            return redirect("/")
+
         # temporarally until we add creator to issues
         if Bounty.objects.filter(user=self.request.user).filter(issue=self.object.issue):
 
