@@ -563,7 +563,7 @@ class IssueDetailView(DetailView):
                     })
 
                 send_mail(
-                    'You have taken issue: '+self.get_object().project + " issue #" + str(self.get_object().id),
+                    'You have taken issue: '+self.get_object().project + " issue #" + str(self.get_object().number),
                     msg_plain,
                     'support@coderbounty.com',
                     [self.request.user.email],
