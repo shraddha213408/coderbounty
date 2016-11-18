@@ -52,7 +52,7 @@
                    
                     <div class="issue-info clearfix">
                         <div class="side-info">
-                            <a href="/issue/{{issue.id}}" class="img-holder"><img src="{% static "images/temp/thumb-github.jpg" %}" alt="" /></a>
+                            <a href="/issue/{{issue.id}}" class="img-holder"><img src="https://github.com/{{issue.user}}.png?size=75" alt="" /></a>
                             <p class="price">${{issue.bounty}}</p>
                             <form action="/post/" method="GET">
                                 <input type="hidden" name="url" value="{{issue.html_url}}">
