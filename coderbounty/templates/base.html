@@ -52,7 +52,8 @@
                     {% endif %}
                     <li><a href="{% url 'post' %}">Post <i class='icon-hammer'></i></a></li>
                     <li><a href="{% url 'list' %}">Bounties <i class='icon-custom_dolar'></i></a></li>
-                    <li><a href="{% url 'about' %}">About <i class='icon-custom_star'></i></a></li>
+                    <li><a href="{% url 'about' %}">About Us</i></a></li>
+                    <li><a href="{% url 'help' %}">Help</i></a></li>
                 </ul>
             </nav>
             <!-- header-social -->
@@ -63,19 +64,21 @@
                     <li><a class="rss" href="https://github.com/seanauriti/coderbounty/issues"></a></li>
                 </ul>
             </div>
+
+            <!-- new feature -->
             {% if messages %}
                 <div class="element-newFeature">
                     {% for message in messages %}
-                        <p>
+                        <p class="titlebar-paper">
                             <strong {% if message.tags %} class="{{ message.tags }}"{% endif %}>
-                                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+                                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                                New Feature: {% endif %}
                             </strong>
                             {{ message }}
                         </p>
                     {% endfor %}
                 </div>
             {% endif %}
-            <!-- new feature -->
 
             <!-- road sign -->
             <div class="element-roadSign">
