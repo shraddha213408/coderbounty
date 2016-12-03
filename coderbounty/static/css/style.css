@@ -1699,3 +1699,34 @@ span#email-help-text{
     background-position-x: 88px;
     background-position-y: 13px;
 }
+
+
+/*
+=====================
+ LIST==========
+=====================
+*/
+
+.left{float:left;margin-right:8em;}
+.list{height:10em;}
+.list-filter-buttons{margin-top:40px;}
+.list-view{margin-bottom:30px;}
+.inline{display:inline-block;}
+.list-table-header{margin-top:60px;}
+.list-hr{width:95%;border-width:2px;}
+.list-table{margin-top:-100px;margin-left:-10px;}
+.list-image{padding:2em;}
+.list-people{width:150px;height:60px;float:left;margin-top:-80px;}        
+.take{margin-left:20px;}
+.list-table-header-user-org{padding-left:150px;padding-right:10px;}
+.list-table-header-issue{padding-left:60px;padding-right:10px;}
+.list-table-header-title{padding-left:50px;padding-right:10px;}
+.list-table-header-status{padding-left:200px;padding-right:10px;}
+.list-table-header-views,.list-table-header-people,.list-table-header-bounty
+{padding-left: 50px;padding-right:10px;}
+.list-table-owner{width:130px;}
+.list-table-issue{padding-left:15px;width:110px;}
+.list-table-title{width:235px;}
+.list-table-status{padding-left:20px;width:105px;}
+.list-table-bounty{width:110px;}
+.list-table-views{padding-left:10px;width:95px;}
