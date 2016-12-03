@@ -26,6 +26,7 @@ urlpatterns = (
     url(r'^issue/(?P<slug>\w+)/$', IssueDetailView.as_view(), name="issue"),
     url(r'^leaderboard/$', LeaderboardView.as_view(), name="leaderboard"),
     url(r'^list/$', website.views.list, name='list'),
+    url(r'^new_list/$', new_list.views.list, name='new_list'),
     url(r'^get_bounty_image/(?P<id>\w+)/$', website.views.get_bounty_image, name='get_bounty_image'),
     url(r'^parse_url_ajax/$', website.views.parse_url_ajax, name='parse_url_ajax'),
     url(r'^post/$', website.views.create_issue_and_bounty, name='post'),
