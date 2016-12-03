@@ -216,6 +216,7 @@ def list(request):
     status = request.GET.get('status','open')
     language = request.GET.get('language')
     sort = request.GET.get('sort','-created')
+    layout = request.GET.get('layout','list')
 
     if sort not in ['-created','-bounty','-views','-modified']:
         messages.error(request, 'invalid sort option')
@@ -247,48 +248,14 @@ def list(request):
         'languages': languages,
         'status': status,
         'sort': sort,
+        'layout': layout,
     }
-    response = render_to_response('list.html', context, context_instance=RequestContext(request))
-    return response
-
-def new_list(request):
-    status = request.GET.get('status','open')
-    language = request.GET.get('language')
-    sort = request.GET.get('sort','-created')
-
-    if sort not in ['-created','-bounty','-views','-modified']:
-        messages.error(request, 'invalid sort option')
-        return redirect('/list')
-
-    if not any(language in lang for lang in Issue.LANGUAGES) and language:
-        messages.error(request, 'invalid language')
-        return redirect('/list')
-
-    if not any(status in stat for stat in Issue.STATUS_CHOICES) and status != "all":
-        messages.error(request, 'invalid status')
-        return redirect('/list')
-
-    if status == "all":
-        issues = Issue.objects.all().order_by(sort)
+    if layout == "list":
+        response = render_to_response('list.html', context, context_instance=RequestContext(request))
     else:
-        issues = Issue.objects.filter(status=status).order_by(sort)
-    
-    if language:
-        issues = issues.filter(language=language)
-
-    languages = []
-    for lang in Issue.LANGUAGES:
-        languages.append(lang[0])
-
-    context = {
-        'issues': issues,
-        'language': language,
-        'languages': languages,
-        'status': status,
-        'sort': sort,
-    }
-    response = render_to_response('new_list.html', context, context_instance=RequestContext(request))
+        response = render_to_response('new_list.html', context, context_instance=RequestContext(request))
     return response
+
 
 def profile(request):
     """Redirects to profile page if the requested user is loggedin
