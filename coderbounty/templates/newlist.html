@@ -120,7 +120,7 @@
                                     <ul class="clearfix">
                                         {% for bounty in issue.bounties %}
                                         <li>
-                                            <a href="/profile/{{bounty.user.username}}"><img src="{{bounty.user.userprofile.avatar}}" alt="{{bounty.user.username}}" data-toggle="tooltip" title="${{bounty.price}} | {{bounty.created|timesince}} ago | {{bounty.user.username}} " /></a>
+                                            <a href="/profile/{{bounty.user.username}}"><img src="{{bounty.user.userprofile.avatar}}" alt="{{bounty.user.username}}" data-toggle="tooltip" title="${{bounty.price}} | {{bounty.created|timesince}} ago | {{bounty.user.username}} " height="30"/></a>
                                         </li>
                                         {% endfor %}
                                     </ul>                                

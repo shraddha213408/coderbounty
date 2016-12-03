@@ -216,7 +216,7 @@ def list(request):
     status = request.GET.get('status','open')
     language = request.GET.get('language')
     sort = request.GET.get('sort','-created')
-    layout = request.GET.get('layout','list')
+    layout = request.GET.get('layout','grid')
 
     if sort not in ['-created','-bounty','-views','-modified']:
         messages.error(request, 'invalid sort option')
