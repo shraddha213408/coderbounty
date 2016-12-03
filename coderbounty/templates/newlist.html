@@ -35,7 +35,7 @@
             </form>
         </div>
         
-        <div class="list-filter-buttons">
+        <div class="list-filter-buttons"><!--
             <div class="left">
                 <button class="ribbon ribbon-normal ribbon-green ribbon-02" value="-issues">
                 Issues</button>
@@ -51,13 +51,11 @@
                 <button class="ribbon ribbon-normal ribbon-green ribbon-02" value="-views"
                 {% if sort == "-views" %}selected{% endif %}>Most Views</button>
             </div>
-
-            <div>
-                <button class="ribbon ribbon-normal ribbon-green ribbon-02" value="-created"
-                {% if sort == "-created" %}selected{% endif %}>List</button>
-                <button class="ribbon ribbon-normal ribbon-green ribbon-02" value="-bounty"
-                {% if sort == "-bounty" %}selected{% endif %}>Grid</button>
-            </div>            
+                -->
+                <div>
+                    <button class="ribbon ribbon-normal ribbon-green ribbon-02" onclick="location.href='?layout=list';">List</button>
+                    <button class="ribbon ribbon-normal ribbon-green ribbon-02" onclick="location.href='?layout=grid';">Grid</button>
+                </div>          
         </div>
 
         <table class="list-table-header">

@@ -250,10 +250,10 @@ def list(request):
         'sort': sort,
         'layout': layout,
     }
-    if layout == "list":
+    if layout == "grid":
         response = render_to_response('list.html', context, context_instance=RequestContext(request))
     else:
-        response = render_to_response('new_list.html', context, context_instance=RequestContext(request))
+        response = render_to_response('newlist.html', context, context_instance=RequestContext(request))
     return response
 
 

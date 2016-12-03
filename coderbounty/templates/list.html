@@ -41,6 +41,31 @@
                     </form>
             </div>
 
+            <div class="list-filter-buttons">
+            <!--
+                <div class="left">
+                    <button class="ribbon ribbon-normal ribbon-green ribbon-02" value="-issues">
+                    Issues</button>
+                    <button class="ribbon ribbon-normal ribbon-green ribbon-02" value="-user/org">
+                    User/Org</button>
+                </div>
+
+                <div class="left">
+                    <button class="ribbon ribbon-normal ribbon-green ribbon-02" value="-created"
+                    {% if sort == "-created" %}selected{% endif %}>Recent</button>
+                    <button class="ribbon ribbon-normal ribbon-green ribbon-02" value="-bounty"
+                    {% if sort == "-bounty" %}selected{% endif %}>Highest Bounty</button>
+                    <button class="ribbon ribbon-normal ribbon-green ribbon-02" value="-views"
+                    {% if sort == "-views" %}selected{% endif %}>Most Views</button>
+                </div>
+                -->
+                <div>
+                    <button class="ribbon ribbon-normal ribbon-green ribbon-02" onclick="location.href=location.href+'?layout=list';">List</button>
+                    <button class="ribbon ribbon-normal ribbon-green ribbon-02" onclick="location.href=location.href+'?layout=grid';">Grid</button>
+                </div>            
+            </div>
+
+
     </div>
     <!-- issues -->
     <div class="issues">
