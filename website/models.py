@@ -71,6 +71,7 @@ class Issue(models.Model):
         ('Erlang', 'Erlang'),
         ('Haskell', 'Haskell'),
         ('HTML', 'HTML'),
+        ('Go', 'Go'),
         ('Java', 'Java'),
         ('JavaScript', 'JavaScript'),
         ('NodeJS', 'NodeJS'),
