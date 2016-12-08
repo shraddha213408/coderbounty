@@ -1730,3 +1730,22 @@ span#email-help-text{
 .list-table-status{padding-left:20px;width:105px;}
 .list-table-bounty{width:110px;}
 .list-table-views{padding-left:10px;width:95px;}
+
+
+/*
+===================================
+ ORGANISATION/REPOSITORY======
+===================================
+*/
+.list-table-header{margin-top:3%; margin-left: 5%; width: 90%;}
+.list-table-header-org,.list-table-header-totalbounty,.list-table-header-repo{width:15%;}
+.list-table-header-updated{width: 20%;}
+.list-table-header-people{width:35%;}
+.organisation-list-table{width: 100%;margin-left: 3%;}
+.organisation-list-row{height: 30px; width: 100%;}
+.list-table-org{padding-left: 2%;}
+.list-table-image{height: 30px; width: auto;}
+.list-table-repo{padding-right: 2%;}
+.list-table-totalbounty{padding-right: 4%;}
+.list-table-updated{padding-right: 5%;}
+.list-table-people{padding-right: 10%;}
