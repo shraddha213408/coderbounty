@@ -488,7 +488,7 @@ class IssueDetailView(DetailView):
                     "payment occured",
                     'support@coderbounty.com',
                     ['support@coderbounty.com'],
-                    html_message="payment error",
+                    html_message="payment occured",
                 )
                 for obj in serializers.deserialize("json", custom, ignorenonexistent=True):
                     obj.object.created = datetime.datetime.now()
