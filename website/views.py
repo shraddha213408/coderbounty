@@ -181,27 +181,6 @@ def create_issue_and_bounty(request):
                     })
 
 
-                # wepay = WePay(settings.WEPAY_IN_PRODUCTION, settings.WEPAY_ACCESS_TOKEN)
-                # wepay_data = wepay.call('/checkout/create', {
-                #     'account_id': settings.WEPAY_ACCOUNT_ID,
-                #     'amount': request.POST.get('grand_total'),
-                #     'short_description': 'CoderBounty',
-                #     'long_description': data,
-                #     'type': 'service',
-                #     'redirect_uri': request.build_absolute_uri(issue.get_absolute_url()),
-                #     'currency': 'USD'
-                # })
-                # if "error_code" in wepay_data:
-                #     messages.error(request, wepay_data['error_description'])
-                #     return render(request, 'post.html', {
-                #         'languages': languages
-                #     })
-
-                # 
-
-
-
-
         else:
             return render(request, 'post.html', {
                 'languages': languages,
@@ -379,18 +358,18 @@ class PostAll(TemplateView):
         return context
 
 #@cache_page(432000) #5 days
-class LeaderboardView(ListView):
-    template_name = "leaderboard.html"
+# class LeaderboardView(ListView):
+#     template_name = "leaderboard.html"
 
-    def get_queryset(self):
-        return User.objects.all().annotate(
-            null_position=Count('userprofile__balance')).order_by(
-            '-null_position', '-userprofile__balance', '-last_login')
+#     def get_queryset(self):
+#         return User.objects.all().annotate(
+#             null_position=Count('userprofile__balance')).order_by(
+#             '-null_position', '-userprofile__balance', '-last_login')
 
-    def get_context_data(self, **kwargs):
-        context = super(LeaderboardView, self).get_context_data(**kwargs)
-        context['leaderboard'] = leaderboard()
-        return context
+#     def get_context_data(self, **kwargs):
+#         context = super(LeaderboardView, self).get_context_data(**kwargs)
+#         context['leaderboard'] = leaderboard()
+#         return context
 
 class LeaderboardView(ListView):
     model = User
@@ -506,6 +485,12 @@ class IssueDetailView(DetailView):
             custom = payment.transactions[0].custom
 
             if payment.execute({"payer_id": self.request.GET.get('PayerID')}):
+                send_mail('Processed Payment PayerID'+self.request.GET.get('PayerID') + " paymentID" + self.request.GET.get('paymentId'),
+                    "payment occured",
+                    'support@coderbounty.com',
+                    ['support@coderbounty.com'],
+                    html_message="payment error",
+                )
                 for obj in serializers.deserialize("json", custom, ignorenonexistent=True):
                     obj.object.created = datetime.datetime.now()
                     obj.object.checkout_id = self.request.GET.get('checkout_id')
@@ -516,21 +501,12 @@ class IssueDetailView(DetailView):
                         create_comment(obj.object.issue)
             else:
                 messages.error(request, payment.error)
-
-        if self.request.GET.get('checkout_id'):
-            wepay = WePay(settings.WEPAY_IN_PRODUCTION, settings.WEPAY_ACCESS_TOKEN)
-            wepay_data = wepay.call('/checkout/', {
-                'checkout_id': self.request.GET.get('checkout_id'),
-            })
-
-            for obj in serializers.deserialize("xml", wepay_data['long_description'], ignorenonexistent=True):
-                obj.object.created = datetime.datetime.now()
-                obj.object.checkout_id = self.request.GET.get('checkout_id')
-                obj.save()
-                action.send(self.request.user, verb='placed a $' + str(obj.object.price) + ' bounty on ', target=obj.object.issue)
-                post_to_slack(obj.object)
-                if not settings.DEBUG:
-                    create_comment(obj.object.issue)
+                send_mail('Payment error: PayerID'+self.request.GET.get('PayerID') + " paymentID" + self.request.GET.get('paymentId'),
+                    "payment error",
+                    'support@coderbounty.com',
+                    ['support@coderbounty.com'],
+                    html_message="payment error",
+                )
 
         return super(IssueDetailView, self).get(request, *args, **kwargs)
 
