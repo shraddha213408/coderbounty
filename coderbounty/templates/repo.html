@@ -19,11 +19,12 @@
         <table class="list-table-header">
             <tbody>
                 <tr>
-                    <th class="list-table-header-org">Org</th>
-                    <th class="list-table-header-repo"># of issues</th>
-                    <th class="list-table-header-totalbounty">Total bounty</th>
-                    <th class="list-table-header-updated">Programming Language(s)</th>
-                    <th class="list-table-header-people">Top contributors</th>
+                    <th class="list-table-header-repository">Repository</th>
+                    <th class="list-table-header-issues"># of issues</th>
+                    <th class="list-table-header-bounty">Total bounty</th>
+                    <th class="list-table-header-languages">Programming Language(s)</th>
+                    <th class="list-table-header-coverage">Bounty Coverage</th>                    
+                    <th class="list-table-header-contributors">Top contributors</th>
                 </tr>
             </tbody>
         </table>
@@ -33,19 +34,19 @@
             <section class="frame frame-light">
                 <div class="frame-content">
                     <table class="organisation-list-table">
-                        <tbody>
+                        <tbody>1
                             {% for repository in repositories %}                            
                             <tr class="organisation-list-row">
-                                <td class="list-table-org">
-                                    <img src="{{}}" class="list-table-image">
+                                <td class="list-table-repository">
+                                    <img src="" class="list-table-image">
                                 </td>
-                                <td class="list-table-header-repo list-table-repo">{{}}</td>
-                                <td class="list-table-header-totalbounty list-table-totalbounty">{{}}</td>
-                                <td class="list-table-header-updated list-table-updated">
-                                <!-- programming languages -->{{}}</td>
-                                <td class="list-table-header-people list-table-people">
+                                <td class="list-table-issues">{}</td>
+                                <td class="list-table-bounty">$ {}</td>
+                                <td class="list-table-repo-languages">{}</td>
+                                <td class="list-table-coverage">{}</td>
+                                <td class="list-table-contributors">
                                     {% for contributor in contributors %}
-                                    <img src="{{}}" class="list-table-image">
+                                    <img src="" class="list-table-image">
                                     {% endfor %}
                                 </td>
                             </tr>
@@ -55,8 +56,6 @@
                 </div>
             </section>
         </div>
-
-
     </div>
 </div>
 {% endblock %}
