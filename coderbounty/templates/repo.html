@@ -4,11 +4,17 @@
 {% block content %}
 <script src="{% static "js/all.js" %}"></script>
 
-<!-- Section - Issues (Find Bounties) -->
+<!-- Section - Repositories -->
 <div class="section-issues clearfix wrapper-global">
     <!-- headbar -->
     <div class="headbar frame listing">
         <h1>Repositories</h1>
+        <div class="list-filter-buttons">
+            <div>
+                <button class="ribbon ribbon-normal ribbon-green ribbon-02" onclick="">List</button>
+                <button class="ribbon ribbon-normal ribbon-green ribbon-02" onclick="">Grid</button>
+            </div>            
+        </div>
 
         <table class="list-table-header">
             <tbody>
