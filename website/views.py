@@ -467,7 +467,7 @@ class IssueDetailView(DetailView):
     def get(self, request, *args, **kwargs):
         try:
             self.object = self.get_object()
-        except Http404:
+        except:
             messages.error(self.request, 'That issue was not found.')
             return redirect("/")
 
