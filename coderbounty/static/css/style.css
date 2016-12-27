@@ -1733,13 +1733,14 @@ span#email-help-text{
 
 
 /*
-===================================
- ORGANISATION/REPOSITORY======
-===================================
+===========================
+ ORGANISATION======
+===========================
 */
 .list-table-header{margin-top:3%; margin-left: 5%; width: 90%;}
 .list-table-header-org,.list-table-header-totalbounty,.list-table-header-repo{width:15%;}
 .list-table-header-updated{width: 20%;}
+.list-table-header-languages{width: 20%;}
 .list-table-header-people{width:35%;}
 .organisation-list-table{width: 100%;margin-left: 3%;}
 .organisation-list-row{height: 30px; width: 100%;}
@@ -1749,3 +1750,53 @@ span#email-help-text{
 .list-table-totalbounty{padding-right: 4%;}
 .list-table-updated{padding-right: 5%;}
 .list-table-people{padding-right: 10%;}
+.list-table-languages{padding-right: 7%;}
+
+
+/*
+=============================
+ REPOSITORY LIST======
+=============================
+*/
+.list-table-header{margin-top:3%; width: 90%;}
+.list-table-header-repository,.list-table-header-issues{width:10%;}
+.list-table-header-bounty{width: 12%; padding-left: 0;}
+.list-table-header-languages{width: 15%;}
+.list-table-header-coverage{width: 13%;}
+.list-table-header-contributors{width:19%;padding-right: 3%}
+.organisation-list-table{width: 90%;margin: 0 5% 0 5%;}
+.organisation-list-row{height: 30px; width: 100%;}
+.organisation-list-row td{text-align: center;}
+.list-table-repository{width:7%;}
+.list-table-issues{width:8%;}
+.list-table-bounty{width: 8%;}
+.list-table-repo-languages{width: 13%;}
+.list-table-coverage{width: 8%;}
+.list-table-contributors{width:15%;}
+
+
+/*
+===============================
+ REPOSITORY GRID======
+===============================
+*/
+.repo-headbar{margin-bottom: 3em !important;}
+.repo-info{margin-left: 5%; margin-top: -10px;margin-bottom: 10px;}
+.repo-name{font-weight: bold; margin-bottom: 0.5em;}
+.repo-item{border-style: none; height: 210px !important;}
+.below-image{padding: 0;margin-left: 10px;font-size: 12px;text-align: left;}
+.side-info{width: 30%; display: inline-block; text-align: center;margin-top: 0;}
+.repository-image{width: 96px;height: 96px;}
+.repo-people{margin-top: 5px;}
+.repo-grid-people-image{width: 30px; height: 30px;}
+.bounty-price{font-family:'RegulatorsRegular',serif; color:#75857B;font-size:24px;}
+.repo-bounty{font-size: 18px; margin-left: 5px;}
+.repo-text-info{margin-left:5%; display: inline-block; text-align: center; width: 60%;}
+.repo-text-info p{font-size: 13px;}
+.repo-issues{margin-top: 0.5em;}
+.repo-issues-table{text-align: center;}
+.repo-issues-table td{font-size: 13px;}
+.repo-issues-td{padding: 0 0.7em 0 0.7em;}
+.repo-commit{text-align: left; margin-top: 0.5em;}
+.commit-info{margin-bottom: 5px;}
+.repo-stats i{margin-left: 1em; font-size: 13px;}
