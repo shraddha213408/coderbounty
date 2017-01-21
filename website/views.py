@@ -116,7 +116,8 @@ def create_issue_and_bounty(request):
                     project=issue_data['project'],
                     user=issue_data['user'],
                     service=service
-                )      
+                )
+            form = IssueCreateForm(request.POST, instance=instance)
         bounty_form = BountyCreateForm(request.POST)
         bounty_form_is_valid = bounty_form.is_valid()
         if form.is_valid() and bounty_form_is_valid:
