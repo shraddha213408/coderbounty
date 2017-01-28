@@ -90,34 +90,21 @@ def create_issue_and_bounty(request):
         try:
             helper = get_issue_helper(request, url)
             issue_data = helper.get_issue(request, url)
-            if issue_data and "service" in issue_data:
-                service = Service.objects.get(name=issue_data['service'])
-                instance = Issue(
-                    number=issue_data['number'],
-                    project=issue_data['project'],
-                    user=issue_data['user'],
-                    service=service
-                )
-        except:
+            service = Service.objects.get(name=issue_data['service'])
+            instance = Issue(
+                number=issue_data['number'],
+                project=issue_data['project'],
+                user=issue_data['user'],
+                service=service
+            )
+            form = IssueCreateForm(request.POST, instance=instance)
+
+        except Exception, e:
             return render(request, 'post.html', {
                 'languages': languages,
-                'message': 'Please provide a propper issue url like \
-                - https://github.com/CoderBounty/coderbounty/issues/83',
+                'message': 'Error: '+ str(e),
             })
-        try:
-            form = IssueCreateForm(request.POST, instance=instance)
-        except:
-            helper = get_issue_helper(request, url)
-            issue_data = helper.get_issue(request, url)
-            if issue_data and "service" in issue_data:
-                service = Service.objects.get(name=issue_data['service'])
-                instance = Issue(
-                    number=issue_data['number'],
-                    project=issue_data['project'],
-                    user=issue_data['user'],
-                    service=service
-                )
-            form = IssueCreateForm(request.POST, instance=instance)
+
         bounty_form = BountyCreateForm(request.POST)
         bounty_form_is_valid = bounty_form.is_valid()
         if form.is_valid() and bounty_form_is_valid:

@@ -53,7 +53,7 @@ class AbstractIssueHelper(object):
         netloc = parsed_url.netloc
         try:
             service = Service.objects.get(domain=netloc)
-        except:
+        except Exception, e:
             messages.error(request, str(e))
             return str(e)
         template = Template(service.template)
@@ -62,7 +62,7 @@ class AbstractIssueHelper(object):
         try:
             replaced_url = service.api_url+template.substitute(r.groupdict())
             self.issue_data = r.groupdict()
-            req = urllib2.Request(replaced_url, None, {'Content-Type': 'application/' + service.type})
+            req = urllib2.Request(replaced_url+"?client_id="+settings.GITHUB_CLIENT_ID+"&client_secret="+settings.GITHUB_CLIENT_SECRET, None, {'Content-Type': 'application/' + service.type})           
 
         except Exception, e:
             messages.error(request, str(e))
