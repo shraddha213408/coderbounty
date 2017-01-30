@@ -79,6 +79,12 @@
                         <div class="side-info">
                             <a href="/issue/{{issue.id}}" class="img-holder"><img src="https://github.com/{{issue.user}}.png?size=75" alt="" /></a>
                             <p class="price">${{issue.bounty}}</p>
+                            {% if issue.winner %}
+                                <a href="/profile/{{issue.winner.username}}"><img src="{{issue.winner.userprofile.avatar}}" alt="{{issue.winner.username}}" data-toggle="tooltip" title="${{bounty.price}} won by {{issue.winner.username}} " 
+                                style="border: solid 2px #453527;"/></a>
+                               <img src="{% static 'images/layout/money_bag.png' %}" > 
+                    
+                            {% else %}
                             <form action="/post/" method="GET">
                                 <input type="hidden" name="url" value="{{issue.html_url}}">
                                 <button class="ribbon ribbon-normal ribbon-03 ribbon-brown-dark">Add $</button>
@@ -86,6 +92,7 @@
                             <div class="logo-tech">
                                 
                             </div>
+                            {% endif %}
                         </div>
                         
                         <div class="issue-status">
@@ -136,9 +143,14 @@
                                 </a>
 
                             {% else %}
+                                {% if not issue.winner %}
                                 <form action="/issue/{{issue.id}}/" method="post">{% csrf_token %}
                                     <button class="ribbon ribbon-normal ribbon-03 ribbon" name="take" value="take">Take</button>
                                 </form>
+                                {% else %}
+                                 
+                                    <button class="ribbon ribbon-normal ribbon-03 ribbon" name="paid" value="take">Paid <span class="icon-trophy"></span></button>
+                                {% endif %}
                             {% endif %}
                         </div>
                     </div>
