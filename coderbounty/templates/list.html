@@ -81,7 +81,7 @@
                             <p class="price">${{issue.bounty}}</p>
                             {% if issue.winner %}
                                 <a href="/profile/{{issue.winner.username}}"><img src="{{issue.winner.userprofile.avatar}}" alt="{{issue.winner.username}}" data-toggle="tooltip" title="${{bounty.price}} won by {{issue.winner.username}} " 
-                                style="border: solid 2px #453527;"/></a>
+                                style="border: solid 2px #453527; height:50px;" /></a>
                                <img src="{% static 'images/layout/money_bag.png' %}" > 
                     
                             {% else %}
