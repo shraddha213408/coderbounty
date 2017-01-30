@@ -444,7 +444,7 @@ class PayView(DetailView):
                     issue=self.object.issue, 
                     solution=self.object,
                     user=self.object.user,
-                    txn_id=payout.items['transaction_id'],
+                    txn_id=payout.items.get('transaction_id'),
                     amount=self.object.issue.bounty(),
                     created=datetime.datetime.now(),
                     modified=datetime.datetime.now(),
