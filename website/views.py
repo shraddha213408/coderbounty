@@ -17,7 +17,7 @@ from django.shortcuts import render_to_response, RequestContext, redirect, rende
 from django.views.generic import ListView, DetailView, FormView, TemplateView, View
 from django.views.generic.edit import UpdateView
 from django.views.generic.detail import SingleObjectMixin
-from models import Issue, UserProfile, Bounty, Service, Taker, Solution
+from models import Issue, UserProfile, Bounty, Service, Taker, Solution, Payment
 from utils import get_issue_helper, leaderboard, post_to_slack, submit_issue_taker, get_comment_helper, create_comment
 from wepay import WePay
 from time import strftime
@@ -431,7 +431,7 @@ class PayView(DetailView):
                 ]
             })
 
-            if payout.create():
+            if payout.create(sync_mode=True):
                 messages.success(self.request, "payout[%s] created successfully" %
                       (payout.batch_header.payout_batch_id))
                 self.object.status = Solution.PAID
@@ -440,6 +440,16 @@ class PayView(DetailView):
                 self.object.issue.status = Issue.PAID_STATUS
                 self.object.issue.paid = self.object.issue.bounty()
                 self.object.issue.save()
+                Payment.objects.create(
+                    issue=self.object.issue, 
+                    solution=self.object,
+                    user=self.object.user,
+                    txn_id=payout.items['transaction_id'],
+                    amount=self.object.issue.bounty(),
+                    created=datetime.datetime.now(),
+                    modified=datetime.datetime.now(),
+                )
+                
 
             else:
                 messages.error(self.request, payout.error)

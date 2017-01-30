@@ -34,7 +34,7 @@ def find_api_url(url):
     return replaced_url
 
 def leaderboard():
-    return User.objects.filter(userprofile__balance__gt=0).order_by('-userprofile__balance')[:10]
+    return User.objects.filter(payment__amount__gt=0).annotate(total=Sum('payment__amount')).order_by('-total')
 
 
 class AbstractIssueHelper(object):

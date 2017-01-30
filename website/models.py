@@ -210,6 +210,9 @@ class UserProfile(models.Model):
     def avatar_large(self, size=200):
         return self.avatar(size=200)
 
+    def bounties_won(self, size=200):
+        return Payment.objects.filter(user=self.user).aggregate(Sum('amount'))['amount__sum'] or 0
+
     def save(self, *args, **kwargs):
         if self.pk is None:
             action.send(self.user, verb='signed up')
