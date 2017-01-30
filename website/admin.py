@@ -3,6 +3,7 @@ from website.models import Issue, Service, UserProfile, Bounty, Solution, Taker,
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from django.contrib.admin.models import LogEntry
+from django.contrib.sessions.models import Session
 
 class ServiceAdmin(admin.ModelAdmin):
      list_display=[] 
@@ -53,6 +54,13 @@ class LogEntryAdmin(admin.ModelAdmin):
         actions = super(LogEntryAdmin, self).get_actions(request)
         del actions['delete_selected']
         return actions
+
+
+class SessionAdmin(ModelAdmin):
+    def _session_data(self, obj):
+        return obj.get_decoded()
+    list_display = ['session_key', '_session_data', 'expire_date']
+admin.site.register(Session, SessionAdmin)
 
 admin.site.register(LogEntry, LogEntryAdmin)
 
