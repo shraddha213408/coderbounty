@@ -2,6 +2,7 @@ from django.contrib import admin
 from website.models import Issue, Service, UserProfile, Bounty, Solution, Taker, Comment, Payment
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
+from django.contrib.admin.models import LogEntry
 
 class ServiceAdmin(admin.ModelAdmin):
      list_display=[] 
@@ -34,7 +35,27 @@ class SolutionAdmin(admin.ModelAdmin):
 admin.site.unregister(User)
 
 UserAdmin.list_display = ('id','username','email', 'first_name', 'last_name', 'is_active', 'date_joined', 'is_staff')
-    
+
+class LogEntryAdmin(admin.ModelAdmin):
+    readonly_fields = ('content_type',
+        'user',
+        'action_time',
+        'object_id',
+        'object_repr',
+        'action_flag',
+        'change_message'
+    )
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def get_actions(self, request):
+        actions = super(LogEntryAdmin, self).get_actions(request)
+        del actions['delete_selected']
+        return actions
+
+admin.site.register(LogEntry, LogEntryAdmin)
+
 admin.site.register(Issue, IssueAdmin)
 admin.site.register(Service, ServiceAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
