@@ -437,9 +437,16 @@ class GithubCommentHelper(AbstractCommentHelper):
         comments = issue.get_api_data(url)
 
         for comment in comments:
-            Comment.objects.update_or_create(issue=issue, content=comment['body'],
-                                   service_comment_id=comment['id'], username=comment['user']['login'],
-                                   created=comment['created_at'], updated=comment['updated_at'])
+            Comment.objects.update_or_create(
+                    issue=issue, 
+                    service_comment_id=comment['id'], 
+                    defaults ={
+                        'content': comment['body'],
+                        'username': comment['user']['login'],
+                        'created': comment['created_at'], 
+                        'updated': comment['updated_at']
+                    }
+                )
 
     def sync_comments(self, issue):
         pass
