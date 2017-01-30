@@ -408,6 +408,7 @@ class Payment(models.Model):
     solution = models.ForeignKey(Solution)
     user = models.ForeignKey(User)
     amount = models.DecimalField(max_digits=10, decimal_places=0)
+    txn_id = models.CharField(max_length=255, blank=True, null=True)
     created = models.DateTimeField()
     updated = models.DateTimeField()
 
