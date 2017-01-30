@@ -80,7 +80,7 @@
                             <a href="/issue/{{issue.id}}" class="img-holder"><img src="https://github.com/{{issue.user}}.png?size=75" alt="" /></a>
                             <p class="price">${{issue.bounty}}</p>
                             {% if issue.winner %}
-                                <a href="/profile/{{issue.winner.username}}"><img src="{{issue.winner.userprofile.avatar}}" alt="{{issue.winner.username}}" data-toggle="tooltip" title="${{bounty.price}} won by {{issue.winner.username}} " 
+                                <a href="/profile/{{issue.winner.username}}"><img src="{{issue.winner.userprofile.avatar}}" alt="{{issue.winner.username}}" data-toggle="tooltip" title="${{issue.bounty}} won by {{issue.winner.username}} " 
                                 style="border: solid 2px #453527; height:50px;" /></a>
                                <img src="{% static 'images/layout/money_bag.png' %}" > 
                     
