@@ -1422,7 +1422,7 @@ p.desc {
 	text-transform: uppercase;}
 .codeIssue-head .status li [class^="icon-"] span,
 .codeIssue-head .status li [class*=" icon-"] span {
-	padding-left: 3x;
+	padding-left: 3px;
 	font-size: 13px;}
 
 .codeIssue-basic {
