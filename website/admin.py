@@ -4,6 +4,18 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from django.contrib.admin.models import LogEntry
 from django.contrib.sessions.models import Session
+from import_export.admin import ImportExportModelAdmin
+from import_export import resources
+
+
+class UserResource(resources.ModelResource):
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email',)
+
+class UserAdmin(ImportExportModelAdmin):
+    resource_class = UserResource
 
 class ServiceAdmin(admin.ModelAdmin):
      list_display=[] 

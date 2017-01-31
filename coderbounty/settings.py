@@ -50,6 +50,7 @@ INSTALLED_APPS = (
     'actstream',
     'website',
     'rest_framework',
+    'import_export',
 )
 
 SITE_ID = 1
