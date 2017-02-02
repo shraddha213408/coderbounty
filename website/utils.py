@@ -89,7 +89,7 @@ class GithubIssueHelper(AbstractIssueHelper):
         data = self.issue_data
         data['status'] = result['state']
         data['title'] = result['title']
-        data['content'] = result['body']
+        data['content'] = result['body'][:400]
         if "closed_by" in result:
             data['closed_by'] = result['closed_by']
         data['service'] = self.service.name
