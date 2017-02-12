@@ -365,15 +365,11 @@ class LeaderboardView(ListView):
     template_name = "leaderboard.html"
 
     def get_queryset(self):
-        return User.objects.all().annotate(
-            null_position=Count('userprofile__balance')).order_by(
-            '-null_position', '-userprofile__balance', '-last_login')
+        return User.objects.filter(payment__amount__gt=0).annotate(total=Sum('payment__amount')).order_by('-total')
 
     def get_context_data(self, **kwargs):
         context = super(LeaderboardView, self).get_context_data(**kwargs)
-        leaderboard_users = User.objects.all().annotate(
-            null_position=Count('userprofile__balance')).order_by(
-            '-null_position', '-userprofile__balance', '-last_login')
+        leaderboard_users = User.objects.filter(payment__amount__gt=0).annotate(total=Sum('payment__amount')).order_by('-total')
         paginator = Paginator(leaderboard_users, self.paginate_by)
         page = self.request.GET.get('page')
 
