@@ -31,7 +31,7 @@ from django.http import Http404
 from django.views.decorators.cache import cache_page
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template.loader import render_to_string
-
+from django.db.models import Sum
 
 def parse_url_ajax(request):
     url = request.POST.get('url', '')
