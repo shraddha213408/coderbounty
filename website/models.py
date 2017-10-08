@@ -400,7 +400,7 @@ class Taker(models.Model):
         return (date_from - datetime.datetime.utcnow().replace(tzinfo=utc)).seconds
 
     def expired(self):
-        return (datetime.datetime.utcnow().replace(tzinfo=utc) - self.created).days >= 1
+        return (datetime.datetime.utcnow().replace(tzinfo=utc) - self.created).days >= 3
 
 #    def clean(self):
 #       raise ValidationError('The issue is already taken.')
