@@ -79,18 +79,27 @@ em {
 	background:url('../images/layout/pattern-header.gif') repeat-x center top;}
 .header .wrapper-global {
 	position: relative;
-    height:175px;}
+    height:210px;}
 .navHeader {
-	position:absolute;
-	top:12px;
-	right:110px;}
+  position: absolute;
+  top: 0px;
+  padding: 10px;
+  height: 40px;
+  background-color: #463527;
+  width: 200%;
+  margin-left: -20%;
+}
+.navHeader ul {
+  position: absolute;
+left: 25%;
+}
 .navHeader li {
 	display:inline;
 	text-transform:uppercase;
 	margin:0 5px;}
 .navHeader li,
 .navHeader li a {
-	color:#463527;
+	color:#fff;
 	text-decoration:none;
 	font-size:14px;}
 .navHeader li a {
@@ -127,7 +136,7 @@ em {
 
 .header .logo {
 	position:absolute;
-	top:13px;
+	top:45px;
 	left:0;}
 
 .footer {
@@ -444,7 +453,7 @@ em {
 .listing span {
 	margin-top:24px;
 	margin-bottom:10px;
-} 
+}
 
 .filter{
 	padding-top:96px;
@@ -1716,7 +1725,7 @@ span#email-help-text{
 .list-hr{width:95%;border-width:2px;}
 .list-table{margin-top:-100px;margin-left:-10px;}
 .list-image{padding:2em;}
-.list-people{width:150px;height:60px;float:left;margin-top:-80px;}        
+.list-people{width:150px;height:60px;float:left;margin-top:-80px;}
 .take{margin-left:20px;}
 .list-table-header-user-org{padding-left:150px;padding-right:10px;}
 .list-table-header-issue{padding-left:60px;padding-right:10px;}
