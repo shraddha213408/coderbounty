@@ -1727,10 +1727,10 @@ span#email-help-text{
 .list-image{padding:2em;}
 .list-people{width:150px;height:60px;float:left;margin-top:-80px;}
 .take{margin-left:20px;}
-.list-table-header-user-org{padding-left:150px;padding-right:10px;}
-.list-table-header-issue{padding-left:60px;padding-right:10px;}
+.list-table-header-user-org{padding-left:50px;padding-right:10px;}
+.list-table-header-issue{padding-left:50px;padding-right:10px;}
 .list-table-header-title{padding-left:50px;padding-right:10px;}
-.list-table-header-status{padding-left:200px;padding-right:10px;}
+.list-table-header-status{padding-left:50px;padding-right:10px;}
 .list-table-header-views,.list-table-header-people,.list-table-header-bounty
 {padding-left: 50px;padding-right:10px;}
 .list-table-owner{width:130px;}
@@ -1750,7 +1750,7 @@ span#email-help-text{
 .list-table-header-org,.list-table-header-totalbounty,.list-table-header-repo{width:15%;}
 .list-table-header-updated{width: 20%;}
 .list-table-header-languages{width: 20%;}
-.list-table-header-people{width:35%;}
+/* .list-table-header-people{width:35%;} */
 .organisation-list-table{width: 100%;margin-left: 3%;}
 .organisation-list-row{height: 30px; width: 100%;}
 .list-table-org{padding-left: 2%;}
@@ -1769,7 +1769,7 @@ span#email-help-text{
 */
 .list-table-header{margin-top:3%; width: 90%;}
 .list-table-header-repository,.list-table-header-issues{width:10%;}
-.list-table-header-bounty{width: 12%; padding-left: 0;}
+/* .list-table-header-bounty{width: 12%; padding-left: 0;} */
 .list-table-header-languages{width: 15%;}
 .list-table-header-coverage{width: 13%;}
 .list-table-header-contributors{width:19%;padding-right: 3%}
