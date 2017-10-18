@@ -22,7 +22,7 @@ oauthlib==1.0.3
 packaging==16.8
 paypalrestsdk==1.11.5
 Pillow==3.2.0
-psycopg2==2.6.1
+psycopg2==2.7.3
 pyasn1==0.1.9
 pycparser==2.14
 pyOpenSSL==16.0.0
@@ -42,5 +42,5 @@ tablib==0.11.4
 tweepy==3.5.0
 wepay==0.3.2
 whitenoise==3.0
-pylibmc==1.5.1		
+pylibmc==1.5.1
 django-pylibmc==0.6.1
