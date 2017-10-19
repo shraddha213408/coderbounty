@@ -87,16 +87,16 @@
                                 <table class="list-table">
                                     <tbody>
                                         <tr>
-                                            <td>
+                                            <td class="first-col">
                                               <div class="side-info inline">
                                                   <a href="/issue/{{issue.id}}" class="img-holder list-image">
                                                   <img src="{% static "images/temp/thumb-github.jpg" %}" alt="" /></a>
                                               </div>
                                             </td>
-                                            <td class="list-table-owner">{{issue.project}}</td>
-                                            <td class="list-table-issue">#{{issue.number}}</td>
-                                            <td class="list-table-title">{{issue.title}}</td>
-                                            <td class="list-table-status">
+                                            <td class="second-col">{{issue.project}}</td>
+                                            <td class="third-col">#{{issue.number}}</td>
+                                            <td class="fourth-col">{{issue.title}}</td>
+                                            <td class="fifth-col">
                                                 <a href="/list/?filter={{issue.status|slugify}}" title="{{issue.status}}">
                                                 {% if issue.status == "in review" %}
                                                     <span class="icon-clock"></span>
@@ -106,12 +106,11 @@
                                                     <i class="icon-banknote"></i>
                                                 {% endif %}
                                             </a></td>
-                                            <td class="list-table-bounty">
+                                            <td class="sixth-col">
                                             <h1>${{issue.bounty}}</h1></td>
-                                            <td class="list-table-views">{{issue.views}}</td>
-                                            <td>
+                                            <td class="seventh-col">{{issue.views}}</td>
+                                            <td class="eighth-col">
                                               <!-- people -->
-                                              <div class="issue-people clearfix inline">
                                                   <div class="list-people">
                                                       <ul class="clearfix">
                                                           {% for bounty in issue.bounties %}

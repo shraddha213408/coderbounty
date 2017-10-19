@@ -1725,7 +1725,7 @@ span#email-help-text{
 .list-hr{width:95%;border-width:2px;}
 .list-table{margin-top:-100px;margin-left:-10px;}
 .list-image{padding:2em;}
-.list-people{width:150px;height:60px;float:left;margin-top:-80px;}
+.list-people{height:60px;}
 .take{margin-left:20px;}
 .list-table-header-user-org{padding-left:50px;padding-right:10px;}
 .list-table-header-issue{padding-left:50px;padding-right:10px;}
@@ -1740,6 +1740,38 @@ span#email-help-text{
 .list-table-bounty{width:110px;}
 .list-table-views{padding-left:10px;width:95px;}
 
+.first-col {
+  width: 16%;
+}
+
+.second-col {
+  width: 10%;
+}
+
+.third-col {
+  width: 16%;
+}
+
+.fourth-col {
+  width: 7%;
+  word-wrap: break-word;
+}
+
+.fifth-col {
+  width: 14%;
+}
+
+.sixth-col {
+  width: 9%;
+}
+
+.seventh-col {
+  width: 15%;
+}
+
+.eigth-col {
+  width: 13%;
+}
 
 /*
 ===========================
