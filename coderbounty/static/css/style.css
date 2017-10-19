@@ -1723,7 +1723,7 @@ span#email-help-text{
 .inline{display:inline-block;}
 .list-table-header{margin-top:60px;}
 .list-hr{width:95%;border-width:2px;}
-.list-table{margin-top:-100px;margin-left:-10px;}
+.list-table{margin-top:0px;margin-left:-10px;}
 .list-image{padding:2em;}
 .list-people{height:60px;}
 .take{margin-left:20px;}
